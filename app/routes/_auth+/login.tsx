@@ -1,7 +1,18 @@
+import type {
+  ActionArgs,
+  ActionFunction,
+  LoaderArgs,
+  LoaderFunction,
+} from "@remix-run/node";
 import { Link } from "@remix-run/react";
-import { Input } from "../components";
-import { Button } from "../components/Button";
-import { AuthLayout } from "../layouts";
+import { authenticator } from "~/services/auth.server";
+import { Input } from "../../components";
+import { Button } from "../../components/Button";
+import { AuthLayout } from "../../layouts";
+
+export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
+  return authenticator.isAuthenticated(request, { successRedirect: "/" });
+};
 
 export default function Login() {
   return (
@@ -17,15 +28,22 @@ export default function Login() {
         </p>
       }
     >
-      <form className="flex flex-col space-y-4">
+      <form className="flex flex-col space-y-4" method="post">
         <Input name="email" label="Email" />
         <Input
           name="password"
           inputProps={{ type: "password" }}
           label="Password"
         />
-        <Button>Login</Button>
+        <Button type="submit">Login</Button>
       </form>
     </AuthLayout>
   );
 }
+
+export const action: ActionFunction = async ({ request }: ActionArgs) => {
+  return authenticator.authenticate("login", request, {
+    successRedirect: "/",
+    failureRedirect: "/login",
+  });
+};

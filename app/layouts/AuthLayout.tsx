@@ -8,7 +8,6 @@ export const AuthLayout: React.FC<Props> = ({ header, children }) => {
   return (
     <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="flex flex-col justify-center sm:mx-auto sm:w-full sm:max-w-md">
-        {/* Logo */}
         <div className="mx-auto h-9 text-heading">
           <svg
             viewBox="0 0 233 38"
