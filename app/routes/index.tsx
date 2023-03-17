@@ -1,4 +1,13 @@
+import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
+import { LogoutButton } from "~/components/LogoutButton";
+import { authenticator } from "~/services/auth.server";
+
+export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
+  return authenticator.isAuthenticated(request, {
+    failureRedirect: "/login",
+  });
+};
 
 export default function Index() {
   return (
@@ -12,6 +21,7 @@ export default function Index() {
         <Link to="/projects">Projects</Link>
         <Link to="/skills">Skills</Link>
       </div>
+      <LogoutButton />
     </div>
   );
 }

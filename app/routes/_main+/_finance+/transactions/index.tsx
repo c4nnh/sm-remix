@@ -1,5 +1,5 @@
 import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
-import { Button } from "~/components/Button";
+import { LogoutButton } from "~/components/LogoutButton";
 import { authenticator } from "~/services/auth.server";
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
@@ -11,8 +11,7 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
 export default function Transactions() {
   return (
     <div>
-      Transactions
-      <Button>Logout</Button>
+      Transactions <LogoutButton />
     </div>
   );
 }

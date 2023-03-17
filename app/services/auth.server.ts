@@ -44,8 +44,6 @@ export const requiredRole = async (request: Request, roles?: UserRole[]) => {
     return redirect("/login");
   }
 
-  console.log(user);
-
   if (roles && roles.length && !roles.includes(user.role)) {
     throw new Response("Forbidden", {
       status: 403,

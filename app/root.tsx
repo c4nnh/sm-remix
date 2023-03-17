@@ -79,7 +79,6 @@ export function CatchBoundary() {
   );
 }
 
-export function ErrorBoundary({ error }: { error: Error }) {
-  console.error(error);
+export function ErrorBoundary() {
   return <ErrorLayout title="Something went wrong" />;
 }

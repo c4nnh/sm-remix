@@ -1,6 +1,6 @@
 import { UserRole } from "@prisma/client";
 import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
-import { Button } from "~/components/Button";
+import { LogoutButton } from "~/components/LogoutButton";
 import { requiredRole } from "~/services/auth.server";
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
@@ -11,7 +11,7 @@ export default function Users() {
   return (
     <div>
       Users
-      <Button>Logout</Button>
+      <LogoutButton />
     </div>
   );
 }
