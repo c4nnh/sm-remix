@@ -1,5 +1,6 @@
 import { Link } from "@remix-run/react";
 import { Button, Input } from "~/components";
+import { ROUTES } from "~/constants";
 import { AuthLayout } from "~/layouts";
 
 export default function Register() {
@@ -7,7 +8,7 @@ export default function Register() {
     <AuthLayout
       header={
         <p className="mt-6 text-center text-sm text-text">
-          <Link to="/login">
+          <Link to={ROUTES.LOGIN}>
             Already have an account?
             <span className="font-semibold text-primary hover:text-primary-accent">
               Login

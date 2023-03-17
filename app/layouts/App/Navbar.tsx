@@ -2,6 +2,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { Bars4Icon, BellIcon } from "@heroicons/react/24/outline";
 import { Form, Link, useLocation } from "@remix-run/react";
 import { Fragment } from "react";
+import { ROUTES } from "~/constants";
 
 type Props = {
   openSidebar: () => void;
@@ -71,10 +72,10 @@ export const Navbar: React.FC<Props> = ({ openSidebar }) => {
           >
             <Menu.Items className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-xl bg-layer-3 py-3 shadow-xl focus:outline-none">
               <Menu.Item>
-                <Link to="/profile">
+                <Link to={ROUTES.PROFILE}>
                   <button
                     className={`${
-                      pathname === "/profile"
+                      pathname === ROUTES.PROFILE
                         ? "bg-muted-1 text-heading"
                         : "text-text"
                     } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold`}
@@ -84,7 +85,7 @@ export const Navbar: React.FC<Props> = ({ openSidebar }) => {
                 </Link>
               </Menu.Item>
               <Menu.Item>
-                <Form method="post" action="/logout">
+                <Form method="post" action={ROUTES.LOGOUT}>
                   <button
                     type="submit"
                     className="text-text flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold"

@@ -3,6 +3,7 @@ import { redirect, Response } from "@remix-run/node";
 import { Authenticator, AuthorizationError } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
 import invariant from "tiny-invariant";
+import { FORM_STRATEGY, ROUTES } from "~/constants";
 import { getUserByEmail } from "~/models/user.server";
 import { sessionStorage } from "~/services/session.server";
 import type { AuthSession } from "~/types/auth";
@@ -34,14 +35,14 @@ authenticator.use(
 
     return { id, email, name, role, status };
   }),
-  "login"
+  FORM_STRATEGY.LOGIN
 );
 
 export const requiredRole = async (request: Request, roles?: UserRole[]) => {
   const user = await authenticator.isAuthenticated(request);
 
   if (!user) {
-    return redirect("/login");
+    return redirect(ROUTES.LOGIN);
   }
 
   if (roles && roles.length && !roles.includes(user.role)) {

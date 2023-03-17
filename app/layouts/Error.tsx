@@ -1,4 +1,5 @@
 import { Link } from "@remix-run/react";
+import { ROUTES } from "~/constants";
 
 type Props = {
   status?: number;
@@ -40,7 +41,7 @@ export const ErrorLayout: React.FC<Props> = ({
         <h1 className="mt-16 text-9xl font-bold text-heading">{status}</h1>
         <h2 className="mt-6 text-2xl font-semibold text-heading">{title}</h2>
         <p className="mt-4 font-medium text-text">{description}</p>
-        <Link to="/">
+        <Link to={ROUTES.ROOT}>
           <span className="mt-8 inline-flex cursor-pointer items-center justify-center rounded-xl border-2 border-primary bg-primary px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:border-primary-accent hover:bg-primary-accent focus:outline-none focus:ring-2 focus:ring-orange-400/80 focus:ring-offset-0 disabled:opacity-30 disabled:hover:border-primary disabled:hover:bg-primary disabled:hover:text-white dark:focus:ring-white/80">
             Go Home
           </span>
