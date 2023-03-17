@@ -1,9 +1,8 @@
 import type { ActionArgs, ActionFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
+import { Button, Input } from "~/components";
+import { AuthLayout } from "~/layouts";
 import { authenticator } from "~/services/auth.server";
-import { Input } from "../../components";
-import { Button } from "../../components/Button";
-import { AuthLayout } from "../../layouts";
 
 export default function Login() {
   return (

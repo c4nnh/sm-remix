@@ -10,7 +10,7 @@ import {
 } from "@remix-run/react";
 
 import stylesheet from "~/styles/tailwind.generated.css";
-import { ErrorLayout } from "./layouts/ErrorLayout";
+import { ErrorLayout } from "./layouts/Error";
 
 export const links: LinksFunction = () => [
   { rel: "stylesheet", href: stylesheet },
@@ -80,5 +80,17 @@ export function CatchBoundary() {
 }
 
 export function ErrorBoundary() {
-  return <ErrorLayout title="Something went wrong" />;
+  return (
+    <html>
+      <head>
+        <title>Oops!</title>
+        <Meta />
+        <Links />
+      </head>
+      <body className="bg-muted-1 text-text h-screen dark overflow-hidden">
+        <ErrorLayout title="Something went wrong" />;
+        <Scripts />
+      </body>
+    </html>
+  );
 }

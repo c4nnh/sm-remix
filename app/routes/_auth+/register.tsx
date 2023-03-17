@@ -1,7 +1,6 @@
 import { Link } from "@remix-run/react";
-import { Input } from "../../components";
-import { Button } from "../../components/Button";
-import { AuthLayout } from "../../layouts";
+import { Button, Input } from "~/components";
+import { AuthLayout } from "~/layouts";
 
 export default function Register() {
   return (

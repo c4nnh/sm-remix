@@ -1,5 +1,6 @@
 import type { LoaderArgs, LoaderFunction } from "@remix-run/node";
 import { Outlet } from "@remix-run/react";
+import { AppLayout } from "~/layouts";
 import { requiredRole } from "~/services/auth.server";
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
@@ -7,5 +8,9 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
 };
 
 export default function Main() {
-  return <Outlet />;
+  return (
+    <AppLayout>
+      <Outlet />
+    </AppLayout>
+  );
 }
