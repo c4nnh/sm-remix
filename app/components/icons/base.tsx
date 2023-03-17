@@ -30,7 +30,7 @@ export const BaseIcon = forwardRef<BaseIconRef, BaseIconProps>(
         viewBox="0 0 36 30"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
-        className={`h-full w-full ${className}`}
+        className={`h-full ${className}`}
         {...a11yProps}
         {...delegated}
       >

@@ -14,4 +14,5 @@ export const ROUTES = {
 
 export const FORM_STRATEGY = {
   LOGIN: "login",
+  REGISTER: "register",
 };

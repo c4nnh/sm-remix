@@ -1,10 +1,11 @@
 import type { UserRole } from "@prisma/client";
 import { redirect, Response } from "@remix-run/node";
+import bcrypt from "bcryptjs";
 import { Authenticator, AuthorizationError } from "remix-auth";
 import { FormStrategy } from "remix-auth-form";
 import invariant from "tiny-invariant";
 import { FORM_STRATEGY, ROUTES } from "~/constants";
-import { getUserByEmail } from "~/models/user.server";
+import { createUser, getUserByEmail } from "~/models/user.server";
 import { sessionStorage } from "~/services/session.server";
 import type { AuthSession } from "~/types/auth";
 
@@ -27,7 +28,11 @@ authenticator.use(
       throw new AuthorizationError("error/invalid-email");
     }
 
-    if (user?.password !== password) {
+    const isPasswordMatched = await bcrypt.compare(
+      password,
+      user.password || ""
+    );
+    if (!isPasswordMatched) {
       throw new AuthorizationError("error/invalid-password");
     }
 
@@ -36,6 +41,31 @@ authenticator.use(
     return { id, email, name, role, status };
   }),
   FORM_STRATEGY.LOGIN
+);
+
+authenticator.use(
+  new FormStrategy(async ({ form }) => {
+    const email = form.get("email");
+    const name = form.get("name");
+    const password = form.get("password");
+
+    invariant(typeof email === "string");
+    invariant(typeof name === "string");
+    invariant(typeof password === "string");
+
+    const existedEmail = await getUserByEmail(email);
+
+    if (existedEmail) {
+      throw new AuthorizationError("error/duplicate-email");
+    }
+
+    const user = await createUser({ email, name, password });
+
+    const { id, role, status } = user;
+
+    return { id, email, name, role, status };
+  }),
+  FORM_STRATEGY.REGISTER
 );
 
 export const requiredRole = async (request: Request, roles?: UserRole[]) => {

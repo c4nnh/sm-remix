@@ -1,7 +1,9 @@
+import type { ActionArgs, ActionFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { Button, Input } from "~/components";
-import { ROUTES } from "~/constants";
+import { FORM_STRATEGY, ROUTES } from "~/constants";
 import { AuthLayout } from "~/layouts";
+import { authenticator } from "~/services/auth.server";
 
 export default function Register() {
   return (
@@ -17,7 +19,7 @@ export default function Register() {
         </p>
       }
     >
-      <form className="flex flex-col space-y-4">
+      <form className="flex flex-col space-y-4" method="post">
         <Input name="email" label="Email" />
         <Input name="name" label="Name" />
         <Input
@@ -30,3 +32,10 @@ export default function Register() {
     </AuthLayout>
   );
 }
+
+export const action: ActionFunction = async ({ request }: ActionArgs) => {
+  return authenticator.authenticate(FORM_STRATEGY.REGISTER, request, {
+    successRedirect: ROUTES.ROOT,
+    failureRedirect: ROUTES.REGISTER,
+  });
+};
