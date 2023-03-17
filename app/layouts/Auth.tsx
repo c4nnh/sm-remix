@@ -10,7 +10,7 @@ export const AuthLayout: React.FC<Props> = ({ header, children }) => {
     <div className="flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="flex flex-col justify-center sm:mx-auto sm:w-full sm:max-w-md">
         <div className="mx-auto h-12 text-heading">
-          <LogoIcon viewBox="0 0 30 25" />
+          <LogoIcon viewBox="0 0 30 25" className="text-blue-500" />
         </div>
         {header}
       </div>
