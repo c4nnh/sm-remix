@@ -1,18 +1,9 @@
-import type {
-  ActionArgs,
-  ActionFunction,
-  LoaderArgs,
-  LoaderFunction,
-} from "@remix-run/node";
+import type { ActionArgs, ActionFunction } from "@remix-run/node";
 import { Link } from "@remix-run/react";
 import { authenticator } from "~/services/auth.server";
 import { Input } from "../../components";
 import { Button } from "../../components/Button";
 import { AuthLayout } from "../../layouts";
-
-export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
-  return authenticator.isAuthenticated(request, { successRedirect: "/" });
-};
 
 export default function Login() {
   return (
