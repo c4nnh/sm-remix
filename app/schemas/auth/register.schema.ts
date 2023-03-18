@@ -11,7 +11,7 @@ export const RegisterSchema = z.object({
   name: z
     .string()
     .trim()
-    .min(6, getErrorMessage({ min: 6 }).minLength),
+    .min(3, getErrorMessage({ min: 6 }).minLength),
   password: z
     .string()
     .trim()
