@@ -1,8 +1,15 @@
 import { Menu, Transition } from '@headlessui/react'
-import { Bars4Icon, BellIcon } from '@heroicons/react/24/outline'
-import { Form, Link, useLocation } from '@remix-run/react'
+import {
+  ArrowLeftOnRectangleIcon,
+  Bars4Icon,
+  BellIcon,
+  UserIcon,
+} from '@heroicons/react/24/outline'
+import { UserStatus } from '@prisma/client'
+import { Form, Link, useLoaderData, useLocation } from '@remix-run/react'
 import { Fragment } from 'react'
 import { ROUTES } from '~/constants'
+import type { AuthSession } from '~/types'
 
 type Props = {
   openSidebar: () => void
@@ -10,6 +17,7 @@ type Props = {
 
 export const Navbar: React.FC<Props> = ({ openSidebar }) => {
   const { pathname } = useLocation()
+  const user = useLoaderData<AuthSession>()
 
   return (
     <nav className="relative z-20 flex h-16 flex-1 shrink-0 items-center space-x-2 bg-layer-2 px-4 shadow sm:px-6">
@@ -71,25 +79,29 @@ export const Navbar: React.FC<Props> = ({ openSidebar }) => {
             leaveTo="transform opacity-0 scale-95"
           >
             <Menu.Items className="absolute right-0 z-50 mt-2 w-56 origin-top-right rounded-xl bg-layer-3 py-3 shadow-xl focus:outline-none">
+              {user.status === UserStatus.ACTIVE && (
+                <Menu.Item>
+                  <Link to={ROUTES.PROFILE}>
+                    <button
+                      className={`${
+                        pathname === ROUTES.PROFILE
+                          ? 'bg-muted-1 text-heading'
+                          : 'text-text'
+                      } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold`}
+                    >
+                      <UserIcon className="mr-2 h-4 w-4 flex-shrink-0" />
+                      Profile
+                    </button>
+                  </Link>
+                </Menu.Item>
+              )}
               <Menu.Item>
-                <Link to={ROUTES.PROFILE}>
-                  <button
-                    className={`${
-                      pathname === ROUTES.PROFILE
-                        ? 'bg-muted-1 text-heading'
-                        : 'text-text'
-                    } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold`}
-                  >
-                    Profile
-                  </button>
-                </Link>
-              </Menu.Item>
-              <Menu.Item>
-                <Form method="post" action={ROUTES.LOGOUT}>
+                <Form method="get" action={ROUTES.LOGOUT}>
                   <button
                     type="submit"
-                    className="flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-text"
+                    className="flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-text hover:text-heading"
                   >
+                    <ArrowLeftOnRectangleIcon className="mr-2 h-4 w-4 flex-shrink-0" />
                     Logout
                   </button>
                 </Form>

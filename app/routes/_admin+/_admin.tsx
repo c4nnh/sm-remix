@@ -2,7 +2,7 @@ import { UserRole } from '@prisma/client'
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { Outlet } from '@remix-run/react'
 import { AppLayout } from '~/layouts'
-import { requiredRole } from '~/services/auth.server'
+import { requiredRole } from '~/services'
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
   return requiredRole(request, [UserRole.ADMIN])

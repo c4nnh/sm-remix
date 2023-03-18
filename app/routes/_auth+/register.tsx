@@ -7,7 +7,7 @@ import { RemixForm } from '~/components'
 import { FORM_STRATEGY, ROUTES } from '~/constants'
 import { AuthLayout } from '~/layouts'
 import { RegisterSchema } from '~/schemas'
-import { authenticator } from '~/services/auth.server'
+import { authenticator } from '~/services'
 
 export default function Register() {
   return (

@@ -8,9 +8,10 @@ export const sessionStorage = createCookieSessionStorage({
     path: '/',
     httpOnly: true,
     maxAge: 12 * 60 * 60,
-    secrets: [SESSION_SECRET], // replace this with an actual secret
-    secure: process.env.NODE_ENV === 'production', // enable this in prod only
+    secrets: [SESSION_SECRET],
+    secure: process.env.NODE_ENV === 'production',
   },
 })
 
-export const { getSession, commitSession, destroySession } = sessionStorage
+export const { getSession, commitSession, destroySession } =
+  sessionStorage || {}

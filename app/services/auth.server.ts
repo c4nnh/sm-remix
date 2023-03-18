@@ -1,14 +1,20 @@
 import type { UserRole } from '@prisma/client'
 import { redirect } from '@remix-run/node'
 import bcrypt from 'bcryptjs'
+import {
+  JsonWebTokenError,
+  NotBeforeError,
+  TokenExpiredError,
+} from 'jsonwebtoken'
 import { Authenticator, AuthorizationError } from 'remix-auth'
 import { FormStrategy } from 'remix-auth-form'
 import { forbidden } from 'remix-utils'
 import invariant from 'tiny-invariant'
 import { FORM_STRATEGY, ROUTES } from '~/constants'
-import { createUser, getUserByEmail } from '~/models/user.server'
-import { sessionStorage } from '~/services/session.server'
-import type { AuthSession } from '~/types/auth'
+import { confirmEmail, createUser, getUserByEmail } from '~/models'
+import { confirmEmailToken, sessionStorage } from '~/services'
+import type { AuthSession } from '~/types'
+import { TokenStrategy } from './token/token.strategy'
 
 export const authenticator = new Authenticator<AuthSession>(sessionStorage, {
   sessionKey: 'sessionKey',
@@ -68,6 +74,31 @@ authenticator.use(
     return { id, email, name, role, status }
   }),
   FORM_STRATEGY.REGISTER
+)
+
+authenticator.use(
+  new TokenStrategy(async ({ token }) => {
+    let user: AuthSession
+
+    try {
+      const { userId } = await confirmEmailToken.verify(token)
+      user = await confirmEmail(userId)
+    } catch (error) {
+      if (error instanceof JsonWebTokenError) {
+        throw new AuthorizationError('error/token-invalid')
+      }
+      if (error instanceof TokenExpiredError) {
+        throw new AuthorizationError('error/token-expired')
+      }
+      if (error instanceof NotBeforeError) {
+        throw new AuthorizationError('error/token-not-active')
+      }
+      throw new AuthorizationError('error/unknown')
+    }
+
+    return user
+  }),
+  FORM_STRATEGY.CONFIRM_EMAIL
 )
 
 export const requiredRole = async (request: Request, roles?: UserRole[]) => {
