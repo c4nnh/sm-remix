@@ -1,8 +1,9 @@
 import type { UserRole } from '@prisma/client'
-import { redirect, Response } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
 import bcrypt from 'bcryptjs'
 import { Authenticator, AuthorizationError } from 'remix-auth'
 import { FormStrategy } from 'remix-auth-form'
+import { forbidden } from 'remix-utils'
 import invariant from 'tiny-invariant'
 import { FORM_STRATEGY, ROUTES } from '~/constants'
 import { createUser, getUserByEmail } from '~/models/user.server'
@@ -77,9 +78,7 @@ export const requiredRole = async (request: Request, roles?: UserRole[]) => {
   }
 
   if (roles && roles.length && !roles.includes(user.role)) {
-    throw new Response('Forbidden', {
-      status: 403,
-    })
+    throw forbidden('You have no permission')
   }
 
   return user
