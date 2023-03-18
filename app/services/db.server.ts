@@ -1,26 +1,26 @@
-import { PrismaClient } from "@prisma/client";
-import invariant from "tiny-invariant";
+import { PrismaClient } from '@prisma/client'
+import invariant from 'tiny-invariant'
 
-let prisma: PrismaClient;
+let prisma: PrismaClient
 
 declare global {
-  var __db__: PrismaClient;
+  var __db__: PrismaClient
 }
 
-if (process.env.NODE_ENV === "production") {
-  prisma = getClient();
+if (process.env.NODE_ENV === 'production') {
+  prisma = getClient()
 } else {
   if (!global.__db__) {
-    global.__db__ = getClient();
+    global.__db__ = getClient()
   }
-  prisma = global.__db__;
+  prisma = global.__db__
 }
 
 function getClient() {
-  const { DATABASE_URL } = process.env;
-  invariant(typeof DATABASE_URL === "string", "DATABASE_URL env var not set");
+  const { DATABASE_URL } = process.env
+  invariant(typeof DATABASE_URL === 'string', 'DATABASE_URL env var not set')
 
-  const databaseUrl = new URL(DATABASE_URL);
+  const databaseUrl = new URL(DATABASE_URL)
 
   const client = new PrismaClient({
     datasources: {
@@ -28,11 +28,11 @@ function getClient() {
         url: databaseUrl.toString(),
       },
     },
-  });
+  })
   // connect eagerly
-  client.$connect();
+  client.$connect()
 
-  return client;
+  return client
 }
 
-export { prisma };
+export { prisma }

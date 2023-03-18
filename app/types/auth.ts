@@ -1,6 +1,6 @@
-import type { User } from "@prisma/client";
+import type { User } from '@prisma/client'
 
 export type AuthSession = Pick<
   User,
-  "id" | "email" | "name" | "role" | "status"
->;
+  'id' | 'email' | 'name' | 'role' | 'status'
+>

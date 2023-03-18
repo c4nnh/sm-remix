@@ -1,28 +1,28 @@
-import type { SVGAttributes } from "react";
-import { forwardRef, useId } from "react";
+import type { SVGAttributes } from 'react'
+import { forwardRef, useId } from 'react'
 
-export type BaseIconRef = SVGSVGElement;
-export type BaseIconProps = Omit<SVGAttributes<SVGSVGElement>, "id"> & {
-  title?: string;
-  description?: string;
-};
+export type BaseIconRef = SVGSVGElement
+export type BaseIconProps = Omit<SVGAttributes<SVGSVGElement>, 'id'> & {
+  title?: string
+  description?: string
+}
 
 export const BaseIcon = forwardRef<BaseIconRef, BaseIconProps>(
   ({ title, description, children, className, ...delegated }, ref) => {
-    const iconId = useId();
-    const titleId = title ? `${iconId}-title` : "";
-    const descriptionId = description ? `${iconId}-description` : "";
+    const iconId = useId()
+    const titleId = title ? `${iconId}-title` : ''
+    const descriptionId = description ? `${iconId}-description` : ''
 
     const a11yProps = title
       ? {
-          role: "img",
-          "aria-labelledby": description
+          role: 'img',
+          'aria-labelledby': description
             ? `${titleId} ${descriptionId}`
             : titleId,
         }
       : {
-          "aria-hidden": true,
-        };
+          'aria-hidden': true,
+        }
 
     return (
       <svg
@@ -38,8 +38,8 @@ export const BaseIcon = forwardRef<BaseIconRef, BaseIconProps>(
         {description ? <desc id={descriptionId}>{description}</desc> : null}
         {children}
       </svg>
-    );
+    )
   }
-);
+)
 
-BaseIcon.displayName = "BaseIcon";
+BaseIcon.displayName = 'BaseIcon'

@@ -1,11 +1,11 @@
-import { Link } from "@remix-run/react";
-import { ROUTES } from "~/constants";
+import { Link } from '@remix-run/react'
+import { ROUTES } from '~/constants'
 
 type Props = {
-  status?: number;
-  title?: string;
-  description?: string;
-};
+  status?: number
+  title?: string
+  description?: string
+}
 
 export const ErrorLayout: React.FC<Props> = ({
   status,
@@ -13,7 +13,7 @@ export const ErrorLayout: React.FC<Props> = ({
   description,
 }) => {
   return (
-    <div className="w-full h-full flex flex-1 items-center justify-center">
+    <div className="flex h-full w-full flex-1 items-center justify-center">
       <div className="flex w-full max-w-2xl flex-col items-center px-6 text-center md:px-10">
         <div className="h-9 text-heading">
           <svg
@@ -48,5 +48,5 @@ export const ErrorLayout: React.FC<Props> = ({
         </Link>
       </div>
     </div>
-  );
-};
+  )
+}

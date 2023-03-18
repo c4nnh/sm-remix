@@ -1,3 +1,3 @@
 export default function Currencies() {
-  return <div>Currencies</div>;
+  return <div>Currencies</div>
 }

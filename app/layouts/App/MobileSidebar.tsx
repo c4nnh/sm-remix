@@ -1,12 +1,12 @@
-import { Dialog, Transition } from "@headlessui/react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Fragment } from "react";
-import { Sidebar } from "./Sidebar";
+import { Dialog, Transition } from '@headlessui/react'
+import { XMarkIcon } from '@heroicons/react/24/outline'
+import { Fragment } from 'react'
+import { Sidebar } from './Sidebar'
 
 type Props = {
-  isSidebarOpen: boolean;
-  closeSidebar: () => void;
-};
+  isSidebarOpen: boolean
+  closeSidebar: () => void
+}
 
 export const MobileSidebar: React.FC<Props> = ({
   isSidebarOpen,
@@ -54,5 +54,5 @@ export const MobileSidebar: React.FC<Props> = ({
         </div>
       </Dialog>
     </Transition>
-  );
-};
+  )
+}

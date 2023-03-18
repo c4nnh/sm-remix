@@ -1,3 +1,3 @@
 export default function Tontines() {
-  return <div>Tontines</div>;
+  return <div>Tontines</div>
 }

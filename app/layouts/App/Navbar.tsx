@@ -1,15 +1,15 @@
-import { Menu, Transition } from "@headlessui/react";
-import { Bars4Icon, BellIcon } from "@heroicons/react/24/outline";
-import { Form, Link, useLocation } from "@remix-run/react";
-import { Fragment } from "react";
-import { ROUTES } from "~/constants";
+import { Menu, Transition } from '@headlessui/react'
+import { Bars4Icon, BellIcon } from '@heroicons/react/24/outline'
+import { Form, Link, useLocation } from '@remix-run/react'
+import { Fragment } from 'react'
+import { ROUTES } from '~/constants'
 
 type Props = {
-  openSidebar: () => void;
-};
+  openSidebar: () => void
+}
 
 export const Navbar: React.FC<Props> = ({ openSidebar }) => {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation()
 
   return (
     <nav className="relative z-20 flex h-16 flex-1 shrink-0 items-center space-x-2 bg-layer-2 px-4 shadow sm:px-6">
@@ -76,8 +76,8 @@ export const Navbar: React.FC<Props> = ({ openSidebar }) => {
                   <button
                     className={`${
                       pathname === ROUTES.PROFILE
-                        ? "bg-muted-1 text-heading"
-                        : "text-text"
+                        ? 'bg-muted-1 text-heading'
+                        : 'text-text'
                     } flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold`}
                   >
                     Profile
@@ -88,7 +88,7 @@ export const Navbar: React.FC<Props> = ({ openSidebar }) => {
                 <Form method="post" action={ROUTES.LOGOUT}>
                   <button
                     type="submit"
-                    className="text-text flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold"
+                    className="flex w-full cursor-pointer items-center px-4 py-2 text-sm font-semibold text-text"
                   >
                     Logout
                   </button>
@@ -99,5 +99,5 @@ export const Navbar: React.FC<Props> = ({ openSidebar }) => {
         </Menu>
       </div>
     </nav>
-  );
-};
+  )
+}

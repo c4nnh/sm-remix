@@ -1,18 +1,18 @@
-import type { PropsWithChildren } from "react";
-import { useState } from "react";
-import { MobileSidebar } from "./MobileSidebar";
-import { Navbar } from "./Navbar";
-import { Sidebar } from "./Sidebar";
+import type { PropsWithChildren } from 'react'
+import { useState } from 'react'
+import { MobileSidebar } from './MobileSidebar'
+import { Navbar } from './Navbar'
+import { Sidebar } from './Sidebar'
 
 export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   function closeSidebar() {
-    setIsSidebarOpen(false);
+    setIsSidebarOpen(false)
   }
 
   function openSidebar() {
-    setIsSidebarOpen(true);
+    setIsSidebarOpen(true)
   }
 
   return (
@@ -29,5 +29,5 @@ export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
         closeSidebar={closeSidebar}
       />
     </div>
-  );
-};
+  )
+}
