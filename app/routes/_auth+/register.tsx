@@ -45,8 +45,11 @@ export const action: ActionFunction = async ({ request }: ActionArgs) => {
   })
 
   try {
-    return await authenticator.authenticate(FORM_STRATEGY.REGISTER, request, {
+    return authenticator.authenticate(FORM_STRATEGY.REGISTER, request, {
       successRedirect: ROUTES.ROOT,
+      context: {
+        originUrl: new URL(request.url).origin,
+      },
     })
   } catch (error) {
     if (error instanceof AuthorizationError) {

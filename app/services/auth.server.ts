@@ -11,6 +11,7 @@ import { FORM_STRATEGY } from '~/constants'
 import { confirmEmail, createUser, getUserByEmail } from '~/models'
 import { sessionStorage } from '~/services/session.server'
 import type { AuthSession } from '~/types/auth'
+import { sendConfirmEmail } from '~/utils'
 import { confirmEmailToken } from './token'
 import { TokenStrategy } from './token/token.strategy'
 
@@ -50,14 +51,16 @@ authenticator.use(
 )
 
 authenticator.use(
-  new FormStrategy(async ({ form }) => {
+  new FormStrategy(async ({ form, context }) => {
     const email = form.get('email')
     const name = form.get('name')
     const password = form.get('password')
+    const originUrl = context?.originUrl
 
     invariant(typeof email === 'string')
     invariant(typeof name === 'string')
     invariant(typeof password === 'string')
+    invariant(typeof originUrl === 'string')
 
     const existedEmail = await getUserByEmail(email)
 
@@ -68,6 +71,7 @@ authenticator.use(
     const user = await createUser({ email, name, password })
 
     const { id, role, status } = user
+    await sendConfirmEmail({ originUrl, email, userId: id })
 
     return { id, email, name, role, status }
   }),

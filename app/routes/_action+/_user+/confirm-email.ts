@@ -17,6 +17,6 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
   })
 }
 
-export default function Route() {
+export default function ConfirmEmail() {
   return null
 }

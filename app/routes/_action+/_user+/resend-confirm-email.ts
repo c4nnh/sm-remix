@@ -2,7 +2,8 @@ import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import { unauthorized } from 'remix-utils'
 import { ROUTES } from '~/constants'
-import { authenticator, confirmEmailToken, sendEmail } from '~/services'
+import { authenticator } from '~/services'
+import { sendConfirmEmail } from '~/utils'
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
   await new Promise(res => setTimeout(res, 2000))
@@ -13,25 +14,8 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
     throw unauthorized('You must login first to use this feature')
   }
 
-  // SEND EMAIL
-  try {
-    const token = await confirmEmailToken.create(
-      {
-        userId: user.id,
-        email: user.email,
-      },
-      {
-        expiresIn: '2d',
-      }
-    )
-    const url = new URL(request.url)
-    const confirmUrl = `${url.origin}/confirm-email?token=${token}}`
-    sendEmail({
-      to: user.email,
-      subject: 'User Registration',
-      text: `Welcome! Please use this link to finish user registration: ${confirmUrl}`,
-    })
-  } catch {}
+  const originUrl = new URL(request.url).origin
+  await sendConfirmEmail({ originUrl, userId: user.id, email: user.email })
 
   return redirect(ROUTES.ROOT)
 }
