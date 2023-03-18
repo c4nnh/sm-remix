@@ -14,7 +14,7 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
     return redirect(ROUTES.ROOT)
   }
 
-  return user
+  return { user }
 }
 
 export default function Main() {

@@ -10,7 +10,7 @@ import { Form, Link, useLoaderData, useLocation } from '@remix-run/react'
 import { Fragment } from 'react'
 import { Select } from '~/components'
 import { ROUTES } from '~/constants'
-import type { AuthSession } from '~/types'
+import type { AppLoaderData } from '~/types'
 
 type Props = {
   openSidebar: () => void
@@ -18,10 +18,10 @@ type Props = {
 
 export const Navbar: React.FC<Props> = ({ openSidebar }) => {
   const { pathname } = useLocation()
-  const user = useLoaderData<AuthSession>()
+  const { user, organizations } = useLoaderData<AppLoaderData>()
 
   return (
-    <nav className="relative z-20 flex h-16 flex-1 shrink-0 items-center space-x-2 bg-layer-2 px-4 shadow sm:px-6">
+    <nav className="relative z-20 flex h-16 flex-1 shrink-0 items-center space-x-2 bg-layer-2 pr-4 shadow sm:pr-6">
       <div className="flex items-center space-x-2 md:hidden">
         <button
           type="button"
@@ -56,16 +56,17 @@ export const Navbar: React.FC<Props> = ({ openSidebar }) => {
         </div>
       </div>
       <div className="flex flex-1 items-center justify-end space-x-3">
-        <div className="flex items-center space-x-3">
-          <Select
-            className="w-60"
-            options={[
-              { value: 'das1', label: 'das1' },
-              { value: 'das2', label: 'das2' },
-              { value: 'das3', label: 'das3' },
-            ]}
-          />
-        </div>
+        {user.status === UserStatus.ACTIVE && (
+          <div className="flex items-center space-x-3">
+            <Select
+              className="w-60"
+              options={organizations.map(({ id, name }) => ({
+                value: id,
+                label: name,
+              }))}
+            />
+          </div>
+        )}
         <div className="flex-1" />
         <div className="flex items-center space-x-3">
           <button

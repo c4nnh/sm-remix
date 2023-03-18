@@ -3,12 +3,16 @@ import { redirect } from '@remix-run/node'
 import { forbidden } from 'remix-utils'
 import { ROUTES } from '~/constants'
 import { authenticator, confirmEmailToken, sendEmail } from '~/services'
+import type { AuthSession } from '~/types'
 
-export const requiredRole = async (request: Request, roles?: UserRole[]) => {
+export const requiredRole = async (
+  request: Request,
+  roles?: UserRole[]
+): Promise<AuthSession> => {
   const user = await authenticator.isAuthenticated(request)
 
   if (!user) {
-    return redirect(ROUTES.LOGIN)
+    return redirect(ROUTES.LOGIN) as any
   }
 
   if (roles && roles.length && !roles.includes(user.role)) {

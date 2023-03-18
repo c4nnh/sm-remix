@@ -14,11 +14,11 @@ import { Form, useLoaderData, useLocation } from '@remix-run/react'
 import { cx } from 'class-variance-authority'
 import { LogoIcon } from '~/components'
 import { ROUTES } from '~/constants'
-import type { AuthSession } from '~/types'
+import type { AppLoaderData } from '~/types'
 
 export const Sidebar = () => {
   const { pathname } = useLocation()
-  const user = useLoaderData<AuthSession>()
+  const { user } = useLoaderData<AppLoaderData>()
 
   return (
     <div className="relative z-30 flex h-full flex-col bg-layer-2 shadow">
