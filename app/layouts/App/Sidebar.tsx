@@ -1,4 +1,13 @@
-import { ArrowLeftIcon, HomeIcon, UsersIcon } from '@heroicons/react/24/outline'
+import {
+  ArrowLeftIcon,
+  ArrowPathIcon,
+  CubeIcon,
+  CurrencyDollarIcon,
+  HandRaisedIcon,
+  HomeIcon,
+  UsersIcon,
+  WalletIcon,
+} from '@heroicons/react/24/outline'
 import { UserRole } from '@prisma/client'
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { Form, useLoaderData, useLocation } from '@remix-run/react'
@@ -85,28 +94,28 @@ const links: LinkItem[] = [
   },
   {
     label: 'Currencies',
-    icon: UsersIcon,
+    icon: CurrencyDollarIcon,
     href: ROUTES.CURRENCIES,
     roles: [UserRole.ADMIN],
   },
   {
     label: 'Transactions',
-    icon: UsersIcon,
+    icon: ArrowPathIcon,
     href: ROUTES.TRANSACTIONS,
   },
   {
     label: 'Tontines',
-    icon: UsersIcon,
+    icon: WalletIcon,
     href: ROUTES.TONTINES,
   },
   {
     label: 'Projects',
-    icon: UsersIcon,
+    icon: CubeIcon,
     href: ROUTES.PROJECTS,
   },
   {
     label: 'Skills',
-    icon: UsersIcon,
+    icon: HandRaisedIcon,
     href: ROUTES.SKILLS,
   },
 ]
