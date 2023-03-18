@@ -63,13 +63,16 @@ export const RemixForm = <Schema extends SomeZodObject>({
       errorComponent={FormError}
       className={cx('flex flex-col gap-5', className)}
       renderField={({ Field, ...props }) => {
-        const { name } = props
+        const { name, errors } = props
         return (
           <Field key={String(name)} {...props}>
             {({ Label, SmartInput, Errors }) => (
               <>
                 <Label />
-                <SmartInput />
+                <SmartInput
+                  // @ts-ignore
+                  hasError={Boolean(errors)}
+                />
                 <Errors />
               </>
             )}
