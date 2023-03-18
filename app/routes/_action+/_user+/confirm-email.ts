@@ -1,10 +1,10 @@
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { unauthorized } from 'remix-utils'
-import { ROUTES } from '~/constants'
+import { FORM_STRATEGY, ROUTES } from '~/constants'
 import { authenticator } from '~/services'
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
-  await new Promise(res => setTimeout(res, 4000))
+  await new Promise(res => setTimeout(res, 2000))
 
   const user = await authenticator.isAuthenticated(request)
 
@@ -12,7 +12,7 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
     throw unauthorized('You must login first to use this feature')
   }
 
-  return authenticator.authenticate('confirm', request, {
+  return authenticator.authenticate(FORM_STRATEGY.CONFIRM_EMAIL, request, {
     successRedirect: ROUTES.ROOT,
   })
 }

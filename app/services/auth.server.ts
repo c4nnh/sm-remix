@@ -1,5 +1,3 @@
-import type { UserRole } from '@prisma/client'
-import { redirect } from '@remix-run/node'
 import bcrypt from 'bcryptjs'
 import {
   JsonWebTokenError,
@@ -8,12 +6,12 @@ import {
 } from 'jsonwebtoken'
 import { Authenticator, AuthorizationError } from 'remix-auth'
 import { FormStrategy } from 'remix-auth-form'
-import { forbidden } from 'remix-utils'
 import invariant from 'tiny-invariant'
-import { FORM_STRATEGY, ROUTES } from '~/constants'
+import { FORM_STRATEGY } from '~/constants'
 import { confirmEmail, createUser, getUserByEmail } from '~/models'
-import { confirmEmailToken, sessionStorage } from '~/services'
-import type { AuthSession } from '~/types'
+import { sessionStorage } from '~/services/session.server'
+import type { AuthSession } from '~/types/auth'
+import { confirmEmailToken } from './token'
 import { TokenStrategy } from './token/token.strategy'
 
 export const authenticator = new Authenticator<AuthSession>(sessionStorage, {
@@ -78,11 +76,21 @@ authenticator.use(
 
 authenticator.use(
   new TokenStrategy(async ({ token }) => {
-    let user: AuthSession
-
+    let authSession: AuthSession
     try {
-      const { userId } = await confirmEmailToken.verify(token)
-      user = await confirmEmail(userId)
+      const payload = await confirmEmailToken.verify(token)
+      const user = await confirmEmail(payload.userId)
+      if (!user) {
+        throw Error()
+      }
+
+      authSession = {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        name: user.name,
+        status: user.status,
+      }
     } catch (error) {
       if (error instanceof JsonWebTokenError) {
         throw new AuthorizationError('error/token-invalid')
@@ -96,21 +104,7 @@ authenticator.use(
       throw new AuthorizationError('error/unknown')
     }
 
-    return user
+    return authSession
   }),
   FORM_STRATEGY.CONFIRM_EMAIL
 )
-
-export const requiredRole = async (request: Request, roles?: UserRole[]) => {
-  const user = await authenticator.isAuthenticated(request)
-
-  if (!user) {
-    return redirect(ROUTES.LOGIN)
-  }
-
-  if (roles && roles.length && !roles.includes(user.role)) {
-    throw forbidden('You have no permission')
-  }
-
-  return user
-}

@@ -11,7 +11,6 @@ export class TokenStrategy<User> extends Strategy<
   TokenStrategyVerifyParams
 > {
   name = 'token'
-
   async authenticate(
     request: Request,
     sessionStorage: SessionStorage,
