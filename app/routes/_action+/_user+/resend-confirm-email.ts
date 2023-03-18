@@ -15,10 +15,15 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
 
   // SEND EMAIL
   try {
-    const token = await confirmEmailToken.create({
-      userId: user.id,
-      email: user.email,
-    })
+    const token = await confirmEmailToken.create(
+      {
+        userId: user.id,
+        email: user.email,
+      },
+      {
+        expiresIn: '2d',
+      }
+    )
     const url = new URL(request.url)
     const confirmUrl = `${url.origin}/confirm-email?token=${token}}`
     sendEmail({
