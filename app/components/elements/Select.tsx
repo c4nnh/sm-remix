@@ -1,6 +1,7 @@
 import { cx } from 'class-variance-authority'
 import type { SelectHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
+import type { SelectStyleProps } from '~/styles'
 import { select, selectOption } from '~/styles'
 
 type Option = {
@@ -9,10 +10,11 @@ type Option = {
 }
 
 type Ref = HTMLSelectElement
-type Props = SelectHTMLAttributes<Ref> & {
-  options?: Option[]
-  optionClassName?: string
-}
+type Props = SelectStyleProps &
+  SelectHTMLAttributes<Ref> & {
+    options?: Option[]
+    optionClassName?: string
+  }
 
 export const Select = forwardRef<Ref, Props>(
   ({ className, optionClassName, options = [], ...props }, ref) => {
