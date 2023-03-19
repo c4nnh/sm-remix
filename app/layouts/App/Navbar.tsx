@@ -62,7 +62,7 @@ export const Navbar: React.FC<Props> = ({ openSidebar }) => {
           </svg>
         </div>
       </div>
-      <div className="!ml-0 flex flex-1 items-center justify-between space-x-3">
+      <div className="!ml-0 flex flex-1 items-center space-x-3">
         {user.status === UserStatus.ACTIVE && !!organizations.length && (
           <div className="flex w-60 items-center space-x-3">
             <Form
@@ -84,6 +84,7 @@ export const Navbar: React.FC<Props> = ({ openSidebar }) => {
             </Form>
           </div>
         )}
+        <div className="flex-1" />
         <div className="flex items-center space-x-3">
           <button
             type="button"

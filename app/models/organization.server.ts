@@ -1,8 +1,8 @@
 import { forbidden } from 'remix-utils'
-import { prisma } from '~/services'
+import { db } from '~/services'
 
 export const getOrganizations = async (userId: string) =>
-  prisma.organization.findMany({
+  db.organization.findMany({
     where: {
       memberships: {
         some: {
@@ -13,7 +13,7 @@ export const getOrganizations = async (userId: string) =>
   })
 
 export const getDefaultOrganization = async (userId: string) =>
-  prisma.organization.findFirst({
+  db.organization.findFirst({
     where: {
       memberships: {
         some: {
@@ -30,20 +30,20 @@ export const setDefaultOrganization = async (
 ) => {
   let defaultOrgId = organizationId
   if (!defaultOrgId) {
-    const firstMembership = await prisma.membership.findFirst({
+    const firstMembership = await db.membership.findFirst({
       where: {
         userId,
       },
     })
     if (!firstMembership) return undefined
-    await prisma.membership.update({
+    await db.membership.update({
       where: { id: firstMembership?.id },
       data: { isDefault: true },
     })
     return firstMembership?.organizationId
   }
 
-  const membership = await prisma.membership.findFirst({
+  const membership = await db.membership.findFirst({
     where: { userId, organizationId },
   })
 
@@ -51,7 +51,7 @@ export const setDefaultOrganization = async (
     throw forbidden('You are not membership')
   }
 
-  const otherDefaultMemberships = await prisma.membership.findMany({
+  const otherDefaultMemberships = await db.membership.findMany({
     where: {
       userId,
       isDefault: true,
@@ -61,7 +61,7 @@ export const setDefaultOrganization = async (
     },
   })
 
-  await prisma.$transaction(async tx => {
+  await db.$transaction(async tx => {
     if (otherDefaultMemberships.length) {
       await tx.membership.updateMany({
         where: {

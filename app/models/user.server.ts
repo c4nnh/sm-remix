@@ -1,13 +1,13 @@
 import type { Prisma } from '@prisma/client'
 import { UserStatus } from '@prisma/client'
 import bcrypt from 'bcryptjs'
-import { prisma } from '~/services'
+import { db } from '~/services'
 
 export const getUserByEmail = (email: string) =>
-  prisma.user.findUnique({ where: { email } })
+  db.user.findUnique({ where: { email } })
 
 export const confirmEmail = async (id: string) =>
-  prisma.user.update({
+  db.user.update({
     where: { id },
     data: { status: UserStatus.ACTIVE },
   })
@@ -21,7 +21,7 @@ export const createUser = async (
     hashedPassword = await bcrypt.hash(password, 10)
   }
 
-  return prisma.user.create({
+  return db.user.create({
     data: { ...dto, password: hashedPassword },
   })
 }

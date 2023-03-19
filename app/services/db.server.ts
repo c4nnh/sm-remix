@@ -1,19 +1,19 @@
 import { PrismaClient } from '@prisma/client'
 import invariant from 'tiny-invariant'
 
-let prisma: PrismaClient
+let db: PrismaClient
 
 declare global {
   var __db__: PrismaClient
 }
 
 if (process.env.NODE_ENV === 'production') {
-  prisma = getClient()
+  db = getClient()
 } else {
   if (!global.__db__) {
     global.__db__ = getClient()
   }
-  prisma = global.__db__
+  db = global.__db__
 }
 
 function getClient() {
@@ -35,4 +35,4 @@ function getClient() {
   return client
 }
 
-export { prisma }
+export { db }

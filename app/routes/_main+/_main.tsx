@@ -5,11 +5,10 @@ import { Outlet } from '@remix-run/react'
 import { ROUTES } from '~/constants'
 import { AppLayout } from '~/layouts'
 import { getOrganizations } from '~/models'
-import type { AuthSession } from '~/types'
 import { requiredRole } from '~/utils'
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
-  const user = (await requiredRole(request, [UserRole.USER])) as AuthSession
+  const user = await requiredRole(request, [UserRole.USER])
 
   if (user.status !== UserStatus.ACTIVE) {
     return redirect(ROUTES.ROOT)

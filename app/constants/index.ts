@@ -13,6 +13,7 @@ export const ROUTES = {
   TRANSACTIONS: '/transactions',
   TONTINES: '/tontines',
   PROJECTS: '/projects',
+  EXTEND_PROJECTS_SUBSCRIPTION: '/projects/extend-subscription',
   SKILLS: '/skills',
 }
 
