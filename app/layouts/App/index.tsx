@@ -1,11 +1,14 @@
+import { useNavigation } from '@remix-run/react'
 import type { PropsWithChildren } from 'react'
 import { useState } from 'react'
+import { Loading } from '~/components'
 import { MobileSidebar } from './MobileSidebar'
 import { Navbar } from './Navbar'
 import { Sidebar } from './Sidebar'
 
 export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const navigation = useNavigation()
 
   function closeSidebar() {
     setIsSidebarOpen(false)
@@ -23,7 +26,7 @@ export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
       <div className="relative w-full flex-1 md:overflow-hidden">
         <Navbar openSidebar={openSidebar} />
         <div className="flex h-full w-full items-center justify-center p-5">
-          {children}
+          {navigation.state === 'loading' ? <Loading /> : children}
         </div>
       </div>
       <MobileSidebar
