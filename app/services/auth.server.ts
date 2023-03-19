@@ -8,7 +8,13 @@ import { Authenticator, AuthorizationError } from 'remix-auth'
 import { FormStrategy } from 'remix-auth-form'
 import invariant from 'tiny-invariant'
 import { FORM_STRATEGY } from '~/constants'
-import { confirmEmail, createUser, getUserByEmail } from '~/models'
+import {
+  confirmEmail,
+  createUser,
+  getDefaultOrganization,
+  getUserByEmail,
+  setDefaultOrganization,
+} from '~/models'
 import { sessionStorage } from '~/services/session.server'
 import type { AuthSession } from '~/types/auth'
 import { sendConfirmEmail } from '~/utils'
@@ -42,10 +48,17 @@ authenticator.use(
     if (!isPasswordMatched) {
       throw new AuthorizationError('Password is incorrect')
     }
+    let organizationId
+    const organization = await getDefaultOrganization(user.id)
+    if (organization) {
+      organizationId = organization.id
+    } else {
+      organizationId = await setDefaultOrganization(user.id)
+    }
 
     const { id, name, role, status } = user
 
-    return { id, email, name, role, status }
+    return { id, email, name, role, status, organizationId }
   }),
   FORM_STRATEGY.LOGIN
 )

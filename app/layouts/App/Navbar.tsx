@@ -56,10 +56,11 @@ export const Navbar: React.FC<Props> = ({ openSidebar }) => {
         </div>
       </div>
       <div className="flex flex-1 items-center justify-end space-x-3">
-        {user.status === UserStatus.ACTIVE && (
-          <div className="flex items-center space-x-3">
+        {user.status === UserStatus.ACTIVE && !!organizations.length && (
+          <div className="flex w-60 items-center space-x-3">
             <Select
-              className="w-60"
+              defaultValue={user.organizationId}
+              className="flex-1"
               options={organizations.map(({ id, name }) => ({
                 value: id,
                 label: name,

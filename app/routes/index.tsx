@@ -1,26 +1,36 @@
 import { UserStatus } from '@prisma/client'
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { Outlet, useLoaderData } from '@remix-run/react'
-import { ConfirmEmail } from '~/components'
+import { ConfirmEmail, CreateOrganization } from '~/components'
 import { AppLayout } from '~/layouts'
-import { getActiveOrganizations } from '~/models'
+import { getOrganizations } from '~/models'
 import type { AppLoaderData } from '~/types'
 import { requiredRole } from '~/utils'
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
   const user = await requiredRole(request)
 
-  const organizations = await getActiveOrganizations(user.id)
+  const organizations = await getOrganizations(user.id)
 
   return { user, organizations }
 }
 
 export default function Index() {
-  const { user } = useLoaderData<AppLoaderData>()
+  const { user, organizations } = useLoaderData<AppLoaderData>()
+
+  const renderBody = () => {
+    if (user.status === UserStatus.PENDING) {
+      return <ConfirmEmail />
+    }
+    if (!organizations.length) {
+      return <CreateOrganization />
+    }
+    return 'Homepage'
+  }
 
   return (
     <AppLayout>
-      {user.status === UserStatus.PENDING && <ConfirmEmail />}
+      {renderBody()}
       <Outlet />
     </AppLayout>
   )

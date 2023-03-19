@@ -1,8 +1,8 @@
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline'
 import { Form, useNavigation } from '@remix-run/react'
 import { useMemo } from 'react'
+import { Button } from '~/components/elements'
 import { ROUTES } from '~/constants'
-import { Button } from '../elements'
 
 export const ConfirmEmail = () => {
   const navigation = useNavigation()

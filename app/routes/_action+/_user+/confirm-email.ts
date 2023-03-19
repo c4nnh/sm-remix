@@ -4,8 +4,6 @@ import { FORM_STRATEGY, ROUTES } from '~/constants'
 import { authenticator } from '~/services'
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
-  await new Promise(res => setTimeout(res, 2000))
-
   const user = await authenticator.isAuthenticated(request)
 
   if (!user) {

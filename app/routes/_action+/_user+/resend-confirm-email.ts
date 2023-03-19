@@ -6,8 +6,6 @@ import { authenticator } from '~/services'
 import { sendConfirmEmail } from '~/utils'
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
-  await new Promise(res => setTimeout(res, 2000))
-
   const user = await authenticator.isAuthenticated(request)
 
   if (!user) {

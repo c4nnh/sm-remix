@@ -4,6 +4,7 @@ import { redirect } from '@remix-run/node'
 import { Outlet } from '@remix-run/react'
 import { ROUTES } from '~/constants'
 import { AppLayout } from '~/layouts'
+import { getOrganizations } from '~/models'
 import type { AuthSession } from '~/types'
 import { requiredRole } from '~/utils'
 
@@ -14,7 +15,15 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
     return redirect(ROUTES.ROOT)
   }
 
-  return { user }
+  const organizations = await getOrganizations(user.id)
+
+  const pathname = new URL(request.url).pathname
+
+  if (!organizations.length && ROUTES.ORGANIZATIONS !== pathname) {
+    return redirect(ROUTES.ROOT)
+  }
+
+  return { user, organizations }
 }
 
 export default function Main() {

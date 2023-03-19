@@ -63,8 +63,9 @@ enum MembershipStatus {
 model Membership {
   id String @id @default(uuid())
 
-  role   MembershipRole   @default(MEMBER)
-  status MembershipStatus @default(PENDING)
+  role      MembershipRole   @default(MEMBER)
+  status    MembershipStatus @default(PENDING)
+  isDefault Boolean          @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -74,5 +75,6 @@ model Membership {
   organization   Organization @relation(fields: [organizationId], references: [id])
   organizationId String
 
+  @@unique([userId, organizationId])
   @@map("membership")
 }

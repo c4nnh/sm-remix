@@ -18,7 +18,7 @@ import type { AppLoaderData } from '~/types'
 
 export const Sidebar = () => {
   const { pathname } = useLocation()
-  const { user } = useLoaderData<AppLoaderData>()
+  const { user, organizations } = useLoaderData<AppLoaderData>()
 
   return (
     <div className="relative z-30 flex h-full flex-col bg-layer-2 shadow">
@@ -48,7 +48,11 @@ export const Sidebar = () => {
                 </>
               )
 
-              if (user.status === UserStatus.PENDING) {
+              if (
+                user.status === UserStatus.PENDING ||
+                (!organizations.length &&
+                  ![ROUTES.ROOT, ROUTES.ORGANIZATIONS].includes(link.href))
+              ) {
                 return (
                   <span
                     className={cx(className, 'hover:cursor-not-allowed')}
