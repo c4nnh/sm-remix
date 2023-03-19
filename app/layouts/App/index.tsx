@@ -22,7 +22,9 @@ export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
       </div>
       <div className="relative w-full flex-1 md:overflow-hidden">
         <Navbar openSidebar={openSidebar} />
-        {children}
+        <div className="flex h-full w-full items-center justify-center p-5">
+          {children}
+        </div>
       </div>
       <MobileSidebar
         isSidebarOpen={isSidebarOpen}
