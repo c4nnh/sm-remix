@@ -41,7 +41,7 @@ export const sendConfirmEmail = async ({
         expiresIn: '2d',
       }
     )
-    const confirmUrl = `${originUrl}/confirm-email?token=${token}}`
+    const confirmUrl = `${originUrl}${ROUTES.CONFIRM_EMAIL}?token=${token}}`
     sendEmail({
       to: email,
       subject: 'User Registration',

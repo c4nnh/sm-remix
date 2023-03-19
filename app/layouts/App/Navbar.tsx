@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { UserStatus } from '@prisma/client'
 import { Form, Link, useLoaderData, useLocation } from '@remix-run/react'
-import { Fragment } from 'react'
+import { Fragment, useRef } from 'react'
 import { Select } from '~/components'
 import { ROUTES } from '~/constants'
 import type { AppLoaderData } from '~/types'
@@ -18,7 +18,14 @@ type Props = {
 
 export const Navbar: React.FC<Props> = ({ openSidebar }) => {
   const { pathname } = useLocation()
+  const selectForm = useRef<HTMLFormElement>(null)
   const { user, organizations } = useLoaderData<AppLoaderData>()
+
+  const onSelectOrgChange = () => {
+    if (selectForm.current) {
+      selectForm.current.submit()
+    }
+  }
 
   return (
     <nav className="relative z-20 flex h-16 flex-1 shrink-0 items-center space-x-2 bg-layer-2 pr-4 shadow sm:pr-6">
@@ -58,14 +65,22 @@ export const Navbar: React.FC<Props> = ({ openSidebar }) => {
       <div className="flex flex-1 items-center justify-end space-x-3">
         {user.status === UserStatus.ACTIVE && !!organizations.length && (
           <div className="flex w-60 items-center space-x-3">
-            <Select
-              defaultValue={user.organizationId}
-              className="flex-1"
-              options={organizations.map(({ id, name }) => ({
-                value: id,
-                label: name,
-              }))}
-            />
+            <Form
+              action={ROUTES.CHANGE_ORGANIZATION}
+              method="post"
+              ref={selectForm}
+            >
+              <Select
+                name="organizationId"
+                onChange={onSelectOrgChange}
+                defaultValue={user.organizationId}
+                className="flex-1"
+                options={organizations.map(({ id, name }) => ({
+                  value: id,
+                  label: name,
+                }))}
+              />
+            </Form>
           </div>
         )}
         <div className="flex-1" />

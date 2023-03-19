@@ -14,7 +14,3 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
     successRedirect: ROUTES.ROOT,
   })
 }
-
-export default function ConfirmEmail() {
-  return null
-}

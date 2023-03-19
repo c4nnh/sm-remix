@@ -51,14 +51,39 @@ export const setDefaultOrganization = async (
     throw forbidden('You are not membership')
   }
 
-  if (!membership.isDefault) {
-    await prisma.membership.update({
-      where: {
-        id: membership.id,
+  const otherDefaultMemberships = await prisma.membership.findMany({
+    where: {
+      userId,
+      isDefault: true,
+      id: {
+        not: membership.id,
       },
-      data: { isDefault: true },
-    })
-  }
+    },
+  })
+
+  await prisma.$transaction(async tx => {
+    if (otherDefaultMemberships.length) {
+      await tx.membership.updateMany({
+        where: {
+          id: {
+            in: otherDefaultMemberships.map(item => item.id),
+          },
+        },
+        data: {
+          isDefault: false,
+        },
+      })
+    }
+
+    if (!membership.isDefault) {
+      await tx.membership.update({
+        where: {
+          id: membership.id,
+        },
+        data: { isDefault: true },
+      })
+    }
+  })
 
   return membership.organizationId
 }
