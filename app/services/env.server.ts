@@ -19,3 +19,11 @@ export const TOKEN_SECRET = process.env.TOKEN_SECRET
 export const STRIPE_PUBLIC_KEY = process.env.STRIPE_PUBLIC_KEY
 export const STRIPE_SECRET_KEY = process.env.STRIPE_SECRET_KEY
 export const NODE_ENV = process.env.NODE_ENV || 'development'
+
+declare global {
+  interface Window {
+    ENV: {
+      STRIPE_PUBLIC_KEY: string
+    }
+  }
+}

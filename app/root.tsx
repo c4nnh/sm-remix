@@ -1,4 +1,8 @@
-import type { LinksFunction, MetaFunction } from '@remix-run/node'
+import type {
+  LinksFunction,
+  LoaderFunction,
+  MetaFunction,
+} from '@remix-run/node'
 import {
   Links,
   LiveReload,
@@ -7,8 +11,9 @@ import {
   Scripts,
   ScrollRestoration,
   useCatch,
+  useLoaderData,
 } from '@remix-run/react'
-
+import { STRIPE_PUBLIC_KEY } from '~/services/env.server'
 import stylesheet from '~/styles/tailwind.generated.css'
 import { ErrorLayout } from './layouts/Error'
 
@@ -22,7 +27,23 @@ export const meta: MetaFunction = () => ({
   viewport: 'width=device-width,initial-scale=1',
 })
 
+type LoaderData = {
+  ENV: {
+    STRIPE_PUBLIC_KEY: string
+  }
+}
+
+export const loader: LoaderFunction = () => {
+  return {
+    ENV: {
+      STRIPE_PUBLIC_KEY,
+    },
+  }
+}
+
 export default function App() {
+  const data = useLoaderData<LoaderData>()
+
   return (
     <html lang="en">
       <head>
@@ -32,6 +53,11 @@ export default function App() {
       <body className="h-screen w-screen bg-muted-1 text-text dark">
         <Outlet />
         <ScrollRestoration />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.ENV = ${JSON.stringify(data.ENV)}`,
+          }}
+        />
         <Scripts />
         <LiveReload />
       </body>

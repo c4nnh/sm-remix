@@ -12,7 +12,10 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
 
   const organizations = await getOrganizations(user.id)
 
-  return { user, organizations }
+  return {
+    user,
+    organizations,
+  }
 }
 
 export default function Index() {

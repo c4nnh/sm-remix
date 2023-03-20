@@ -9,6 +9,7 @@ export const createPaymentIntent = async () => {
     // },
     // payment_method: 'card',
     // confirm: true,
+    payment_method_types: ['card'],
     metadata: {
       subscriptionId: 'hehehe',
     },
