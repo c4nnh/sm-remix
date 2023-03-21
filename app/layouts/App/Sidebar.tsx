@@ -3,7 +3,6 @@ import {
   ArrowPathIcon,
   BuildingOfficeIcon,
   CubeIcon,
-  CurrencyDollarIcon,
   HandRaisedIcon,
   HomeIcon,
   UsersIcon,
@@ -49,9 +48,10 @@ export const Sidebar = () => {
               )
 
               if (
-                user.status === UserStatus.PENDING ||
-                (!organizations.length &&
-                  ![ROUTES.ROOT, ROUTES.ORGANIZATIONS].includes(link.href))
+                user.role !== UserRole.ADMIN &&
+                (user.status === UserStatus.PENDING ||
+                  (!organizations.length &&
+                    ![ROUTES.ROOT, ROUTES.ORGANIZATIONS].includes(link.href)))
               ) {
                 return (
                   <span
@@ -101,12 +101,6 @@ const links: LinkItem[] = [
     label: 'Users',
     icon: UsersIcon,
     href: ROUTES.USERS,
-    roles: [UserRole.ADMIN],
-  },
-  {
-    label: 'Currencies',
-    icon: CurrencyDollarIcon,
-    href: ROUTES.CURRENCIES,
     roles: [UserRole.ADMIN],
   },
   {

@@ -30,10 +30,9 @@ model User {
   role     UserRole   @default(USER)
   status   UserStatus @default(PENDING)
 
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  memberships  Membership[]
-  subcriptionS Subscription[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  memberships Membership[]
 
   @@map("user")
 }
@@ -43,10 +42,9 @@ model Organization {
 
   name String
 
-  createdAt    DateTime       @default(now())
-  updatedAt    DateTime       @updatedAt
-  memberships  Membership[]
-  subcriptions Subscription[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  memberships Membership[]
 
   @@map("organization")
 }
@@ -72,10 +70,11 @@ model Membership {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user           User         @relation(fields: [userId], references: [id])
+  user           User           @relation(fields: [userId], references: [id])
   userId         String
-  organization   Organization @relation(fields: [organizationId], references: [id])
+  organization   Organization   @relation(fields: [organizationId], references: [id])
   organizationId String
+  subscriptions  Subscription[]
 
   @@unique([userId, organizationId])
   @@map("membership")
@@ -95,11 +94,9 @@ model Subscription {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user           User         @relation(fields: [userId], references: [id])
-  userId         String
-  organization   Organization @relation(fields: [organizationId], references: [id])
-  organizationId String
+  membership   Membership @relation(fields: [membershipId], references: [id])
+  membershipId String
 
-  @@unique([userId, organizationId, service])
+  @@unique([membershipId, service])
   @@map("subscription")
 }

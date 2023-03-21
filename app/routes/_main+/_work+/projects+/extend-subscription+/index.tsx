@@ -1,4 +1,6 @@
+import { SubscriptionService } from '@prisma/client'
 import type { LoaderFunction } from '@remix-run/node'
+import { redirect } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import {
   Elements,
@@ -8,17 +10,44 @@ import {
 } from '@stripe/react-stripe-js'
 import { useState } from 'react'
 import type Stripe from 'stripe'
+import invariant from 'tiny-invariant'
 import { Button } from '~/components'
+import { ROUTES } from '~/constants'
 import { useStripePromise } from '~/hooks'
-import { createPaymentIntent } from '~/models'
+import {
+  createPaymentIntent,
+  getMembershipByUserAndOrg,
+  getSubscriptionByMembership,
+} from '~/models'
+import { requiredRole } from '~/utils'
 
 type LoaderData = {
   paymentIntent: Stripe.Response<Stripe.PaymentIntent>
 }
 
 export const loader: LoaderFunction = async ({ request }) => {
-  const paymentIntent = await createPaymentIntent()
+  const { id: userId, organizationId } = await requiredRole(request)
 
+  invariant(organizationId)
+
+  const membership = await getMembershipByUserAndOrg(userId, organizationId)
+  if (!membership) {
+    return redirect(ROUTES.PROJECTS)
+  }
+
+  const subscription = await getSubscriptionByMembership(membership.id)
+
+  const paymentIntent = await createPaymentIntent({
+    amount: 100,
+    metadata: subscription
+      ? {
+          subscriptionId: subscription.id,
+        }
+      : {
+          membershipId: membership.id,
+          service: SubscriptionService.PROJECT_MANAGEMENT,
+        },
+  })
   return { paymentIntent }
 }
 
@@ -56,9 +85,12 @@ const SubmitForm = () => {
     setErrorMsg('')
     setIsLoading(true)
 
-    const { error } = await stripe.confirmSetup({
+    const { error } = await stripe.confirmPayment({
       elements,
-      confirmParams: { return_url: 'http://localhost:3000' },
+      confirmParams: {
+        return_url:
+          'http://localhost:3000/projects/extend-subscription/success',
+      },
     })
 
     // This point will only be reached if there is an immediate error when

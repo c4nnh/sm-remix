@@ -22,8 +22,10 @@ export const getActiveSubscriptions = async (
   }
 
   const subscriptions = await getSubscriptions({
-    userId: user.id,
-    organizationId,
+    membership: {
+      userId: user.id,
+      organizationId,
+    },
     service,
   })
 

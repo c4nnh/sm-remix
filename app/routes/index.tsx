@@ -1,4 +1,4 @@
-import { UserStatus } from '@prisma/client'
+import { UserRole, UserStatus } from '@prisma/client'
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { Outlet, useLoaderData } from '@remix-run/react'
 import { ConfirmEmail, CreateOrganization } from '~/components'
@@ -25,7 +25,7 @@ export default function Index() {
     if (user.status === UserStatus.PENDING) {
       return <ConfirmEmail />
     }
-    if (!organizations.length) {
+    if (user.role !== UserRole.ADMIN && !organizations.length) {
       return <CreateOrganization />
     }
     return 'Homepage'
