@@ -1,3 +1,9 @@
+import { Table } from '~/components'
+
 export default function Transactions() {
-  return <div>Transactions</div>
+  return (
+    <div className="h-full w-full">
+      <Table />
+    </div>
+  )
 }

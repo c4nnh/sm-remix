@@ -14,6 +14,7 @@ import { cx } from 'class-variance-authority'
 import { LogoIcon } from '~/components'
 import { ROUTES } from '~/constants'
 import type { AppLoaderData } from '~/types'
+import { OrganizationSelect } from './OrganizationSelect'
 
 export const Sidebar = () => {
   const { pathname } = useLocation()
@@ -26,6 +27,9 @@ export const Sidebar = () => {
         <div className="mt-5 flex h-8 flex-shrink-0 px-4 text-xl text-blue-500">
           <LogoIcon viewBox="0 0 32 28" />
           Self management
+        </div>
+        <div className="px-3 pt-5 not-mobile:hidden">
+          <OrganizationSelect />
         </div>
         <div className="mt-5 space-y-1 px-1 sm:px-2">
           {links
