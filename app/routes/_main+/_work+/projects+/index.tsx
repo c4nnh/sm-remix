@@ -1,7 +1,7 @@
 import { SubscriptionService } from '@prisma/client'
 import type { LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
-import { ExpiredSubscription, Loading } from '~/components'
+import { ExpiredSubscription } from '~/components'
 import { ROUTES } from '~/constants'
 import { getActiveSubscriptions } from '~/utils'
 
@@ -31,9 +31,5 @@ export default function Projects() {
     )
   }
 
-  return (
-    <div>
-      <Loading />
-    </div>
-  )
+  return <div></div>
 }

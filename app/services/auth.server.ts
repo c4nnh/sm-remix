@@ -10,6 +10,7 @@ import invariant from 'tiny-invariant'
 import { FORM_STRATEGY, SESSION_ERROR_KEY, SESSION_KEY } from '~/constants'
 import {
   confirmEmail,
+  createStripeCustomer,
   createUser,
   getDefaultOrganization,
   getUserByEmail,
@@ -85,6 +86,7 @@ authenticator.use(
 
     const { id, role, status } = user
     await sendConfirmEmail({ originUrl, email, userId: id })
+    await createStripeCustomer(email, name)
 
     return { id, email, name, role, status }
   }),
