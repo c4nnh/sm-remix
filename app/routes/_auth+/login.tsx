@@ -44,7 +44,7 @@ export const action: ActionFunction = async ({ request }: ActionArgs) => {
   })
 
   try {
-    return authenticator.authenticate(FORM_STRATEGY.LOGIN, request, {
+    return await authenticator.authenticate(FORM_STRATEGY.LOGIN, request, {
       successRedirect: ROUTES.ROOT,
     })
   } catch (error) {

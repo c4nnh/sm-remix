@@ -45,15 +45,15 @@ export const action: ActionFunction = async ({ request }: ActionArgs) => {
   })
 
   try {
-    return authenticator.authenticate(FORM_STRATEGY.REGISTER, request, {
+    return await authenticator.authenticate(FORM_STRATEGY.REGISTER, request, {
       successRedirect: ROUTES.ROOT,
       context: {
         originUrl: new URL(request.url).origin,
       },
     })
-  } catch (error) {
+  } catch (error: any) {
     if (error instanceof AuthorizationError) {
-      return { errors: { password: ['Invalid email or password'] } }
+      return { errors: { password: [error.message] } }
     }
     throw error
   }
