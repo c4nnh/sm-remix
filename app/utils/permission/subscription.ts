@@ -7,7 +7,7 @@ import { authenticator } from '~/services'
 
 export const getActiveSubscriptions = async (
   request: Request,
-  service: SubscriptionService
+  service?: SubscriptionService
 ): Promise<Subscription[]> => {
   const user = await authenticator.isAuthenticated(request)
 

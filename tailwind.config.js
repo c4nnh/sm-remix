@@ -13,6 +13,14 @@ module.exports = {
       animation: {
         'spin-slow': 'spin 2s linear infinite',
       },
+      screens: {
+        tiny: {
+          max: '350px',
+        },
+        mobile: {
+          max: '500px',
+        },
+      },
     },
   },
   plugins: [
