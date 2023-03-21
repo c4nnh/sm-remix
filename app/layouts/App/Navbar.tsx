@@ -10,7 +10,6 @@ import { Form, Link, useLoaderData, useLocation } from '@remix-run/react'
 import { Fragment } from 'react'
 import { ROUTES } from '~/constants'
 import type { AppLoaderData } from '~/types'
-import { OrganizationSelect } from './OrganizationSelect'
 
 type Props = {
   openSidebar: () => void
@@ -32,9 +31,6 @@ export const Navbar: React.FC<Props> = ({ openSidebar }) => {
         </button>
       </div>
       <div className="!ml-0 flex flex-1 items-center space-x-3">
-        <div className="mobile:hidden">
-          <OrganizationSelect />
-        </div>
         <div className="flex-1" />
         <div className="flex items-center space-x-3">
           <button

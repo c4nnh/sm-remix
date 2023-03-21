@@ -20,9 +20,6 @@ module.exports = {
         mobile: {
           max: '500px',
         },
-        'not-mobile': {
-          min: '500px',
-        },
       },
     },
   },

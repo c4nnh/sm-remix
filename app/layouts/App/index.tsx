@@ -23,7 +23,7 @@ export const AppLayout: React.FC<PropsWithChildren> = ({ children }) => {
       <div className="hidden w-64 flex-shrink-0 md:block">
         <Sidebar />
       </div>
-      <div className="relative w-full flex-1 md:overflow-hidden">
+      <div className="relative w-full flex-1 overflow-hidden">
         <Navbar openSidebar={openSidebar} />
         <div className="flex h-full w-full items-center justify-center p-5">
           {navigation.state === 'loading' ? <Loading /> : children}
