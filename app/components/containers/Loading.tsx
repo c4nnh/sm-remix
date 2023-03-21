@@ -3,7 +3,7 @@ export const Loading = () => {
     <div className="flex space-x-2">
       <div aria-label="Loading..." role="status">
         <svg
-          className="h-12 w-12 animate-spin stroke-blue-500"
+          className="h-12 w-12 animate-spin-slow stroke-blue-500"
           viewBox="0 0 256 256"
         >
           <line

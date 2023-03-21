@@ -1,11 +1,8 @@
 import type { LoaderFunction } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
-import type Stripe from 'stripe'
+import { redirect } from '@remix-run/node'
+import { SubscriptionSuccess } from '~/components'
+import { ROUTES } from '~/constants'
 import { retrievePaymentIntent } from '~/models'
-
-type LoaderData = {
-  paymentIntent: Stripe.PaymentIntent
-}
 
 export const loader: LoaderFunction = async ({ request }) => {
   const url = new URL(request.url)
@@ -13,11 +10,13 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const paymentIntent = await retrievePaymentIntent(id)
 
+  if (paymentIntent.status !== 'succeeded') {
+    return redirect(ROUTES.PROJECTS)
+  }
+
   return { paymentIntent }
 }
 
 export default function ExtendSubscriptionSuccess() {
-  const { paymentIntent } = useLoaderData<LoaderData>()
-
-  return <div>{JSON.stringify(paymentIntent.metadata)}Success</div>
+  return <SubscriptionSuccess listPath={ROUTES.PROJECTS} />
 }

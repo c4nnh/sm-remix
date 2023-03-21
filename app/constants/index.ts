@@ -13,6 +13,7 @@ export const ROUTES = {
   TONTINES: '/tontines',
   PROJECTS: '/projects',
   EXTEND_PROJECTS_SUBSCRIPTION: '/projects/extend-subscription',
+  EXTEND_PROJECTS_SUBSCRIPTION_SUCCESS: '/projects/extend-subscription/success',
   SKILLS: '/skills',
 }
 
