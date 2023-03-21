@@ -18,6 +18,9 @@ export const action: ActionFunction = async ({ request }) => {
       sig,
       STRIPE_WEBHOOK_SECRET
     )
+    console.log(event.type)
+    console.log(event.data)
+
     const eventDataObj = event.data
       .object as WebhookEventDataObject<PaymentIntentMetadata>
     const { metadata } = eventDataObj

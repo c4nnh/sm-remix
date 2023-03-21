@@ -5,9 +5,10 @@
     "build": "run-p build:*",
     "build:remix": "remix build",
     "build:css": "tailwindcss -m -o app/styles/tailwind.generated.css",
-    "dev": "run-p dev:*",
+    "dev": "run-p dev:* ",
     "dev:remix": "remix dev",
     "dev:css": "tailwindcss -w -o app/styles/tailwind.generated.css",
+    "dev:webhook-stripe": "hookdeck listen 3000 mbr_stripe_dev -p dev",
     "start": "remix-serve build",
     "typecheck": "tsc"
   },

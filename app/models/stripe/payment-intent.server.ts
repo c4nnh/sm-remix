@@ -12,10 +12,10 @@ export const createPaymentIntent = async (
 
   const defaultParams: Omit<Stripe.PaymentIntentCreateParams, 'amount'> = {
     currency: 'usd',
-    payment_method_types: ['card'],
-    metadata: {
-      subscriptionId: 'hehehe',
-    },
+    customer: 'cus_NZEOC0uyFiFBDX',
+    // save payment info (for first time)
+    // setup_future_usage: 'off_session',
+    payment_method: 'pm_1Mo6BVAeRaf2RkSwnB0tKGv9',
   }
 
   return stripe.paymentIntents.create({
