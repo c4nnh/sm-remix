@@ -1,5 +1,6 @@
 import invariant from 'tiny-invariant'
 
+invariant(process.env.DATABASE_URL, 'DATABASE_URL is not set')
 invariant(process.env.SESSION_SECRET, 'SESSION_SECRET is not set')
 invariant(process.env.POSTMARK_API_KEY, 'POSTMARK_API_KEY is not set')
 invariant(
@@ -11,6 +12,7 @@ invariant(process.env.TOKEN_SECRET, 'TOKEN_SECRET is not set')
 invariant(process.env.STRIPE_PUBLIC_KEY, 'STRIPE_PUBLIC_KEY is not set')
 invariant(process.env.STRIPE_SECRET_KEY, 'STRIPE_SECRET_KEY is not set')
 
+export const DATABASE_URL = process.env.DATABASE_URL
 export const SESSION_SECRET = process.env.SESSION_SECRET
 export const POSTMARK_API_KEY = process.env.POSTMARK_API_KEY
 export const POSTMARK_MESSAGE_STREAM = process.env.POSTMARK_MESSAGE_STREAM
