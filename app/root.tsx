@@ -50,7 +50,7 @@ export default function App() {
         <Meta />
         <Links />
       </head>
-      <body className="h-screen w-screen bg-muted-1 text-text dark">
+      <body className="h-screen w-screen bg-muted-2 text-text dark">
         <Outlet />
         <ScrollRestoration />
         <script

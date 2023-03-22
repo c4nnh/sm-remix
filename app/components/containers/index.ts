@@ -1,5 +1,5 @@
 export * from './FeatureCard'
 export * from './Loading'
 export * from './stripe'
-export * from './Table'
+export * from './table'
 export * from './warning'
