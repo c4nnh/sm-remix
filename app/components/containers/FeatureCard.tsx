@@ -30,8 +30,10 @@ export const FeatureCard: React.FC<Props> = ({
         alt={name}
         className="aspect-[2] w-full object-contain"
       />
-      <div className="mt-2 text-3xl font-bold text-white">{name}</div>
-      <div>{description}</div>
+      <div className="mt-2 text-3xl font-bold text-white mobile:text-xl">
+        {name}
+      </div>
+      <div className="text-center text-sm">{description}</div>
     </div>
   )
 
