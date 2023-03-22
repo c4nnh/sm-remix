@@ -1,7 +1,6 @@
-import { ServerClient } from 'postmark'
-import { NODE_ENV, POSTMARK_API_KEY } from './env.server'
+import { NODE_ENV } from './env.server'
 
-const client = new ServerClient(POSTMARK_API_KEY)
+// const client = new ServerClient(POSTMARK_API_KEY)
 
 type SendEmailProps = {
   to: string

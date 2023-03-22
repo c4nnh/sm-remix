@@ -49,12 +49,12 @@ authenticator.use(
     if (!isPasswordMatched) {
       throw new AuthorizationError('Password is incorrect')
     }
-    let organizationId
+    let organizationId = ''
     const organization = await getDefaultOrganization(user.id)
     if (organization) {
       organizationId = organization.id
     } else {
-      organizationId = await setDefaultOrganization(user.id)
+      organizationId = (await setDefaultOrganization(user.id)) || ''
     }
 
     const { id, name, role, status } = user
@@ -90,7 +90,7 @@ authenticator.use(
       userId: id,
     })
 
-    return { id, email, name, role, status }
+    return { id, email, name, role, status, organizationId: '' }
   }),
   FORM_STRATEGY.REGISTER
 )
@@ -111,6 +111,7 @@ authenticator.use(
         role: user.role,
         name: user.name,
         status: user.status,
+        organizationId: '',
       }
     } catch (error) {
       if (error instanceof JsonWebTokenError) {
