@@ -23,7 +23,7 @@ export default function Register() {
               <p className="-mb-3 text-center text-sm text-text">
                 <Link to={ROUTES.LOGIN}>
                   Already have an account?&nbsp;
-                  <span className="font-semibold text-primary hover:text-primary-accent">
+                  <span className="font-semibold text-white hover:text-primary">
                     Login
                   </span>
                 </Link>
