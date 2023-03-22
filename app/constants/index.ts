@@ -9,6 +9,7 @@ export const ROUTES = {
   CHANGE_ORGANIZATION: '/change-organization',
   USERS: '/users',
   ORGANIZATIONS: '/organizations',
+  CREATE_ORGANIZATION: '/organizations/create',
   TRANSACTIONS: '/transactions',
   TONTINES: '/tontines',
   PROJECTS: '/projects',

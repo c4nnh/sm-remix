@@ -21,7 +21,7 @@ export const CreateOrganization = () => {
           </div>
         </div>
         <div className="flex items-center justify-center space-x-3 px-6 pt-1 pb-8">
-          <Link to={ROUTES.ORGANIZATIONS}>
+          <Link to={ROUTES.CREATE_ORGANIZATION}>
             <Button>Create</Button>
           </Link>
         </div>
