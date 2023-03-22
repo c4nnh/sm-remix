@@ -4,5 +4,5 @@ export type AuthSession = Pick<
   User,
   'id' | 'email' | 'name' | 'role' | 'status'
 > & {
-  organizationId?: string
+  organizationId: string
 }

@@ -19,7 +19,9 @@ type LoaderData = {
   organizations: OrganizationQueryResponse[]
 }
 
-export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
+export const loader: LoaderFunction = async ({
+  request,
+}: LoaderArgs): Promise<LoaderData> => {
   const user = await requiredRole(request, [UserRole.USER])
 
   const organizations = await db.organization.findMany({

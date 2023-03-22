@@ -1,3 +1,4 @@
+import type { Subscription, SubscriptionService } from '@prisma/client'
 import { dayjs } from '~/libs'
 import { db } from '~/services'
 import type {
@@ -32,4 +33,26 @@ export const extendSubscription = (metaData: StripePaymentIntentMetadata) => {
       },
     })
   }
+}
+
+export const getActiveSubscriptions = async (
+  userId: string,
+  organizationId: string,
+  service?: SubscriptionService
+): Promise<Subscription[]> => {
+  const subscriptions = await db.subscription.findMany({
+    where: {
+      membership: {
+        userId,
+        organizationId,
+      },
+      service,
+    },
+  })
+
+  return subscriptions.filter(subscription => {
+    const expiredDate = dayjs(subscription.expiredDate).endOf('d')
+    const currentDate = dayjs().startOf('d')
+    return expiredDate.isAfter(currentDate)
+  })
 }

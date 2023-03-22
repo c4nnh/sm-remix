@@ -1,3 +1,4 @@
+import defaultAvatarImage from '~/assets/images/defaultAvatar.png'
 import organizationImage from '~/assets/images/organization.png'
 import projectImage from '~/assets/images/project.png'
 import skillImage from '~/assets/images/skill.png'
@@ -12,4 +13,5 @@ export {
   userImage,
   projectImage,
   skillImage,
+  defaultAvatarImage,
 }

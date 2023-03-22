@@ -14,7 +14,9 @@ type LoaderData = {
   transactions: Transaction[]
 }
 
-export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
+export const loader: LoaderFunction = async ({
+  request,
+}: LoaderArgs): Promise<LoaderData> => {
   const { id, organizationId } = await requiredRole(request, [UserRole.USER])
 
   const transactions = await db.transaction.findMany({

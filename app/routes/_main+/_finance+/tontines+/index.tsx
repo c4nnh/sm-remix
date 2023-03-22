@@ -13,7 +13,9 @@ type LoaderData = {
   tontines: Tontine[]
 }
 
-export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
+export const loader: LoaderFunction = async ({
+  request,
+}: LoaderArgs): Promise<LoaderData> => {
   const { id, organizationId } = await requiredRole(request, [UserRole.USER])
 
   const tontines = await db.tontine.findMany({

@@ -8,6 +8,7 @@ import {
 import { UserStatus } from '@prisma/client'
 import { Form, Link, useLoaderData, useLocation } from '@remix-run/react'
 import { Fragment } from 'react'
+import { defaultAvatarImage } from '~/assets'
 import { ROUTES } from '~/constants'
 import type { AppLoaderData } from '~/types'
 
@@ -42,7 +43,7 @@ export const Navbar: React.FC<Props> = ({ openSidebar }) => {
           <Menu as="div" className="relative">
             <Menu.Button type="button">
               <img
-                src="/assets/avatars/nicholas-turner.png"
+                src={defaultAvatarImage}
                 alt="avatar"
                 className="inline-block h-8 w-8 rounded-full"
               />
