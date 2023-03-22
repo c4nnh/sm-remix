@@ -1,5 +1,5 @@
 import type { User } from '@prisma/client'
-import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
+import type { LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { Column } from '~/components'
 import { Table, Tag } from '~/components'
@@ -11,9 +11,7 @@ type LoaderData = {
   users: User[]
 }
 
-export const loader: LoaderFunction = async ({
-  request,
-}: LoaderArgs): Promise<LoaderData> => {
+export const loader: LoaderFunction = async (): Promise<LoaderData> => {
   const users = await db.user.findMany({
     orderBy: {
       createdAt: 'desc',
