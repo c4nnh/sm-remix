@@ -4,17 +4,40 @@ import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { Column } from '~/components'
 import { Table } from '~/components'
-import { getOrganizations } from '~/models'
+import { DISPLAY_DATE_FORMAT } from '~/constants'
+import { dayjs } from '~/libs'
+import { db } from '~/services'
 import { requiredRole } from '~/utils'
 
+type OrganizationQueryResponse = Organization & {
+  _count: {
+    memberships: number
+  }
+}
+
 type LoaderData = {
-  organizations: Organization[]
+  organizations: OrganizationQueryResponse[]
 }
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
   const user = await requiredRole(request, [UserRole.USER])
 
-  const organizations = await getOrganizations(user.id)
+  const organizations = await db.organization.findMany({
+    where: {
+      memberships: {
+        some: {
+          userId: user.id,
+        },
+      },
+    },
+    include: {
+      _count: {
+        select: {
+          memberships: true,
+        },
+      },
+    },
+  })
 
   return { organizations }
 }
@@ -24,14 +47,23 @@ export default function Organizations() {
 
   return (
     <div className="h-full w-full">
-      <Table<Organization> columns={columns} data={organizations} />
+      <Table<OrganizationQueryResponse>
+        columns={columns}
+        data={organizations}
+      />
     </div>
   )
 }
 
-const columns: Column<Organization>[] = [
-  // { label: 'Id', dataIndex: 'id' },
+const columns: Column<OrganizationQueryResponse>[] = [
   { label: 'Name', dataIndex: 'name' },
-  { label: 'Update at', dataIndex: 'updatedAt' },
-  { label: 'Created at', dataIndex: 'createdAt' },
+  {
+    label: 'Number of members',
+    render: organization => organization._count.memberships,
+  },
+  {
+    label: 'Created at',
+    render: organization =>
+      dayjs(organization.createdAt).format(DISPLAY_DATE_FORMAT),
+  },
 ]

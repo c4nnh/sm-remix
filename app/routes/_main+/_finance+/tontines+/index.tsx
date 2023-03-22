@@ -1,23 +1,22 @@
-import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline'
-import type { Transaction } from '@prisma/client'
-import { TransactionType, UserRole } from '@prisma/client'
+import type { Tontine } from '@prisma/client'
+import { UserRole } from '@prisma/client'
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { Column } from '~/components'
-import { Table, Tag } from '~/components'
+import { Table } from '~/components'
 import { DISPLAY_DATE_FORMAT } from '~/constants'
 import { dayjs } from '~/libs'
 import { db } from '~/services'
 import { requiredRole } from '~/utils'
 
 type LoaderData = {
-  transactions: Transaction[]
+  tontines: Tontine[]
 }
 
 export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
   const { id, organizationId } = await requiredRole(request, [UserRole.USER])
 
-  const transactions = await db.transaction.findMany({
+  const tontines = await db.tontine.findMany({
     where: {
       membership: {
         userId: id,
@@ -26,34 +25,21 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
     },
   })
 
-  return { transactions }
+  return { tontines }
 }
 
-export default function Transactions() {
-  const { transactions } = useLoaderData<LoaderData>()
+export default function Tontines() {
+  const { tontines } = useLoaderData<LoaderData>()
 
   return (
     <div className="h-full w-full">
-      <Table data={transactions} columns={columns} />
+      <Table columns={columns} data={tontines} />
     </div>
   )
 }
 
-const columns: Column<Transaction>[] = [
+const columns: Column<Tontine>[] = [
   { label: 'Title', dataIndex: 'title' },
-  {
-    label: 'Type',
-    render: transaction => {
-      const isIncome = transaction.type === TransactionType.INCOME
-      return (
-        <Tag
-          label={transaction.type}
-          icon={isIncome ? ArrowUpIcon : ArrowDownIcon}
-          type={isIncome ? 'success' : 'danger'}
-        />
-      )
-    },
-  },
   {
     label: 'Amount',
     render: transaction => (
