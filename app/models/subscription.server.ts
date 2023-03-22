@@ -2,8 +2,8 @@ import type { Prisma } from '@prisma/client'
 import { dayjs } from '~/libs'
 import { db } from '~/services'
 import type {
-  PaymentIntentMetadata,
   StripeCreateSubscriptionMetadata,
+  StripePaymentIntentMetadata,
   StripeUpdateSubscriptionMetadata,
 } from '~/types'
 
@@ -15,7 +15,7 @@ export const getSubscriptions = (params: Prisma.SubscriptionWhereInput) =>
 export const getSubscriptionByMembership = (membershipId: string) =>
   db.subscription.findFirst({ where: { membershipId } })
 
-export const extendSubscription = (metaData: PaymentIntentMetadata) => {
+export const extendSubscription = (metaData: StripePaymentIntentMetadata) => {
   const { subscriptionId } = metaData as StripeUpdateSubscriptionMetadata
   const newExpiredDate = dayjs().add(1, 'month').toDate()
   if (subscriptionId) {

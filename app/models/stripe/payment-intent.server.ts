@@ -1,10 +1,10 @@
 import type Stripe from 'stripe'
 import { stripe } from '~/services'
-import type { PaymentIntentMetadata } from '~/types'
+import type { StripePaymentIntentMetadata } from '~/types'
 
 export const createPaymentIntent = async (
   params: Omit<Stripe.PaymentIntentCreateParams, 'currency' | 'metadata'> & {
-    metadata: PaymentIntentMetadata
+    metadata: StripePaymentIntentMetadata
     currency?: string
   }
 ) => {
@@ -12,10 +12,10 @@ export const createPaymentIntent = async (
 
   const defaultParams: Omit<Stripe.PaymentIntentCreateParams, 'amount'> = {
     currency: 'usd',
-    customer: 'cus_NZEOC0uyFiFBDX',
+    customer: 'cus_NZX4HuX12glUCw',
     // save payment info (for first time)
-    // setup_future_usage: 'off_session',
-    payment_method: 'pm_1Mo6BVAeRaf2RkSwnB0tKGv9',
+    setup_future_usage: 'off_session',
+    // payment_method: 'pm_1Mo6BVAeRaf2RkSwnB0tKGv9',
   }
 
   return stripe.paymentIntents.create({

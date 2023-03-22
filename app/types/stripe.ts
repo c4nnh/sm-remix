@@ -9,10 +9,16 @@ export type StripeCreateSubscriptionMetadata = {
   service: SubscriptionService
 }
 
-export type PaymentIntentMetadata =
+export type StripePaymentIntentMetadata =
   | StripeUpdateSubscriptionMetadata
   | StripeCreateSubscriptionMetadata
 
-export type WebhookEventDataObject<M> = {
+export type StripeWebhookEventDataObject<M> = {
+  id: string
+  customer?: string
   metadata: M
+}
+
+export type StripeCustomerMetadata = {
+  userId: string
 }
