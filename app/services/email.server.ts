@@ -1,10 +1,5 @@
 import { ServerClient } from 'postmark'
-import {
-  EMAIL_FROM_ADDRESS,
-  NODE_ENV,
-  POSTMARK_API_KEY,
-  POSTMARK_MESSAGE_STREAM,
-} from './env.server'
+import { NODE_ENV, POSTMARK_API_KEY } from './env.server'
 
 const client = new ServerClient(POSTMARK_API_KEY)
 
@@ -23,14 +18,14 @@ export const sendEmail = (payload: SendEmailProps) => {
     console.log('---')
   }
 
-  if (NODE_ENV === 'production') {
-    return client.sendEmail({
-      MessageStream: POSTMARK_MESSAGE_STREAM,
-      From: EMAIL_FROM_ADDRESS,
-      To: payload.to,
-      Subject: payload.subject,
-      HtmlBody: payload.html,
-      TextBody: payload.text,
-    })
-  }
+  // if (NODE_ENV === 'production') {
+  //   return client.sendEmail({
+  //     MessageStream: POSTMARK_MESSAGE_STREAM,
+  //     From: EMAIL_FROM_ADDRESS,
+  //     To: payload.to,
+  //     Subject: payload.subject,
+  //     HtmlBody: payload.html,
+  //     TextBody: payload.text,
+  //   })
+  // }
 }
