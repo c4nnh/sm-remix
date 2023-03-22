@@ -1,4 +1,3 @@
-import type { Prisma } from '@prisma/client'
 import { dayjs } from '~/libs'
 import { db } from '~/services'
 import type {
@@ -6,11 +5,6 @@ import type {
   StripePaymentIntentMetadata,
   StripeUpdateSubscriptionMetadata,
 } from '~/types'
-
-export const getSubscriptions = (params: Prisma.SubscriptionWhereInput) =>
-  db.subscription.findMany({
-    where: params,
-  })
 
 export const getSubscriptionByMembership = (membershipId: string) =>
   db.subscription.findFirst({ where: { membershipId } })

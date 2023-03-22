@@ -30,7 +30,7 @@ export default function Organizations() {
 }
 
 const columns: Column<Organization>[] = [
-  { label: 'Id', dataIndex: 'id' },
+  // { label: 'Id', dataIndex: 'id' },
   { label: 'Name', dataIndex: 'name' },
   { label: 'Update at', dataIndex: 'updatedAt' },
   { label: 'Created at', dataIndex: 'createdAt' },

@@ -20,24 +20,26 @@ export const OrganizationSelect = () => {
   }
 
   return (
-    <div className="flex w-full min-w-[200px] items-center space-x-3">
-      <Form
-        action={ROUTES.CHANGE_ORGANIZATION}
-        method="post"
-        ref={selectForm}
-        className="flex-1"
-      >
-        <Select
-          name="organizationId"
-          onChange={onSelectOrgChange}
-          defaultValue={user.organizationId}
+    <div className="px-3 pt-5">
+      <div className="flex w-full min-w-[200px] items-center space-x-3">
+        <Form
+          action={ROUTES.CHANGE_ORGANIZATION}
+          method="post"
+          ref={selectForm}
           className="flex-1"
-          options={organizations.map(({ id, name }) => ({
-            value: id,
-            label: name,
-          }))}
-        />
-      </Form>
+        >
+          <Select
+            name="organizationId"
+            onChange={onSelectOrgChange}
+            defaultValue={user.organizationId}
+            className="flex-1"
+            options={organizations.map(({ id, name }) => ({
+              value: id,
+              label: name,
+            }))}
+          />
+        </Form>
+      </div>
     </div>
   )
 }

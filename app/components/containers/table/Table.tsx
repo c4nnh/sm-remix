@@ -1,8 +1,10 @@
 import { cx } from 'class-variance-authority'
+import React from 'react'
 
 export type Column<T> = {
   label: string
-  dataIndex: keyof T
+  dataIndex?: keyof T
+  render?: (data: T) => React.ReactNode
 }
 
 type Props<T> = {
@@ -49,7 +51,7 @@ export const Table = <T extends BaseObject>({ data, columns }: Props<T>) => {
                         isLastCol ? 'rounded-r-lg' : '',
                       ])}
                     >
-                      {item[dataIndex]}
+                      {col.render ? col.render(item) : item[dataIndex]}
                     </td>
                   )
                 })}

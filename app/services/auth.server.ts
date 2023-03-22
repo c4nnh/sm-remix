@@ -95,28 +95,6 @@ authenticator.use(
   FORM_STRATEGY.REGISTER
 )
 
-// authenticator.use(
-//   new FormStrategy(async ({ form }) => {
-//     const organizationId = form.get('organizationId')
-
-//     invariant(typeof email === 'string')
-
-//     const existedEmail = await getUserByEmail(email)
-
-//     if (existedEmail) {
-//       throw new AuthorizationError('Email has already been taken')
-//     }
-
-//     const user = await createUser({ email, name, password })
-
-//     const { id, role, status } = user
-//     await sendConfirmEmail({ originUrl, email, userId: id })
-
-//     return { id, email, name, role, status }
-//   }),
-//   FORM_STRATEGY.REGISTER
-// )
-
 authenticator.use(
   new TokenStrategy(async ({ token }) => {
     let authSession: AuthSession

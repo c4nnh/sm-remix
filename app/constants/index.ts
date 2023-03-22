@@ -26,3 +26,5 @@ export const FORM_STRATEGY = {
 
 export const SESSION_KEY = 'SESSION_KEY'
 export const SESSION_ERROR_KEY = 'SESSION_ERROR_KEY'
+
+export const DISPLAY_DATE_FORMAT = 'DD/MM/YYYY'

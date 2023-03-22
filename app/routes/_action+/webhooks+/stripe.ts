@@ -1,11 +1,7 @@
 import { PspType } from '@prisma/client'
 import type { ActionFunction } from '@remix-run/node'
-import {
-  createPaymentCustomer,
-  extendSubscription,
-  updatePaymentCustomer,
-} from '~/models'
-import { stripe } from '~/services'
+import { extendSubscription } from '~/models'
+import { db, stripe } from '~/services'
 import { STRIPE_WEBHOOK_SECRET } from '~/services/env.server'
 import type {
   StripeCustomerMetadata,
@@ -40,18 +36,24 @@ export const action: ActionFunction = async ({ request }) => {
         const { id: customerId } = eventDataObj
         const userId = (metadata as StripeCustomerMetadata).userId
         if (!customerId || !userId) break
-        await createPaymentCustomer({
-          pspId: customerId,
-          pspType: PspType.STRIPE,
-          userId,
+        await db.paymentCustomer.create({
+          data: {
+            pspId: customerId,
+            pspType: PspType.STRIPE,
+            userId,
+          },
         })
         break
       case 'payment_method.attached':
         const { id: paymentMethodPspId, customer: pspId } = eventDataObj
         if (!pspId || !paymentMethodPspId) break
-        await updatePaymentCustomer({
-          where: { pspId },
-          data: { paymentMethodPspId },
+        await db.paymentCustomer.update({
+          where: {
+            pspId,
+          },
+          data: {
+            paymentMethodPspId,
+          },
         })
         break
       default:

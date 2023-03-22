@@ -2,8 +2,7 @@ import type { Subscription, SubscriptionService } from '@prisma/client'
 import { redirect } from '@remix-run/node'
 import dayjs from 'dayjs'
 import { ROUTES } from '~/constants'
-import { getSubscriptions } from '~/models'
-import { authenticator } from '~/services'
+import { authenticator, db } from '~/services'
 
 export const getActiveSubscriptions = async (
   request: Request,
@@ -21,12 +20,14 @@ export const getActiveSubscriptions = async (
     throw redirect(ROUTES.ORGANIZATIONS)
   }
 
-  const subscriptions = await getSubscriptions({
-    membership: {
-      userId: user.id,
-      organizationId,
+  const subscriptions = await db.subscription.findMany({
+    where: {
+      membership: {
+        userId: user.id,
+        organizationId,
+      },
+      service,
     },
-    service,
   })
 
   return subscriptions.filter(subscription => {

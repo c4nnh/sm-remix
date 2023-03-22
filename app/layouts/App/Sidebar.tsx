@@ -28,9 +28,7 @@ export const Sidebar = () => {
           <LogoIcon viewBox="0 0 32 28" />
           Self management
         </div>
-        <div className="px-3 pt-5">
-          <OrganizationSelect />
-        </div>
+        <OrganizationSelect />
         <div className="mt-5 space-y-1 px-1 sm:px-2">
           {links
             .filter(link => !link.roles || link.roles.includes(user.role))
