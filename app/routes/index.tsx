@@ -53,7 +53,7 @@ type Card = {
   description: string
   image: string
   link: string
-  roles?: UserRole[]
+  roles: UserRole[]
   subscriptionService?: SubscriptionService
 }
 
@@ -66,24 +66,28 @@ const HomepageBody = () => {
       description: 'Manage your organizations',
       image: organizationImage,
       link: ROUTES.ORGANIZATIONS,
+      roles: [UserRole.USER],
     },
     {
       name: 'Transaction',
       description: 'Manage your transactions',
       link: ROUTES.TRANSACTIONS,
       image: transactionImage,
+      roles: [UserRole.USER],
     },
     {
       name: 'Tontine',
       description: 'Manage your tontines',
       link: ROUTES.TONTINES,
       image: tontineImage,
+      roles: [UserRole.USER],
     },
     {
       name: 'Project',
       description: 'Manage your projects',
       link: ROUTES.PROJECTS,
       image: projectImage,
+      roles: [UserRole.USER],
       subscriptionService: SubscriptionService.PROJECT_MANAGEMENT,
     },
     {
@@ -91,6 +95,7 @@ const HomepageBody = () => {
       description: 'Manage your skills',
       link: ROUTES.SKILLS,
       image: skillImage,
+      roles: [UserRole.USER],
       subscriptionService: SubscriptionService.PROJECT_MANAGEMENT,
     },
     {
