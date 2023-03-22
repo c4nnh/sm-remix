@@ -1,5 +1,5 @@
 import { cx } from 'class-variance-authority'
-import React from 'react'
+import React, { useState } from 'react'
 
 export type Column<T> = {
   label: string
@@ -17,6 +17,8 @@ interface BaseObject {
 }
 
 export const Table = <T extends BaseObject>({ data, columns }: Props<T>) => {
+  const [hoveredRow, setHoveredRow] = useState<number>(-1)
+
   return (
     <div className="w-full overflow-x-auto rounded-xl bg-layer-2 px-11 py-6 scrollbar">
       <table className="w-full">
@@ -36,11 +38,17 @@ export const Table = <T extends BaseObject>({ data, columns }: Props<T>) => {
           {data.map((item, index) => {
             const isHighlighted = index % 2 === 0
             return (
-              <tr key={item.id} className="hover:cursor-pointer">
+              <tr
+                key={item.id}
+                className="hover:cursor-pointer"
+                onMouseOver={() => setHoveredRow(index)}
+                onMouseLeave={() => setHoveredRow(-1)}
+              >
                 {columns.map((col, colIndex) => {
                   const dataIndex = col.dataIndex as string
                   const isFirstCol = colIndex === 0
                   const isLastCol = colIndex === columns.length - 1
+                  const isHovered = hoveredRow === index
                   return (
                     <td
                       key={`${item.id}_${dataIndex}`}
@@ -49,6 +57,7 @@ export const Table = <T extends BaseObject>({ data, columns }: Props<T>) => {
                         isHighlighted ? 'bg-muted-1' : 'bg-layer-2',
                         isFirstCol ? 'rounded-l-lg' : '',
                         isLastCol ? 'rounded-r-lg' : '',
+                        isHovered ? 'bg-muted-3' : '',
                       ])}
                     >
                       {col.render ? col.render(item) : item[dataIndex]}
