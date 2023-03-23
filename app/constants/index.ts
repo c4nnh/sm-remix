@@ -20,6 +20,7 @@ export const ROUTES = {
   EXTEND_PROJECTS_SUBSCRIPTION: '/projects/extend-subscription',
   EXTEND_PROJECTS_SUBSCRIPTION_SUCCESS: '/projects/extend-subscription/success',
   SKILLS: '/skills',
+  CREATE_SKILLS: '/skills/create',
 }
 
 export const FORM_STRATEGY = {

@@ -4,18 +4,20 @@ import { UserRole } from '@prisma/client'
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { Column } from '~/components'
-import { Table } from '~/components'
+import { ListHeader, Pagination, Table } from '~/components'
+import { ROUTES } from '~/constants'
 import { db } from '~/services'
-import { requiredRole } from '~/utils'
+import type { ListLoaderData } from '~/types'
+import { getPaginationAndSearchParams, requiredRole } from '~/utils'
 
-type LoaderData = {
-  skills: Skill[]
-}
+type LoaderData = ListLoaderData<Skill, 'skills'>
 
 export const loader: LoaderFunction = async ({
   request,
 }: LoaderArgs): Promise<LoaderData> => {
   const { id, organizationId } = await requiredRole(request, [UserRole.USER])
+
+  const { search, take, skip } = getPaginationAndSearchParams(request)
 
   const skills = await db.skill.findMany({
     where: {
@@ -23,21 +25,38 @@ export const loader: LoaderFunction = async ({
         userId: id,
         organizationId,
       },
+      name: {
+        contains: search,
+        mode: 'insensitive',
+      },
     },
     orderBy: {
       yoe: 'desc',
     },
+    skip,
+    take,
   })
 
-  return { skills }
+  const totalItems = await db.skill.count({
+    where: {
+      name: {
+        contains: search,
+        mode: 'insensitive',
+      },
+    },
+  })
+
+  return { skills, totalItems }
 }
 
 export default function Skills() {
-  const { skills } = useLoaderData<LoaderData>()
+  const { skills, totalItems } = useLoaderData<LoaderData>()
 
   return (
-    <div className="h-full w-full">
+    <div className="flex h-full w-full flex-col gap-5">
+      <ListHeader createPath={ROUTES.CREATE_SKILLS} />
       <Table columns={columns} data={skills} />
+      <Pagination total={totalItems} />
     </div>
   )
 }
