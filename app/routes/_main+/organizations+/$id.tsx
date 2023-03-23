@@ -2,6 +2,8 @@ import type { Organization } from '@prisma/client'
 import type { LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { notFound } from 'remix-utils'
+import { RemixForm } from '~/components'
+import { OrganizationSchema } from '~/schemas'
 import { db } from '~/services'
 import { requiredRole } from '~/utils'
 
@@ -34,5 +36,24 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 export default function OrganizationDetail() {
   const { organization } = useLoaderData<LoaderData>()
 
-  return <div>{JSON.stringify(organization)}</div>
+  return (
+    <div>
+      <RemixForm
+        schema={OrganizationSchema}
+        values={organization}
+        buttonLabel="Update"
+        pendingButtonLabel="Updating..."
+      >
+        {({ Field, Button, Errors }) => {
+          return (
+            <>
+              <Field name="name" label="Name" />
+              <Errors />
+              <Button />
+            </>
+          )
+        }}
+      </RemixForm>
+    </div>
+  )
 }
