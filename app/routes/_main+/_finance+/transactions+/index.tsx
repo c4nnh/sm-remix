@@ -4,20 +4,21 @@ import { TransactionType, UserRole } from '@prisma/client'
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { Column } from '~/components'
-import { Table, Tag } from '~/components'
-import { DISPLAY_DATE_FORMAT } from '~/constants'
+import { ListHeader, Pagination, Table, Tag } from '~/components'
+import { DISPLAY_DATE_FORMAT, ROUTES } from '~/constants'
 import { dayjs } from '~/libs'
 import { db } from '~/services'
-import { requiredRole } from '~/utils'
+import type { ListLoaderData } from '~/types'
+import { getPaginationAndSearchParams, requiredRole } from '~/utils'
 
-type LoaderData = {
-  transactions: Transaction[]
-}
+type LoaderData = ListLoaderData<Transaction, 'transactions'>
 
 export const loader: LoaderFunction = async ({
   request,
 }: LoaderArgs): Promise<LoaderData> => {
   const { id, organizationId } = await requiredRole(request, [UserRole.USER])
+
+  const { search, take, skip } = getPaginationAndSearchParams(request)
 
   const transactions = await db.transaction.findMany({
     where: {
@@ -25,18 +26,38 @@ export const loader: LoaderFunction = async ({
         userId: id,
         organizationId,
       },
+      title: {
+        contains: search,
+        mode: 'insensitive',
+      },
+    },
+    orderBy: {
+      date: 'desc',
+    },
+    skip,
+    take,
+  })
+
+  const totalItems = await db.transaction.count({
+    where: {
+      title: {
+        contains: search,
+        mode: 'insensitive',
+      },
     },
   })
 
-  return { transactions }
+  return { transactions, totalItems }
 }
 
 export default function Transactions() {
-  const { transactions } = useLoaderData<LoaderData>()
+  const { transactions, totalItems } = useLoaderData<LoaderData>()
 
   return (
-    <div className="h-full w-full">
+    <div className="flex h-full w-full flex-col gap-5">
+      <ListHeader createPath={ROUTES.CREATE_TRANSACTIONS} />
       <Table data={transactions} columns={columns} />
+      <Pagination total={totalItems} />
     </div>
   )
 }
