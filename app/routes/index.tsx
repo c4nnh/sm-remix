@@ -1,10 +1,11 @@
-import { SubscriptionService, UserRole, UserStatus } from '@prisma/client'
+import { SubscriptionServiceType, UserRole, UserStatus } from '@prisma/client'
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { Outlet, useLoaderData } from '@remix-run/react'
 import {
   organizationImage,
   projectImage,
   skillImage,
+  subscriptionServiceImage,
   tontineImage,
   transactionImage,
   userImage,
@@ -54,7 +55,7 @@ type Card = {
   image: string
   link: string
   roles: UserRole[]
-  subscriptionService?: SubscriptionService
+  subscriptionService?: SubscriptionServiceType
 }
 
 const HomepageBody = () => {
@@ -88,7 +89,7 @@ const HomepageBody = () => {
       link: ROUTES.PROJECTS,
       image: projectImage,
       roles: [UserRole.USER],
-      subscriptionService: SubscriptionService.PROJECT_MANAGEMENT,
+      subscriptionService: SubscriptionServiceType.PROJECT_MANAGEMENT,
     },
     {
       name: 'Skill',
@@ -96,13 +97,20 @@ const HomepageBody = () => {
       link: ROUTES.SKILLS,
       image: skillImage,
       roles: [UserRole.USER],
-      subscriptionService: SubscriptionService.PROJECT_MANAGEMENT,
+      subscriptionService: SubscriptionServiceType.PROJECT_MANAGEMENT,
     },
     {
       name: 'User',
       description: 'Manage users',
       link: ROUTES.USERS,
       image: userImage,
+      roles: [UserRole.ADMIN],
+    },
+    {
+      name: 'Subscription service',
+      description: 'Manage subscription service',
+      link: ROUTES.SUBSCRIPTION_SERVICE,
+      image: subscriptionServiceImage,
       roles: [UserRole.ADMIN],
     },
   ]

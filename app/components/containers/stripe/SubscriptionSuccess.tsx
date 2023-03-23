@@ -3,10 +3,10 @@ import { Link } from '@remix-run/react'
 import { Button } from '~/components/elements'
 
 type Props = {
-  listPath: string
+  redirectPath: string
 }
 
-export const SubscriptionSuccess: React.FC<Props> = ({ listPath }) => {
+export const SubscriptionSuccess: React.FC<Props> = ({ redirectPath }) => {
   return (
     <div className="flex h-full items-center justify-center">
       <div className="mb-40 flex flex-col rounded-2xl bg-layer-2">
@@ -23,8 +23,8 @@ export const SubscriptionSuccess: React.FC<Props> = ({ listPath }) => {
           </div>
         </div>
         <div className="flex items-center justify-center space-x-3 px-6 pt-1 pb-8">
-          <Link to={listPath}>
-            <Button>Back to list</Button>
+          <Link to={redirectPath}>
+            <Button buttonType="primary">Back to list</Button>
           </Link>
         </div>
       </div>

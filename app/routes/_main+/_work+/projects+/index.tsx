@@ -1,6 +1,6 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 import type { Project } from '@prisma/client'
-import { SubscriptionService } from '@prisma/client'
+import { SubscriptionServiceType } from '@prisma/client'
 import type { LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { Column } from '~/components'
@@ -24,7 +24,7 @@ export const loader: LoaderFunction = async ({
   const activeSubscriptions = await getActiveSubscriptions(
     id,
     organizationId,
-    SubscriptionService.PROJECT_MANAGEMENT
+    SubscriptionServiceType.PROJECT_MANAGEMENT
   )
 
   const hasSubscription = !!activeSubscriptions.length

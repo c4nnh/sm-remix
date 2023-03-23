@@ -1,4 +1,4 @@
-import type { Subscription, SubscriptionService } from '@prisma/client'
+import type { Subscription, SubscriptionServiceType } from '@prisma/client'
 import { dayjs } from '~/libs'
 import { db } from '~/services'
 import type {
@@ -10,10 +10,21 @@ import type {
 export const getSubscriptionByMembership = (membershipId: string) =>
   db.subscription.findFirst({ where: { membershipId } })
 
-export const extendSubscription = (metaData: StripePaymentIntentMetadata) => {
-  const { subscriptionId } = metaData as StripeUpdateSubscriptionMetadata
+export const extendSubscription = async (
+  metaData: StripePaymentIntentMetadata
+) => {
+  const { subscriptionId, subscriptionServiceId } =
+    metaData as StripeUpdateSubscriptionMetadata
+
+  // TODO: Get duration from here
+  const subscriptionService = await db.subscriptionService.findUnique({
+    where: { id: subscriptionServiceId },
+  })
+  if (!subscriptionService) return
+
   const newExpiredDate = dayjs().add(1, 'month').toDate()
   if (subscriptionId) {
+    // new expired date from old expired date
     return db.subscription.update({
       data: {
         expiredDate: newExpiredDate,
@@ -23,11 +34,12 @@ export const extendSubscription = (metaData: StripePaymentIntentMetadata) => {
       },
     })
   } else {
-    const { service, membershipId } =
-      metaData as StripeCreateSubscriptionMetadata
+    const { membershipId } = metaData as StripeCreateSubscriptionMetadata
+
+    // new expired date from current date
     return db.subscription.create({
       data: {
-        service,
+        subscriptionServiceId: subscriptionService.id,
         membershipId,
         expiredDate: newExpiredDate,
       },
@@ -38,7 +50,7 @@ export const extendSubscription = (metaData: StripePaymentIntentMetadata) => {
 export const getActiveSubscriptions = async (
   userId: string,
   organizationId: string,
-  service?: SubscriptionService
+  service?: SubscriptionServiceType
 ): Promise<Subscription[]> => {
   const subscriptions = await db.subscription.findMany({
     where: {
@@ -46,7 +58,9 @@ export const getActiveSubscriptions = async (
         userId,
         organizationId,
       },
-      service,
+      subscriptionService: {
+        type: service,
+      },
     },
   })
 

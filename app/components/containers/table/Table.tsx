@@ -51,7 +51,7 @@ export const Table = <T extends BaseObject>({ data, columns }: Props<T>) => {
                   const isHovered = hoveredRow === index
                   return (
                     <td
-                      key={`${item.id}_${dataIndex}`}
+                      key={`${item.id || colIndex}_${dataIndex || colIndex}`}
                       className={cx([
                         'whitespace-nowrap py-3 px-4 text-heading',
                         isHighlighted ? 'bg-muted-1' : 'bg-layer-2',

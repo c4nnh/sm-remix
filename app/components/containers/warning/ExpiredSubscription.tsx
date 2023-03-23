@@ -24,7 +24,7 @@ export const ExpiredSubscription: React.FC<Props> = ({ extendLink }) => {
         </div>
         <div className="flex items-center justify-center space-x-3 px-6 pt-1 pb-8">
           <Link to={extendLink}>
-            <Button>Pay now</Button>
+            <Button buttonType="primary">Pay now</Button>
           </Link>
         </div>
       </div>

@@ -1,5 +1,5 @@
 import type { Prisma } from '@prisma/client'
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, SubscriptionServiceType } from '@prisma/client'
 const db = new PrismaClient()
 
 const projectRolesSeed: Prisma.ProjectRoleUncheckedCreateInput[] = [
@@ -20,16 +20,33 @@ const projectRolesSeed: Prisma.ProjectRoleUncheckedCreateInput[] = [
   },
 ]
 
+const subscriptionServicesSeed: Prisma.SubscriptionServiceUncheckedCreateInput[] =
+  [
+    {
+      name: 'Project management',
+      type: SubscriptionServiceType.PROJECT_MANAGEMENT,
+      price: 100,
+      currency: 'usd',
+    },
+  ]
+
 async function seed() {
-  await Promise.all(
-    projectRolesSeed.map(item =>
+  await Promise.all([
+    ...projectRolesSeed.map(item =>
       db.projectRole.upsert({
         where: { name: item.name },
-        update: item,
+        update: {},
         create: item,
       })
-    )
-  )
+    ),
+    ...subscriptionServicesSeed.map(item =>
+      db.subscriptionService.upsert({
+        where: { type: item.type },
+        update: {},
+        create: item,
+      })
+    ),
+  ])
 }
 
 seed()

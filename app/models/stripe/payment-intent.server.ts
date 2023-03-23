@@ -8,20 +8,19 @@ export const createPaymentIntent = async (
     currency?: string
   }
 ) => {
-  const { amount, ...rest } = params
+  const { amount, payment_method, ...rest } = params
 
   const defaultParams: Omit<Stripe.PaymentIntentCreateParams, 'amount'> = {
     currency: 'usd',
-    // customer: 'cus_NZX4HuX12glUCw',
-    // save payment info (for first time)
-    setup_future_usage: 'off_session',
-    // payment_method: 'pm_1Mo6BVAeRaf2RkSwnB0tKGv9',
   }
 
   return stripe.paymentIntents.create({
     amount: amount * 100,
     ...defaultParams,
     ...rest,
+    ...(payment_method
+      ? { payment_method }
+      : { setup_future_usage: 'off_session' }),
   })
 }
 

@@ -1,13 +1,16 @@
-import type { SubscriptionService } from '@prisma/client'
-
-export type StripeUpdateSubscriptionMetadata = {
-  subscriptionId: string
+type BaseStripeSubscriptionMetadata = {
+  subscriptionServiceId: string
 }
 
-export type StripeCreateSubscriptionMetadata = {
-  membershipId: string
-  service: SubscriptionService
-}
+export type StripeUpdateSubscriptionMetadata =
+  BaseStripeSubscriptionMetadata & {
+    subscriptionId: string
+  }
+
+export type StripeCreateSubscriptionMetadata =
+  BaseStripeSubscriptionMetadata & {
+    membershipId: string
+  }
 
 export type StripePaymentIntentMetadata =
   | StripeUpdateSubscriptionMetadata
