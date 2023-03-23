@@ -16,7 +16,7 @@
     "dev:webhooks-stripe": "hookdeck listen 3000 sm -p dev",
     "start": "remix-serve build",
     "typecheck": "tsc",
-    "generate:css": "tailwindcss -w -o ./app/styles/tailwind.generated.css",
+    "generate:css": "tailwindcss -o ./app/styles/tailwind.generated.css",
     "seed:database": "ts-node prisma/seed.ts"
   },
   "dependencies": {
