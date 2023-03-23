@@ -45,7 +45,7 @@ export const SubmitStripeForm: React.FC<Props> = ({
 
   return (
     <form onSubmit={handleSubmit}>
-      <span className="text-white">Enter card information</span>
+      <span className="text-lg text-text">Enter card information</span>
       <PaymentElement className="mt-2" />
       <div className="mt-8 flex justify-between mobile:mt-3">
         <Link to={cancelRedirectPath}>

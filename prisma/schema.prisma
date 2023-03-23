@@ -99,6 +99,10 @@ model SubscriptionService {
   type        SubscriptionServiceType @unique
   price       Float
   currency    String
+  // duration
+  year        Int                     @default(0)
+  month       Int                     @default(0)
+  day         Int                     @default(0)
 
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt

@@ -22,8 +22,20 @@ export const extendSubscription = async (
   })
   if (!subscriptionService) return
 
-  const newExpiredDate = dayjs().add(1, 'month').toDate()
-  if (subscriptionId) {
+  // get duration of service
+  const { year, month, day } = subscriptionService
+
+  const subscription = await db.subscription.findUnique({
+    where: { id: subscriptionId },
+  })
+  const oldExipredDate = subscription?.expiredDate || dayjs()
+  const newExpiredDate = dayjs(oldExipredDate)
+    .add(year || 0, 'year')
+    .add(month || 0, 'month')
+    .add(day || 0, 'day')
+    .toDate()
+
+  if (subscription) {
     // new expired date from old expired date
     return db.subscription.update({
       data: {
@@ -35,7 +47,6 @@ export const extendSubscription = async (
     })
   } else {
     const { membershipId } = metaData as StripeCreateSubscriptionMetadata
-
     // new expired date from current date
     return db.subscription.create({
       data: {

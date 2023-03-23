@@ -83,9 +83,10 @@ export default function ExtendProjectsSubscription() {
           locale: 'en',
           clientSecret: paymentIntent.client_secret || '',
           appearance: {
-            labels: 'floating',
-            variables: {
-              colorBackground: '#e3e6e9',
+            rules: {
+              '.Label': {
+                color: 'white',
+              },
             },
           },
         }}
