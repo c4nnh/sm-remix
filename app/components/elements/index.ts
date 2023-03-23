@@ -1,5 +1,6 @@
 export * from './Button'
 export * from './Input'
+export * from './InputSearch'
 export * from './Label'
 export * from './Select'
 export * from './Tag'

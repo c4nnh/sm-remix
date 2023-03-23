@@ -19,7 +19,7 @@ export const Button = forwardRef<Ref, Props>(
           className
         )}
         {...props}
-      />
+      ></button>
     )
   }
 )

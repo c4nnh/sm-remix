@@ -30,3 +30,15 @@ export const SESSION_KEY = 'SESSION_KEY'
 export const SESSION_ERROR_KEY = 'SESSION_ERROR_KEY'
 
 export const DISPLAY_DATE_FORMAT = 'DD/MM/YYYY'
+
+export const QUERY_KEY = {
+  SEARCH: 'search',
+  SKIP: 'skip',
+  TAKE: 'take',
+}
+
+export const PAGINATION = {
+  SKIP: 0,
+  TAKE: 1,
+  GAP: 2,
+}

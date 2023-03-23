@@ -6,3 +6,9 @@ export type AppLoaderData = {
   organizations: Organization[]
   subscriptions: Subscription[]
 }
+
+export type ListLoaderData<T, Name extends string> = {
+  [key in Name]: T[]
+} & {
+  totalItems: number
+}
