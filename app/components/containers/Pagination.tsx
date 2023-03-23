@@ -24,6 +24,8 @@ export const Pagination: React.FC<Props> = ({ total = 0 }) => {
     return navigate(newUrl)
   }
 
+  if (!total) return <></>
+
   return (
     <div className="flex flex-1 flex-col items-center space-y-6">
       <nav className="flex items-center" aria-label="Pagination">
