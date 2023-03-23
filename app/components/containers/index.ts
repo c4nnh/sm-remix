@@ -1,5 +1,6 @@
 export * from './FeatureCard'
 export * from './Loading'
 export * from './stripe'
+export * from './SubscriptionBanner'
 export * from './table'
 export * from './warning'

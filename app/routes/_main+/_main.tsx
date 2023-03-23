@@ -18,7 +18,7 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
 
   const pathname = new URL(request.url).pathname
 
-  if (!organizations.length && ROUTES.ORGANIZATIONS !== pathname) {
+  if (!organizations.length && !pathname.includes(ROUTES.ORGANIZATIONS)) {
     return redirect(ROUTES.ROOT)
   }
 

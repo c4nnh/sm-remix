@@ -1,6 +1,7 @@
 import {
   ArrowLeftOnRectangleIcon,
   ArrowPathIcon,
+  BanknotesIcon,
   BuildingOfficeIcon,
   CubeIcon,
   HandRaisedIcon,
@@ -103,6 +104,12 @@ const links: LinkItem[] = [
     label: 'Users',
     icon: UsersIcon,
     href: ROUTES.USERS,
+    roles: [UserRole.ADMIN],
+  },
+  {
+    label: 'Subscription service',
+    icon: BanknotesIcon,
+    href: ROUTES.SUBSCRIPTION_SERVICE,
     roles: [UserRole.ADMIN],
   },
   {

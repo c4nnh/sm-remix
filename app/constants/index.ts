@@ -8,6 +8,7 @@ export const ROUTES = {
   RESEND_CONFIRM_EMAIL: '/resend-confirm-email',
   CHANGE_ORGANIZATION: '/change-organization',
   USERS: '/users',
+  SUBSCRIPTION_SERVICE: '/subscription-service',
   ORGANIZATIONS: '/organizations',
   CREATE_ORGANIZATION: '/organizations/create',
   TRANSACTIONS: '/transactions',

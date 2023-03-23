@@ -86,24 +86,45 @@ model Membership {
   @@map("membership")
 }
 
-enum SubscriptionService {
+enum SubscriptionServiceType {
   PROJECT_MANAGEMENT
   SKIL_MANAGEMENT
+}
+
+model SubscriptionService {
+  id String @id @default(uuid())
+
+  name        String
+  description String?
+  type        SubscriptionServiceType @unique
+  price       Float
+  currency    String
+  // duration
+  year        Int                     @default(0)
+  month       Int                     @default(0)
+  day         Int                     @default(0)
+
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+  Subscription Subscription[]
+
+  @@map("subscription_service")
 }
 
 model Subscription {
   id String @id @default(uuid())
 
-  service     SubscriptionService
-  expiredDate DateTime            @db.Date
+  expiredDate DateTime @db.Date
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  membership   Membership @relation(fields: [membershipId], references: [id])
-  membershipId String
+  membership            Membership          @relation(fields: [membershipId], references: [id])
+  membershipId          String
+  subscriptionService   SubscriptionService @relation(fields: [subscriptionServiceId], references: [id])
+  subscriptionServiceId String
 
-  @@unique([membershipId, service])
+  @@unique([membershipId, subscriptionServiceId])
   @@map("subscription")
 }
 

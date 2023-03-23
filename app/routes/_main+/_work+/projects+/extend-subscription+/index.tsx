@@ -1,11 +1,12 @@
-import { SubscriptionService } from '@prisma/client'
+import { SubscriptionServiceType } from '@prisma/client'
 import type { LoaderFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { Elements } from '@stripe/react-stripe-js'
 import type Stripe from 'stripe'
 import invariant from 'tiny-invariant'
-import { SubmitStripeForm } from '~/components'
+import { projectImage } from '~/assets'
+import { SubmitStripeForm, SubscriptionBanner } from '~/components'
 import { ROUTES } from '~/constants'
 import { useStripePromise } from '~/hooks'
 import {
@@ -13,6 +14,7 @@ import {
   getMembershipByUserAndOrg,
   getSubscriptionByMembership,
 } from '~/models'
+import { db } from '~/services'
 import { requiredRole } from '~/utils'
 
 type LoaderData = {
@@ -31,18 +33,41 @@ export const loader: LoaderFunction = async ({ request }) => {
 
   const subscription = await getSubscriptionByMembership(membership.id)
 
-  const paymentIntent = await createPaymentIntent({
-    amount: 100,
-    metadata: subscription
-      ? {
-          subscriptionId: subscription.id,
-        }
-      : {
-          membershipId: membership.id,
-          service: SubscriptionService.PROJECT_MANAGEMENT,
-        },
+  const subscriptionService = await db.subscriptionService.findUnique({
+    where: { type: SubscriptionServiceType.PROJECT_MANAGEMENT },
   })
-  return { paymentIntent }
+
+  if (!subscriptionService) {
+    return redirect(ROUTES.PROJECTS)
+  }
+
+  const { price, currency } = subscriptionService
+
+  const paymentCustomer = await db.paymentCustomer.findFirst({
+    where: {
+      userId,
+    },
+  })
+
+  const paymentIntent = await createPaymentIntent({
+    amount: price,
+    currency,
+    customer: paymentCustomer?.pspId,
+    payment_method: paymentCustomer?.paymentMethodPspId || '',
+    metadata: {
+      subscriptionServiceId: subscriptionService.id,
+      ...(subscription
+        ? {
+            subscriptionId: subscription.id,
+          }
+        : {
+            membershipId: membership.id,
+            service: SubscriptionServiceType.PROJECT_MANAGEMENT,
+          }),
+    },
+  })
+
+  return { paymentIntent, subscriptionService }
 }
 
 export default function ExtendProjectsSubscription() {
@@ -50,12 +75,24 @@ export default function ExtendProjectsSubscription() {
   const { paymentIntent } = useLoaderData<LoaderData>()
 
   return (
-    <div>
+    <div className="flex rounded-2xl bg-layer-2 p-10 mobile:flex-col mobile:px-5">
+      <SubscriptionBanner image={projectImage} />
       <Elements
         stripe={stripePromise}
-        options={{ clientSecret: paymentIntent.client_secret || '' }}
+        options={{
+          locale: 'en',
+          clientSecret: paymentIntent.client_secret || '',
+          appearance: {
+            rules: {
+              '.Label': {
+                color: 'white',
+              },
+            },
+          },
+        }}
       >
         <SubmitStripeForm
+          cancelRedirectPath={ROUTES.PROJECTS}
           returnPath={ROUTES.EXTEND_PROJECTS_SUBSCRIPTION_SUCCESS}
         />
       </Elements>

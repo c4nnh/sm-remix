@@ -18,5 +18,5 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function ExtendSubscriptionSuccess() {
-  return <SubscriptionSuccess listPath={ROUTES.PROJECTS} />
+  return <SubscriptionSuccess redirectPath={ROUTES.PROJECTS} />
 }

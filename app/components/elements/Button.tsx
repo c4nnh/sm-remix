@@ -7,8 +7,21 @@ import { button } from '~/styles'
 type Ref = HTMLButtonElement
 type Props = ButtonStyleProps & ButtonHTMLAttributes<Ref>
 
-export const Button = forwardRef<Ref, Props>(({ className, ...props }, ref) => {
-  return <button ref={ref} className={cx(button(), className)} {...props} />
-})
+export const Button = forwardRef<Ref, Props>(
+  ({ className, buttonType = 'default', ...props }, ref) => {
+    return (
+      <button
+        ref={ref}
+        className={cx(
+          button({
+            buttonType,
+          }),
+          className
+        )}
+        {...props}
+      />
+    )
+  }
+)
 
 Button.displayName = 'Button'

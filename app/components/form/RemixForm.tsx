@@ -27,7 +27,7 @@ const FormLabel = (props: LabelHTMLAttributes<HTMLLabelElement>) => {
 }
 
 const FormButton = (props: ButtonHTMLAttributes<HTMLButtonElement>) => {
-  return <Button {...props} />
+  return <Button buttonType="primary" {...props} />
 }
 
 const FormError = ({

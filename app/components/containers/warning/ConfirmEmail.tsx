@@ -28,7 +28,7 @@ export const ConfirmEmail = () => {
         </div>
         <div className="flex items-center justify-center space-x-3 px-6 pt-1 pb-8">
           <Form method="get" action={ROUTES.RESEND_CONFIRM_EMAIL}>
-            <Button disabled={isSubmitting}>
+            <Button disabled={isSubmitting} buttonType="primary">
               {isSubmitting ? 'Sending...' : 'Resend'}
             </Button>
           </Form>
