@@ -1,4 +1,4 @@
-import type { Tontine } from '@prisma/client'
+import type { Prisma, Tontine } from '@prisma/client'
 import { UserRole } from '@prisma/client'
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
@@ -19,29 +19,26 @@ export const loader: LoaderFunction = async ({
 
   const { search, take, skip } = getPaginationAndSearchParams(request)
 
-  const tontines = await db.tontine.findMany({
-    where: {
-      membership: {
-        userId: id,
-        organizationId,
-      },
-      title: {
-        contains: search,
-        mode: 'insensitive',
-      },
+  const where: Prisma.TontineWhereInput = {
+    membership: {
+      userId: id,
+      organizationId,
     },
+    title: {
+      contains: search,
+      mode: 'insensitive',
+    },
+  }
+
+  const tontines = await db.tontine.findMany({
+    where,
     orderBy: { date: 'desc' },
     skip,
     take,
   })
 
   const totalItems = await db.tontine.count({
-    where: {
-      title: {
-        contains: search,
-        mode: 'insensitive',
-      },
-    },
+    where,
   })
 
   return { tontines, totalItems }
@@ -53,7 +50,7 @@ export default function Tontines() {
   return (
     <div className="flex h-full w-full flex-col gap-5">
       <ListHeader createPath={ROUTES.CREATE_TONTINES} />
-      <Table columns={columns} data={tontines} />
+      <Table<Tontine> columns={columns} data={tontines} />
       <Pagination total={totalItems} />
     </div>
   )

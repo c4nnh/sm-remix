@@ -1,4 +1,4 @@
-import type { Organization } from '@prisma/client'
+import type { Organization, Prisma } from '@prisma/client'
 import { UserRole } from '@prisma/client'
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
@@ -25,18 +25,20 @@ export const loader: LoaderFunction = async ({
 
   const { search, take, skip } = getPaginationAndSearchParams(request)
 
-  const organizations = await db.organization.findMany({
-    where: {
-      memberships: {
-        some: {
-          userId: user.id,
-        },
-      },
-      name: {
-        contains: search,
-        mode: 'insensitive',
+  const where: Prisma.OrganizationWhereInput = {
+    memberships: {
+      some: {
+        userId: user.id,
       },
     },
+    name: {
+      contains: search,
+      mode: 'insensitive',
+    },
+  }
+
+  const organizations = await db.organization.findMany({
+    where,
     include: {
       _count: {
         select: {
@@ -52,12 +54,7 @@ export const loader: LoaderFunction = async ({
   })
 
   const totalItems = await db.organization.count({
-    where: {
-      name: {
-        contains: search,
-        mode: 'insensitive',
-      },
-    },
+    where,
   })
 
   return { organizations, totalItems }

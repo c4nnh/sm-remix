@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
-import type { Project } from '@prisma/client'
+import type { Prisma, Project } from '@prisma/client'
 import { SubscriptionServiceType } from '@prisma/client'
 import type { LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
@@ -44,17 +44,19 @@ export const loader: LoaderFunction = async ({
 
   const { search, take, skip } = getPaginationAndSearchParams(request)
 
-  const projects = await db.project.findMany({
-    where: {
-      membership: {
-        userId: id,
-        organizationId,
-      },
-      name: {
-        contains: search,
-        mode: 'insensitive',
-      },
+  const where: Prisma.ProjectWhereInput = {
+    membership: {
+      userId: id,
+      organizationId,
     },
+    name: {
+      contains: search,
+      mode: 'insensitive',
+    },
+  }
+
+  const projects = await db.project.findMany({
+    where,
     orderBy: {
       fromDate: 'desc',
     },
@@ -63,12 +65,7 @@ export const loader: LoaderFunction = async ({
   })
 
   const totalItems = await db.project.count({
-    where: {
-      name: {
-        contains: search,
-        mode: 'insensitive',
-      },
-    },
+    where,
   })
 
   return {
@@ -90,7 +87,7 @@ export default function Projects() {
   return (
     <div className="flex h-full w-full flex-col gap-5">
       <ListHeader createPath={ROUTES.CREATE_PROJECTS} />
-      <Table columns={columns} data={projects} />
+      <Table<Project> columns={columns} data={projects} />
       <Pagination total={totalItems} />
     </div>
   )

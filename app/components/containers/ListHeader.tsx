@@ -10,7 +10,7 @@ import { QUERY_KEY } from '~/constants'
 import { onChangeParams } from '~/utils'
 
 type Props = {
-  createPath: string
+  createPath?: string
 }
 
 export const ListHeader: React.FC<Props> = ({ createPath }) => {
@@ -29,12 +29,14 @@ export const ListHeader: React.FC<Props> = ({ createPath }) => {
         value={params.get(QUERY_KEY.SEARCH) || ''}
         onSearch={onSearch}
       />
-      <Link to={createPath}>
-        <Button buttonType="primary">
-          <PlusIcon className="h-5 w-5" />
-          Create
-        </Button>
-      </Link>
+      {!!createPath && (
+        <Link to={createPath}>
+          <Button buttonType="primary">
+            <PlusIcon className="h-5 w-5" />
+            Create
+          </Button>
+        </Link>
+      )}
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { CheckCircleIcon } from '@heroicons/react/24/outline'
-import type { Skill } from '@prisma/client'
+import type { Prisma, Skill } from '@prisma/client'
 import { UserRole } from '@prisma/client'
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
@@ -19,17 +19,19 @@ export const loader: LoaderFunction = async ({
 
   const { search, take, skip } = getPaginationAndSearchParams(request)
 
-  const skills = await db.skill.findMany({
-    where: {
-      membership: {
-        userId: id,
-        organizationId,
-      },
-      name: {
-        contains: search,
-        mode: 'insensitive',
-      },
+  const where: Prisma.SkillWhereInput = {
+    membership: {
+      userId: id,
+      organizationId,
     },
+    name: {
+      contains: search,
+      mode: 'insensitive',
+    },
+  }
+
+  const skills = await db.skill.findMany({
+    where,
     orderBy: {
       yoe: 'desc',
     },
@@ -38,12 +40,7 @@ export const loader: LoaderFunction = async ({
   })
 
   const totalItems = await db.skill.count({
-    where: {
-      name: {
-        contains: search,
-        mode: 'insensitive',
-      },
-    },
+    where,
   })
 
   return { skills, totalItems }
@@ -55,7 +52,7 @@ export default function Skills() {
   return (
     <div className="flex h-full w-full flex-col gap-5">
       <ListHeader createPath={ROUTES.CREATE_SKILLS} />
-      <Table columns={columns} data={skills} />
+      <Table<Skill> columns={columns} data={skills} />
       <Pagination total={totalItems} />
     </div>
   )

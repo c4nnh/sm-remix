@@ -1,5 +1,5 @@
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline'
-import type { Transaction } from '@prisma/client'
+import type { Prisma, Transaction } from '@prisma/client'
 import { TransactionType, UserRole } from '@prisma/client'
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
@@ -20,17 +20,19 @@ export const loader: LoaderFunction = async ({
 
   const { search, take, skip } = getPaginationAndSearchParams(request)
 
-  const transactions = await db.transaction.findMany({
-    where: {
-      membership: {
-        userId: id,
-        organizationId,
-      },
-      title: {
-        contains: search,
-        mode: 'insensitive',
-      },
+  const where: Prisma.TransactionWhereInput = {
+    membership: {
+      userId: id,
+      organizationId,
     },
+    title: {
+      contains: search,
+      mode: 'insensitive',
+    },
+  }
+
+  const transactions = await db.transaction.findMany({
+    where,
     orderBy: {
       date: 'desc',
     },
@@ -39,12 +41,7 @@ export const loader: LoaderFunction = async ({
   })
 
   const totalItems = await db.transaction.count({
-    where: {
-      title: {
-        contains: search,
-        mode: 'insensitive',
-      },
-    },
+    where,
   })
 
   return { transactions, totalItems }
@@ -56,7 +53,7 @@ export default function Transactions() {
   return (
     <div className="flex h-full w-full flex-col gap-5">
       <ListHeader createPath={ROUTES.CREATE_TRANSACTIONS} />
-      <Table data={transactions} columns={columns} />
+      <Table<Transaction> data={transactions} columns={columns} />
       <Pagination total={totalItems} />
     </div>
   )
