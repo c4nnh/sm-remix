@@ -12,11 +12,15 @@ export const ROUTES = {
   ORGANIZATIONS: '/organizations',
   CREATE_ORGANIZATION: '/organizations/create',
   TRANSACTIONS: '/transactions',
+  CREATE_TRANSACTIONS: '/transactions/create',
   TONTINES: '/tontines',
+  CREATE_TONTINES: '/tontines/create',
   PROJECTS: '/projects',
+  CREATE_PROJECTS: '/projects/create',
   EXTEND_PROJECTS_SUBSCRIPTION: '/projects/extend-subscription',
   EXTEND_PROJECTS_SUBSCRIPTION_SUCCESS: '/projects/extend-subscription/success',
   SKILLS: '/skills',
+  CREATE_SKILLS: '/skills/create',
 }
 
 export const FORM_STRATEGY = {
@@ -30,3 +34,15 @@ export const SESSION_KEY = 'SESSION_KEY'
 export const SESSION_ERROR_KEY = 'SESSION_ERROR_KEY'
 
 export const DISPLAY_DATE_FORMAT = 'DD/MM/YYYY'
+
+export const QUERY_KEY = {
+  SEARCH: 'search',
+  SKIP: 'skip',
+  TAKE: 'take',
+}
+
+export const PAGINATION = {
+  SKIP: 0,
+  TAKE: 20,
+  GAP: 2,
+}

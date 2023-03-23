@@ -1,5 +1,6 @@
 export * from './buttons.css'
 export * from './input.css'
 export * from './label.css'
+export * from './pagination-item.css'
 export * from './select'
 export * from './tag.css'

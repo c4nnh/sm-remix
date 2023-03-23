@@ -1,13 +1,14 @@
-import type { Organization } from '@prisma/client'
+import type { Organization, Prisma } from '@prisma/client'
 import { UserRole } from '@prisma/client'
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { Column } from '~/components'
-import { Table } from '~/components'
-import { DISPLAY_DATE_FORMAT } from '~/constants'
+import { ListHeader, Pagination, Table } from '~/components'
+import { DISPLAY_DATE_FORMAT, ROUTES } from '~/constants'
 import { dayjs } from '~/libs'
 import { db } from '~/services'
-import { requiredRole } from '~/utils'
+import type { ListLoaderData } from '~/types'
+import { getPaginationAndSearchParams, requiredRole } from '~/utils'
 
 type OrganizationQueryResponse = Organization & {
   _count: {
@@ -15,23 +16,29 @@ type OrganizationQueryResponse = Organization & {
   }
 }
 
-type LoaderData = {
-  organizations: OrganizationQueryResponse[]
-}
+type LoaderData = ListLoaderData<Organization, 'organizations'>
 
 export const loader: LoaderFunction = async ({
   request,
 }: LoaderArgs): Promise<LoaderData> => {
   const user = await requiredRole(request, [UserRole.USER])
 
-  const organizations = await db.organization.findMany({
-    where: {
-      memberships: {
-        some: {
-          userId: user.id,
-        },
+  const { search, take, skip } = getPaginationAndSearchParams(request)
+
+  const where: Prisma.OrganizationWhereInput = {
+    memberships: {
+      some: {
+        userId: user.id,
       },
     },
+    name: {
+      contains: search,
+      mode: 'insensitive',
+    },
+  }
+
+  const organizations = await db.organization.findMany({
+    where,
     include: {
       _count: {
         select: {
@@ -39,20 +46,31 @@ export const loader: LoaderFunction = async ({
         },
       },
     },
+    orderBy: {
+      name: 'asc',
+    },
+    skip,
+    take,
   })
 
-  return { organizations }
+  const totalItems = await db.organization.count({
+    where,
+  })
+
+  return { organizations, totalItems }
 }
 
 export default function Organizations() {
-  const { organizations } = useLoaderData<LoaderData>()
+  const { organizations, totalItems } = useLoaderData<LoaderData>()
 
   return (
-    <div className="h-full w-full">
+    <div className="flex h-full w-full flex-col gap-5">
+      <ListHeader createPath={ROUTES.CREATE_ORGANIZATION} />
       <Table<OrganizationQueryResponse>
         columns={columns}
         data={organizations}
       />
+      <Pagination total={totalItems} />
     </div>
   )
 }

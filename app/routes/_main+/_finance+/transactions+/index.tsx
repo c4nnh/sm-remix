@@ -1,42 +1,60 @@
 import { ArrowDownIcon, ArrowUpIcon } from '@heroicons/react/24/outline'
-import type { Transaction } from '@prisma/client'
+import type { Prisma, Transaction } from '@prisma/client'
 import { TransactionType, UserRole } from '@prisma/client'
 import type { LoaderArgs, LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { Column } from '~/components'
-import { Table, Tag } from '~/components'
-import { DISPLAY_DATE_FORMAT } from '~/constants'
+import { ListHeader, Pagination, Table, Tag } from '~/components'
+import { DISPLAY_DATE_FORMAT, ROUTES } from '~/constants'
 import { dayjs } from '~/libs'
 import { db } from '~/services'
-import { requiredRole } from '~/utils'
+import type { ListLoaderData } from '~/types'
+import { getPaginationAndSearchParams, requiredRole } from '~/utils'
 
-type LoaderData = {
-  transactions: Transaction[]
-}
+type LoaderData = ListLoaderData<Transaction, 'transactions'>
 
 export const loader: LoaderFunction = async ({
   request,
 }: LoaderArgs): Promise<LoaderData> => {
   const { id, organizationId } = await requiredRole(request, [UserRole.USER])
 
-  const transactions = await db.transaction.findMany({
-    where: {
-      membership: {
-        userId: id,
-        organizationId,
-      },
+  const { search, take, skip } = getPaginationAndSearchParams(request)
+
+  const where: Prisma.TransactionWhereInput = {
+    membership: {
+      userId: id,
+      organizationId,
     },
+    title: {
+      contains: search,
+      mode: 'insensitive',
+    },
+  }
+
+  const transactions = await db.transaction.findMany({
+    where,
+    orderBy: {
+      date: 'desc',
+    },
+    skip,
+    take,
   })
 
-  return { transactions }
+  const totalItems = await db.transaction.count({
+    where,
+  })
+
+  return { transactions, totalItems }
 }
 
 export default function Transactions() {
-  const { transactions } = useLoaderData<LoaderData>()
+  const { transactions, totalItems } = useLoaderData<LoaderData>()
 
   return (
-    <div className="h-full w-full">
-      <Table data={transactions} columns={columns} />
+    <div className="flex h-full w-full flex-col gap-5">
+      <ListHeader createPath={ROUTES.CREATE_TRANSACTIONS} />
+      <Table<Transaction> data={transactions} columns={columns} />
+      <Pagination total={totalItems} />
     </div>
   )
 }

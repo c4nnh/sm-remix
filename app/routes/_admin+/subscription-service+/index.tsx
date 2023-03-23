@@ -1,32 +1,55 @@
-import type { SubscriptionService } from '@prisma/client'
+import type { Prisma, SubscriptionService } from '@prisma/client'
 import type { LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { Column } from '~/components'
-import { Table } from '~/components'
-import { DISPLAY_DATE_FORMAT } from '~/constants'
+import { ListHeader, Pagination, Table } from '~/components'
+import { DISPLAY_DATE_FORMAT, ROUTES } from '~/constants'
 import { dayjs } from '~/libs/dayjs'
 import { db } from '~/services'
+import type { ListLoaderData } from '~/types'
+import { getPaginationAndSearchParams } from '~/utils'
 
-type LoaderData = {
-  subscriptionServices: SubscriptionService[]
-}
+type LoaderData = ListLoaderData<SubscriptionService, 'subscriptionServices'>
 
-export const loader: LoaderFunction = async (): Promise<LoaderData> => {
+export const loader: LoaderFunction = async ({
+  request,
+}): Promise<LoaderData> => {
+  const { search, take, skip } = getPaginationAndSearchParams(request)
+
+  const where: Prisma.SubscriptionServiceWhereInput = {
+    name: {
+      contains: search,
+      mode: 'insensitive',
+    },
+  }
+
   const subscriptionServices = await db.subscriptionService.findMany({
     orderBy: {
       createdAt: 'desc',
     },
+    where,
+    take,
+    skip,
   })
 
-  return { subscriptionServices }
+  const totalItems = await db.subscriptionService.count({
+    where,
+  })
+
+  return { subscriptionServices, totalItems }
 }
 
 export default function SubscriptionServices() {
-  const { subscriptionServices } = useLoaderData<LoaderData>()
+  const { subscriptionServices, totalItems } = useLoaderData<LoaderData>()
 
   return (
-    <div className="h-full w-full">
-      <Table columns={columns} data={subscriptionServices} />
+    <div className="flex h-full w-full flex-col gap-5">
+      <ListHeader createPath={ROUTES.CREATE_ORGANIZATION} />
+      <Table<SubscriptionService>
+        columns={columns}
+        data={subscriptionServices}
+      />
+      <Pagination total={totalItems} />
     </div>
   )
 }
@@ -34,6 +57,16 @@ export default function SubscriptionServices() {
 const columns: Column<SubscriptionService>[] = [
   { label: 'Name', dataIndex: 'name' },
   { label: 'Type', dataIndex: 'type' },
+  {
+    label: 'Duration',
+    render: ({ year, month, day }) => {
+      const yearLabel = year ? `${year} year${year > 1 ? 's' : ''}` : ''
+      const monthLabel = month ? `${month} month${month > 1 ? 's' : ''}` : ''
+      const dayLabel = day ? `${day} day${day > 1 ? 's' : ''}` : ''
+
+      return `${yearLabel} ${monthLabel} ${dayLabel}`.trim()
+    },
+  },
   {
     label: 'Price',
     render: transaction => (

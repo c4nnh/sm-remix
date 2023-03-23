@@ -3,7 +3,7 @@ import { cva } from 'class-variance-authority'
 
 export const button = cva(
   [
-    'inline-flex cursor-pointer items-center justify-center rounded-xl border-2 px-4 py-2.5 text-sm font-semibold shadow-sm',
+    'inline-flex gap-1 cursor-pointer items-center justify-center rounded-xl border-2 px-4 py-2.5 text-sm font-semibold shadow-sm',
     'focus:outline-none focus:ring-2 focus:ring-offset-0',
     'disabled:opacity-30 disabled:hover:text-white',
     'dark:focus:ring-white/80',

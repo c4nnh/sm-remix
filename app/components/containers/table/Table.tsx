@@ -20,7 +20,7 @@ export const Table = <T extends BaseObject>({ data, columns }: Props<T>) => {
   const [hoveredRow, setHoveredRow] = useState<number>(-1)
 
   return (
-    <div className="w-full overflow-x-auto rounded-xl bg-layer-2 px-11 py-6 scrollbar">
+    <div className="w-full overflow-x-auto rounded-xl bg-layer-2 px-10 py-5 scrollbar">
       <table className="w-full">
         <thead className="text-xs font-semibold uppercase text-text">
           <tr>

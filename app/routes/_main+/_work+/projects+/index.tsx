@@ -1,19 +1,24 @@
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
-import type { Project } from '@prisma/client'
+import type { Prisma, Project } from '@prisma/client'
 import { SubscriptionServiceType } from '@prisma/client'
 import type { LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { Column } from '~/components'
-import { ExpiredSubscription, Table } from '~/components'
+import {
+  ExpiredSubscription,
+  ListHeader,
+  Pagination,
+  Table,
+} from '~/components'
 import { DISPLAY_DATE_FORMAT, ROUTES } from '~/constants'
 import { dayjs } from '~/libs/dayjs'
 import { getActiveSubscriptions } from '~/models'
 import { db } from '~/services'
-import { requiredRole } from '~/utils'
+import type { ListLoaderData } from '~/types'
+import { getPaginationAndSearchParams, requiredRole } from '~/utils'
 
-type LoaderData = {
+type LoaderData = ListLoaderData<Project, 'projects'> & {
   hasSubscription: boolean
-  projects: Project[]
 }
 
 export const loader: LoaderFunction = async ({
@@ -33,29 +38,45 @@ export const loader: LoaderFunction = async ({
     return {
       hasSubscription,
       projects: [],
+      totalItems: 0,
     }
   }
 
-  const projects = await db.project.findMany({
-    where: {
-      membership: {
-        userId: id,
-        organizationId,
-      },
+  const { search, take, skip } = getPaginationAndSearchParams(request)
+
+  const where: Prisma.ProjectWhereInput = {
+    membership: {
+      userId: id,
+      organizationId,
     },
+    name: {
+      contains: search,
+      mode: 'insensitive',
+    },
+  }
+
+  const projects = await db.project.findMany({
+    where,
     orderBy: {
       fromDate: 'desc',
     },
+    skip,
+    take,
+  })
+
+  const totalItems = await db.project.count({
+    where,
   })
 
   return {
     hasSubscription,
     projects,
+    totalItems,
   }
 }
 
 export default function Projects() {
-  const { hasSubscription, projects } = useLoaderData<LoaderData>()
+  const { hasSubscription, projects, totalItems } = useLoaderData<LoaderData>()
 
   if (!hasSubscription) {
     return (
@@ -64,8 +85,10 @@ export default function Projects() {
   }
 
   return (
-    <div className="h-full w-full">
-      <Table columns={columns} data={projects} />
+    <div className="flex h-full w-full flex-col gap-5">
+      <ListHeader createPath={ROUTES.CREATE_PROJECTS} />
+      <Table<Project> columns={columns} data={projects} />
+      <Pagination total={totalItems} />
     </div>
   )
 }
