@@ -35,6 +35,16 @@ const columns: Column<SubscriptionService>[] = [
   { label: 'Name', dataIndex: 'name' },
   { label: 'Type', dataIndex: 'type' },
   {
+    label: 'Duration',
+    render: ({ year, month, day }) => {
+      const yearLabel = year ? `${year} year${year > 1 ? 's' : ''}` : ''
+      const monthLabel = month ? `${month} month${month > 1 ? 's' : ''}` : ''
+      const dayLabel = day ? `${day} day${day > 1 ? 's' : ''}` : ''
+
+      return `${yearLabel} ${monthLabel} ${dayLabel}`.trim()
+    },
+  },
+  {
     label: 'Price',
     render: transaction => (
       <div>
