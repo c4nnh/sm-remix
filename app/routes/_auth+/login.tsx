@@ -12,7 +12,11 @@ import { authenticator } from '~/services'
 export default function Login() {
   return (
     <AuthLayout>
-      <RemixForm schema={LoginSchema} buttonLabel="Login">
+      <RemixForm
+        schema={LoginSchema}
+        buttonLabel="Login"
+        pendingButtonLabel="Logining"
+      >
         {({ Field, Button, Errors }) => {
           return (
             <>
