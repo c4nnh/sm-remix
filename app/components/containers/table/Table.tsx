@@ -1,3 +1,5 @@
+import { PencilSquareIcon } from '@heroicons/react/24/outline'
+import { Link } from '@remix-run/react'
 import { cx } from 'class-variance-authority'
 import React, { useState } from 'react'
 
@@ -47,7 +49,6 @@ export const Table = <T extends BaseObject>({ data, columns }: Props<T>) => {
                 {columns.map((col, colIndex) => {
                   const dataIndex = col.dataIndex as string
                   const isFirstCol = colIndex === 0
-                  const isLastCol = colIndex === columns.length - 1
                   const isHovered = hoveredRow === index
                   return (
                     <td
@@ -56,14 +57,25 @@ export const Table = <T extends BaseObject>({ data, columns }: Props<T>) => {
                         'whitespace-nowrap py-3 px-4 text-heading',
                         isHighlighted ? 'bg-muted-1' : 'bg-layer-2',
                         isFirstCol ? 'rounded-l-lg' : '',
-                        isLastCol ? 'rounded-r-lg' : '',
-                        isHovered ? 'bg-muted-3' : '',
+                        isHovered ? 'bg-muted-3 duration-500' : '',
                       ])}
                     >
                       {col.render ? col.render(item) : item[dataIndex]}
                     </td>
                   )
                 })}
+                <td
+                  key={`${item.id || index}_action`}
+                  className={cx([
+                    'whitespace-nowrap rounded-r-lg py-3 px-4 text-heading',
+                    isHighlighted ? 'bg-muted-1' : 'bg-layer-2',
+                    hoveredRow === index ? 'bg-muted-3 duration-500' : '',
+                  ])}
+                >
+                  <Link to={item.id}>
+                    <PencilSquareIcon className="h-5 w-5 text-primary duration-500 hover:scale-125 hover:text-blue-400" />
+                  </Link>
+                </td>
               </tr>
             )
           })}

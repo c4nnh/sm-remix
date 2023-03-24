@@ -38,7 +38,10 @@ export const Sidebar = () => {
 
               const className = cx(
                 'group relative flex items-center rounded-xl px-2 py-2 font-medium focus:outline-none focus:ring-2 focus:ring-heading/80',
-                pathname === link.href
+                pathname === link.href ||
+                  (pathname !== ROUTES.ROOT &&
+                    link.href !== ROUTES.ROOT &&
+                    pathname.startsWith(link.href))
                   ? 'bg-layer-3 text-heading'
                   : 'text-text hover:bg-layer-3 hover:text-heading'
               )
