@@ -12,7 +12,7 @@ import type {
 } from 'react'
 import type { FormProps } from 'remix-forms'
 import { createForm } from 'remix-forms'
-import type { SomeZodObject } from 'zod'
+import type { SomeZodObject, z } from 'zod'
 import { Button, Input, Label } from '../elements'
 
 const Form = createForm({
@@ -45,8 +45,12 @@ const FormError = ({
 export const RemixForm = <Schema extends SomeZodObject>({
   className,
   fieldClassName,
+  readOnlyFields = [],
   ...props
-}: FormProps<Schema> & { fieldClassName?: string }) => {
+}: FormProps<Schema> & {
+  fieldClassName?: string
+  readOnlyFields?: Array<keyof z.TypeOf<Schema>>
+}) => {
   return (
     <Form
       fieldComponent={fieldProps => {
@@ -63,16 +67,13 @@ export const RemixForm = <Schema extends SomeZodObject>({
       errorComponent={FormError}
       className={cx('flex flex-col gap-5', className)}
       renderField={({ Field, ...props }) => {
-        const { name, errors } = props
+        const { name } = props
         return (
           <Field key={String(name)} {...props}>
-            {({ Label, SmartInput, Errors }) => (
+            {({ Label, Errors }) => (
               <>
                 <Label />
-                <SmartInput
-                  // @ts-ignore
-                  hasError={Boolean(errors)}
-                />
+                <Input readOnly={readOnlyFields.includes(name)} />
                 <Errors />
               </>
             )}

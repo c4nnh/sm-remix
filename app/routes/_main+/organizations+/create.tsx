@@ -1,3 +1,5 @@
+import { OrganizationForm } from '~/components'
+
 export default function CreateOrganization() {
-  return <div>Create org</div>
+  return <OrganizationForm />
 }
