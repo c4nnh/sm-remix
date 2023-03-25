@@ -48,7 +48,7 @@ export default function OrganizationDetail() {
   return (
     <OrganizationForm
       organization={organization as unknown as Organization}
-      editable={isOwner}
+      isOwner={isOwner}
     />
   )
 }

@@ -43,5 +43,7 @@ export const createOrganizationMutation = makeDomainFunction(
     })
   })
 
-  return {}
+  return {
+    test: 123,
+  }
 })

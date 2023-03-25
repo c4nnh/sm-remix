@@ -20,6 +20,8 @@ export const action: ActionFunction = async ({ request }) => {
   })
   if (!result.success) return json(result, 400)
 
+  console.log(result)
+
   return redirect(ROUTES.ORGANIZATIONS)
 }
 
