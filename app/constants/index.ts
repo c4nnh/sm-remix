@@ -44,6 +44,6 @@ export const QUERY_KEY = {
 
 export const PAGINATION = {
   SKIP: 0,
-  TAKE: 20,
+  TAKE: 2,
   GAP: 2,
 }

@@ -16,10 +16,10 @@ export const Pagination: React.FC<Props> = ({ total = 0 }) => {
   const numberOfPage = Math.ceil(total / PAGINATION.TAKE)
   const skip = parseInt(params.get(QUERY_KEY.SKIP) || `${PAGINATION.SKIP}`)
 
-  const currentPage = Math.ceil(skip / PAGINATION.TAKE) + 1
+  const currentPage = Math.ceil(skip / PAGINATION.TAKE)
 
   const onPageChange = (page: number) => {
-    const skip = page * PAGINATION.TAKE - 1
+    const skip = page * PAGINATION.TAKE
     const newUrl = onChangeParams(`${skip}`, QUERY_KEY.SKIP, location, params)
     return navigate(newUrl)
   }
@@ -35,7 +35,7 @@ export const Pagination: React.FC<Props> = ({ total = 0 }) => {
             'rounded-l-xl',
             'disabled:cursor-not-allowed',
           ])}
-          disabled={currentPage === 1}
+          disabled={currentPage === 0}
           onClick={() => onPageChange(currentPage - 1)}
         >
           <span className="sr-only">Previous</span>
@@ -56,15 +56,15 @@ export const Pagination: React.FC<Props> = ({ total = 0 }) => {
 
             return (
               <button
-                onClick={() => onPageChange(pageNumber)}
+                onClick={() => onPageChange(pageNumber - 1)}
                 key={pageNumber}
                 type="button"
                 className={cx(
                   paginationItem(),
-                  pageNumber === currentPage
-                    ? 'font-semibold text-primary'
-                    : '',
-                  '-ml-0.5'
+                  '-ml-0.5',
+                  pageNumber === currentPage + 1
+                    ? 'font-semibold !text-primary'
+                    : ''
                 )}
               >
                 {pageNumber}
@@ -78,8 +78,8 @@ export const Pagination: React.FC<Props> = ({ total = 0 }) => {
             '-ml-0.5 rounded-r-xl',
             'disabled:cursor-not-allowed',
           ])}
-          disabled={currentPage === numberOfPage}
-          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage === numberOfPage - 1}
+          onClick={() => onPageChange(currentPage)}
         >
           <span className="sr-only">Next</span>
           <ChevronRightIcon className="h-5 w-5" />

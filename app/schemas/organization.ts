@@ -6,3 +6,7 @@ export const OrganizationSchema = z.object({
     message: getErrorMessage().notEmpty,
   }),
 })
+
+export const OrganizationEnvironmentSchema = z.object({
+  userId: z.string(),
+})

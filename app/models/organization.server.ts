@@ -1,3 +1,4 @@
+import { MembershipRole, MembershipStatus } from '@prisma/client'
 import { forbidden } from 'remix-utils'
 import { db } from '~/services'
 
@@ -23,6 +24,37 @@ export const getDefaultOrganization = async (userId: string) =>
       },
     },
   })
+
+export const createOrganization = async (userId: string, orgName: string) => {
+  const res = await db.$transaction(async tx => {
+    const organization = await tx.organization.create({
+      data: { name: orgName.trim() },
+    })
+    const defaultOrg = await tx.membership.findFirst({
+      where: {
+        userId,
+        isDefault: true,
+      },
+    })
+
+    await tx.membership.create({
+      data: {
+        userId,
+        organizationId: organization.id,
+        isDefault: !defaultOrg,
+        role: MembershipRole.OWNER,
+        status: MembershipStatus.ACTIVE,
+      },
+    })
+
+    return {
+      organization,
+      isDefault: !defaultOrg,
+    }
+  })
+
+  return res
+}
 
 export const setDefaultOrganization = async (
   userId: string,

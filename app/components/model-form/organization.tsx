@@ -1,15 +1,17 @@
 import type { Organization } from '@prisma/client'
-import { useLoaderData } from '@remix-run/react'
+import React from 'react'
 import { OrganizationSchema } from '~/schemas'
 import { RemixForm } from '../form'
 
-type LoaderData = {
-  organization: Organization
+type Props = {
+  editable?: boolean
+  organization?: Organization
 }
 
-export const OrganizationForm = () => {
-  const { organization } = useLoaderData<LoaderData>() || {}
-
+export const OrganizationForm: React.FC<Props> = ({
+  editable,
+  organization,
+}) => {
   const isCreate = !organization
 
   return (
@@ -22,7 +24,7 @@ export const OrganizationForm = () => {
         values={organization}
         buttonLabel={isCreate ? 'Create' : 'Update'}
         pendingButtonLabel={isCreate ? 'Creating...' : '"Updating..."'}
-        readOnlyFields={['name']}
+        readOnlyFields={!editable && !organization ? [] : ['name']}
       >
         {({ Field, Button, Errors }) => {
           return (
