@@ -29,7 +29,7 @@ export const getDefaultOrganization = async (userId: string) =>
   })
 
 export const createOrganization = async (userId: string, orgName: string) => {
-  const res = await db.$transaction(async tx => {
+  return db.$transaction(async tx => {
     const organization = await tx.organization.create({
       data: { name: orgName.trim() },
     })
@@ -55,8 +55,21 @@ export const createOrganization = async (userId: string, orgName: string) => {
       needSetDefault: !defaultOrg,
     }
   })
+}
 
-  return res
+export const updateOrganization = async (orgId: string, newOrgName: string) => {
+  const organization = await db.organization.findUnique({
+    where: { id: orgId },
+  })
+
+  if (organization?.name === newOrgName) {
+    return organization
+  }
+
+  return db.organization.update({
+    data: { name: newOrgName },
+    where: { id: orgId },
+  })
 }
 
 export const setDefaultOrganization = async (

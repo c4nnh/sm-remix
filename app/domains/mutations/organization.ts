@@ -1,11 +1,16 @@
+import { MembershipRole } from '@prisma/client'
 import { makeDomainFunction } from 'domain-functions'
-import { createOrganization } from '~/models'
-import { OrganizationEnvironmentSchema, OrganizationSchema } from '~/schemas'
+import { createOrganization, updateOrganization } from '~/models'
+import {
+  CreateOrganizationEnvironmentSchema,
+  OrganizationSchema,
+  UpdateOrganizationEnvironmentSchema,
+} from '~/schemas'
 import { db } from '~/services'
 
 export const createOrganizationMutation = makeDomainFunction(
   OrganizationSchema,
-  OrganizationEnvironmentSchema
+  CreateOrganizationEnvironmentSchema
 )(async ({ name: orgName }, { userId }) => {
   const joinedOrgs = await db.organization.findMany({
     where: {
@@ -22,4 +27,36 @@ export const createOrganizationMutation = makeDomainFunction(
   }
 
   return createOrganization(userId, orgName)
+})
+
+export const updateOrganizationMutation = makeDomainFunction(
+  OrganizationSchema,
+  UpdateOrganizationEnvironmentSchema
+)(async ({ name: orgName }, { userId, orgId }) => {
+  const organization = await db.organization.findUnique({
+    where: { id: orgId },
+  })
+
+  if (!organization) {
+    throw 'This organization does not exist'
+  }
+
+  const membership = await db.membership.findUnique({
+    where: {
+      userId_organizationId: {
+        userId,
+        organizationId: orgId,
+      },
+    },
+  })
+
+  if (!membership) {
+    throw 'You are not membership of this organization'
+  }
+
+  if (membership.role !== MembershipRole.OWNER) {
+    throw 'Only organization owner can edit organization'
+  }
+
+  return updateOrganization(orgId, orgName)
 })
