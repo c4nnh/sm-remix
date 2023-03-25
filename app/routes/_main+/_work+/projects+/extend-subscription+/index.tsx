@@ -8,6 +8,7 @@ import { ROUTES } from '~/constants'
 import {
   createPaymentIntent,
   getMembershipByUserAndOrg,
+  getPaymentMethodInfo,
   getSubscriptionByMembership,
 } from '~/models'
 import { db } from '~/services'
@@ -40,6 +41,21 @@ export const loader: LoaderFunction = async ({ request }) => {
       userId,
     },
   })
+
+  if (paymentCustomer && paymentCustomer.paymentMethodPspId) {
+    const paymentMethod = await getPaymentMethodInfo(
+      paymentCustomer.paymentMethodPspId
+    )
+
+    if (paymentMethod) {
+      return {
+        subscriptionService,
+        paymentMethod,
+        subscription,
+        membership,
+      }
+    }
+  }
 
   const paymentIntent = await createPaymentIntent({
     amount: price,

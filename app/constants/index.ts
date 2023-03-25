@@ -21,6 +21,7 @@ export const ROUTES = {
   EXTEND_PROJECTS_SUBSCRIPTION_SUCCESS: '/projects/extend-subscription/success',
   SKILLS: '/skills',
   CREATE_SKILLS: '/skills/create',
+  PAY_NOW: '/pay-now',
 }
 
 export const FORM_STRATEGY = {

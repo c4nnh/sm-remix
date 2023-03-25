@@ -68,12 +68,18 @@ export const RemixForm = <Schema extends SomeZodObject>({
       className={cx('flex flex-col gap-5', className)}
       renderField={({ Field, ...props }) => {
         const { name } = props
+        // @ts-ignore
+        const inputType = props.type
+
         return (
           <Field key={String(name)} {...props}>
             {({ Label, Errors }) => (
               <>
                 <Label />
-                <Input readOnly={readOnlyFields.includes(name)} />
+                <Input
+                  readOnly={readOnlyFields.includes(name)}
+                  type={inputType}
+                />
                 <Errors />
               </>
             )}
