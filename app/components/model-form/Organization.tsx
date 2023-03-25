@@ -16,9 +16,16 @@ export const OrganizationForm: React.FC<Props> = ({
 
   return (
     <div className="mb-96 flex flex-col gap-10 rounded-lg bg-layer-3 p-10 text-text mobile:p-5">
-      <span className="text-3xl">
-        {isCreate ? 'Create your organization' : 'Update your organization'}
-      </span>
+      <div className="flex flex-col gap-1">
+        <span className="text-3xl">
+          {isCreate ? 'Create your organization' : 'Update your organization'}
+        </span>
+        {!editable && (
+          <span className="text-xs text-orange-400">
+            You can not edit this organization because you are not owner
+          </span>
+        )}
+      </div>
       <RemixForm
         schema={OrganizationSchema}
         values={organization}
@@ -31,7 +38,7 @@ export const OrganizationForm: React.FC<Props> = ({
             <>
               <Field name="name" label="Name" />
               <Errors />
-              <Button />
+              {editable && <Button />}
             </>
           )
         }}
