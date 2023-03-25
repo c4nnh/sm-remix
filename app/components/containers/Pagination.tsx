@@ -41,7 +41,7 @@ export const Pagination: React.FC<Props> = ({ total = 0 }) => {
           <span className="sr-only">Previous</span>
           <ChevronLeftIcon className="h-5 w-5" />
         </button>
-        {getPageNumbersWithDot(currentPage, numberOfPage).map(
+        {getPageNumbersWithDot(currentPage + 1, numberOfPage).map(
           (pageNumber, index) => {
             if (pageNumber < 0) {
               return (
