@@ -11,6 +11,9 @@ export const getOrganizations = async (userId: string) =>
         },
       },
     },
+    orderBy: {
+      createdAt: 'desc',
+    },
   })
 
 export const getDefaultOrganization = async (userId: string) =>
@@ -49,7 +52,7 @@ export const createOrganization = async (userId: string, orgName: string) => {
 
     return {
       organization,
-      isDefault: !defaultOrg,
+      needSetDefault: !defaultOrg,
     }
   })
 

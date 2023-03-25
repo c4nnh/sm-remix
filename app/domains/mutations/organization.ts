@@ -1,5 +1,5 @@
-import { MembershipRole, MembershipStatus } from '@prisma/client'
 import { makeDomainFunction } from 'domain-functions'
+import { createOrganization } from '~/models'
 import { OrganizationEnvironmentSchema, OrganizationSchema } from '~/schemas'
 import { db } from '~/services'
 
@@ -21,29 +21,5 @@ export const createOrganizationMutation = makeDomainFunction(
     throw `You have joined organization with name ${orgName}`
   }
 
-  await db.$transaction(async tx => {
-    const organization = await tx.organization.create({
-      data: { name: orgName.trim() },
-    })
-    const defaultOrg = await tx.membership.findFirst({
-      where: {
-        userId,
-        isDefault: true,
-      },
-    })
-
-    await tx.membership.create({
-      data: {
-        userId,
-        organizationId: organization.id,
-        isDefault: !defaultOrg,
-        role: MembershipRole.OWNER,
-        status: MembershipStatus.ACTIVE,
-      },
-    })
-  })
-
-  return {
-    test: 123,
-  }
+  return createOrganization(userId, orgName)
 })

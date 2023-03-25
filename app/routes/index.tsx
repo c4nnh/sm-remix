@@ -117,14 +117,14 @@ const HomepageBody = () => {
 
   return (
     <div className="flex h-full w-full flex-col items-center gap-5 pt-10 mobile:gap-1 mobile:pt-2">
-      <div className="text-5xl text-white mobile:text-3xl">
+      <div className="text-center text-5xl text-white mobile:text-3xl">
         WELCOME TO SELF MANAGEMENT APP
       </div>
       <div className="text-2xl text-text mobile:text-base">
         What do you want to manage?
       </div>
       <div
-        className="grid w-full gap-12 px-8 pt-10 mobile:gap-4"
+        className="grid w-full gap-12 px-8 pt-10 mobile:gap-4 mobile:pb-20"
         style={{
           gridTemplateColumns:
             'repeat(auto-fill, minmax(calc(5% + 175px), 1fr))',
