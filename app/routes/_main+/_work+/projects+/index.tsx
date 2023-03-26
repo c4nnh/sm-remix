@@ -53,6 +53,7 @@ export const loader: LoaderFunction = async ({
       contains: search,
       mode: 'insensitive',
     },
+    isDeleted: false,
   }
 
   const projects = await db.project.findMany({
@@ -86,8 +87,14 @@ export default function Projects() {
 
   return (
     <div className="flex h-full w-full flex-col gap-5">
-      <ListHeader createPath={ROUTES.CREATE_PROJECTS} />
-      <Table<Project> columns={columns} data={projects} />
+      <ListHeader createPath={ROUTES.CREATE_PROJECT} />
+      <Table<Project>
+        columns={columns}
+        data={projects}
+        deleteUrl={ROUTES.DELETE_PROJECT}
+        deleteTitle="Delete project"
+        deleteMessage="Are you sure you wish to delete this project?"
+      />
       <Pagination total={totalItems} />
     </div>
   )

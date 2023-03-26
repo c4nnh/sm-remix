@@ -1,3 +1,5 @@
+import { dayjs } from '~/libs'
+
 type Props = {
   min?: number
   max?: number
@@ -24,4 +26,13 @@ export const isTwoObjectEqual = (
   const compareFields = fields || Object.keys(first)
 
   return compareFields.every(key => first[key] === second[key])
+}
+
+export const checkDateDuration = ({ from, to }: { from?: Date; to?: Date }) => {
+  if (!from || !to) return true
+
+  const fromDate = dayjs(from)
+  const toDate = dayjs(to)
+
+  return fromDate.isSame(toDate) || fromDate.isBefore(toDate)
 }

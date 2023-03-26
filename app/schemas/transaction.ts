@@ -1,6 +1,6 @@
 import { TransactionType } from '@prisma/client'
 import { z } from 'zod'
-import { dayjs } from '~/libs/dayjs'
+import { dayjs } from '~/libs'
 import { getErrorMessage } from '~/utils'
 
 export const TransactionSchema = z.object({

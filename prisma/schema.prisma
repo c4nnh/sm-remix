@@ -212,7 +212,8 @@ model Skill {
 model ProjectRole {
   id String @id @default(uuid())
 
-  name String @unique
+  name      String  @unique
+  isDeleted Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -231,6 +232,7 @@ model Project {
   teamSize    Int
   fromDate    DateTime  @db.Date
   toDate      DateTime? @db.Date
+  isDeleted   Boolean   @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

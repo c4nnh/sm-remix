@@ -5,7 +5,7 @@ export const SkillSchema = z.object({
   name: z.string().trim().nonempty({
     message: getErrorMessage().notEmpty,
   }),
-  yoe: z.number().min(1, getErrorMessage({ min: 0 }).min),
+  yoe: z.number().min(1, getErrorMessage({ min: 1 }).min),
   isMain: z.nullable(z.boolean()),
 })
 
