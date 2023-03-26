@@ -33,9 +33,12 @@ export const loader: LoaderFunction = async ({
 
   const transactions = await db.transaction.findMany({
     where,
-    orderBy: {
-      date: 'desc',
-    },
+    orderBy: [
+      {
+        date: 'desc',
+      },
+      { createdAt: 'desc' },
+    ],
     skip,
     take,
   })

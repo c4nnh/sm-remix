@@ -157,7 +157,7 @@ model Transaction {
   id String @id @default(uuid())
 
   title       String
-  amount      String
+  amount      Float
   currency    String
   description String?
   date        DateTime        @db.Date

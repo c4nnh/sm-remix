@@ -94,39 +94,40 @@ export const Table = <T extends BaseObject>({
                 <td
                   key={`${item.id || index}_action`}
                   className={cx([
-                    'flex justify-end gap-3 whitespace-nowrap rounded-r-lg py-3 px-4 text-heading',
+                    'gap-3 whitespace-nowrap rounded-r-lg py-3 px-4 text-heading',
                     isHighlighted ? 'bg-muted-1' : 'bg-layer-2',
                     hoveredRow === index ? 'bg-muted-3 duration-500' : '',
                   ])}
                 >
-                  {item.id}
-                  <Link to={item.id}>
-                    <PencilSquareIcon className="h-5 w-5 text-primary duration-500 hover:scale-125 hover:text-blue-400" />
-                  </Link>
-                  {!!deleteUrl && (
-                    <Modal
-                      triggerButtonContent={
-                        <Form
-                          ref={el => (deleteFormRef.current[item.id] = el)}
-                          action={`${deleteUrl}/${item.id}`}
-                        >
-                          <TrashIcon className="h-5 w-5 text-red-500 duration-500 hover:scale-125 hover:text-red-300" />
-                        </Form>
-                      }
-                      onOk={() => handleDelete(item.id)}
-                      title={deleteTitle || 'Delete'}
-                      message={
-                        deleteMessage ||
-                        'Are you sure you wish to delete this item?'
-                      }
-                      okLabel="Delete"
-                      okButtonStyleProps={{
-                        buttonType: 'danger',
-                        disabled: isDeleting,
-                        type: 'submit',
-                      }}
-                    />
-                  )}
+                  <div className="flex gap-2">
+                    <Link to={item.id}>
+                      <PencilSquareIcon className="h-5 w-5 text-primary duration-500 hover:scale-125 hover:text-blue-400" />
+                    </Link>
+                    {!!deleteUrl && (
+                      <Modal
+                        triggerButtonContent={
+                          <Form
+                            ref={el => (deleteFormRef.current[item.id] = el)}
+                            action={`${deleteUrl}/${item.id}`}
+                          >
+                            <TrashIcon className="h-5 w-5 text-red-500 duration-500 hover:scale-125 hover:text-red-300" />
+                          </Form>
+                        }
+                        onOk={() => handleDelete(item.id)}
+                        title={deleteTitle || 'Delete'}
+                        message={
+                          deleteMessage ||
+                          'Are you sure you wish to delete this item?'
+                        }
+                        okLabel="Delete"
+                        okButtonStyleProps={{
+                          buttonType: 'danger',
+                          disabled: isDeleting,
+                          type: 'submit',
+                        }}
+                      />
+                    )}
+                  </div>
                 </td>
               </tr>
             )
