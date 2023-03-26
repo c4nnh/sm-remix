@@ -57,7 +57,7 @@ export default function Skills() {
 
   return (
     <div className="flex h-full w-full flex-col gap-5">
-      <ListHeader createPath={ROUTES.CREATE_SKILLS} />
+      <ListHeader createPath={ROUTES.CREATE_SKILL} />
       <Table<Skill>
         columns={columns}
         data={skills}

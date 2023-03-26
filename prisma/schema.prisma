@@ -162,6 +162,7 @@ model Transaction {
   description String?
   date        DateTime        @db.Date
   type        TransactionType
+  isDeleted   Boolean         @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -12,7 +12,8 @@ export const ROUTES = {
   ORGANIZATIONS: '/organizations',
   CREATE_ORGANIZATION: '/organizations/create',
   TRANSACTIONS: '/transactions',
-  CREATE_TRANSACTIONS: '/transactions/create',
+  CREATE_TRANSACTION: '/transactions/create',
+  DELETE_TRANSACTION: '/transactions/delete',
   TONTINES: '/tontines',
   CREATE_TONTINES: '/tontines/create',
   PROJECTS: '/projects',
@@ -20,7 +21,7 @@ export const ROUTES = {
   EXTEND_PROJECTS_SUBSCRIPTION: '/projects/extend-subscription',
   EXTEND_PROJECTS_SUBSCRIPTION_SUCCESS: '/projects/extend-subscription/success',
   SKILLS: '/skills',
-  CREATE_SKILLS: '/skills/create',
+  CREATE_SKILL: '/skills/create',
   DELETE_SKILL: '/skills/delete',
   PAY_NOW: '/pay-now',
 }
