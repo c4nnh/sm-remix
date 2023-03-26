@@ -15,6 +15,7 @@ export const createSkillMutation = makeDomainFunction(
     where: {
       name: createSkillDto.name,
       membershipId,
+      isDeleted: false,
     },
   })
 
@@ -56,6 +57,7 @@ export const updateSkillMutation = makeDomainFunction(
       id: {
         not: skillId,
       },
+      isDeleted: false,
     },
   })
 

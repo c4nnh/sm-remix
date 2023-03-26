@@ -28,6 +28,7 @@ export const loader: LoaderFunction = async ({
       contains: search,
       mode: 'insensitive',
     },
+    isDeleted: false,
   }
 
   const skills = await db.skill.findMany({
@@ -57,7 +58,13 @@ export default function Skills() {
   return (
     <div className="flex h-full w-full flex-col gap-5">
       <ListHeader createPath={ROUTES.CREATE_SKILLS} />
-      <Table<Skill> columns={columns} data={skills} />
+      <Table<Skill>
+        columns={columns}
+        data={skills}
+        deleteUrl={ROUTES.DELETE_SKILL}
+        deleteTitle="Delete skill"
+        deleteMessage="Are you sure you wish to delete this skill?"
+      />
       <Pagination total={totalItems} />
     </div>
   )
