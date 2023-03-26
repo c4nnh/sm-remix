@@ -50,6 +50,24 @@ export const updateOrganizationMutation = makeDomainFunction(
     },
   })
 
+  const existedOrg = await db.organization.findFirst({
+    where: {
+      name: orgName,
+      id: {
+        not: orgId,
+      },
+      memberships: {
+        some: {
+          userId,
+        },
+      },
+    },
+  })
+
+  if (existedOrg) {
+    throw `You are members of organization with same name ${orgName}`
+  }
+
   if (!membership) {
     throw 'You are not membership of this organization'
   }

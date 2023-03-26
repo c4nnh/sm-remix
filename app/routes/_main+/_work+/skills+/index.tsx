@@ -32,9 +32,14 @@ export const loader: LoaderFunction = async ({
 
   const skills = await db.skill.findMany({
     where,
-    orderBy: {
-      yoe: 'desc',
-    },
+    orderBy: [
+      {
+        yoe: 'desc',
+      },
+      {
+        createdAt: 'desc',
+      },
+    ],
     skip,
     take,
   })

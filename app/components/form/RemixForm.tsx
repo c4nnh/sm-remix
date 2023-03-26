@@ -73,13 +73,14 @@ export const RemixForm = <Schema extends SomeZodObject>({
 
         return (
           <Field key={String(name)} {...props}>
-            {({ Label, Errors }) => (
+            {({ Label, SmartInput, Errors }) => (
               <>
                 <Label />
-                <Input
-                  readOnly={readOnlyFields.includes(name)}
-                  type={inputType}
-                />
+                {readOnlyFields.includes(name) ? (
+                  <Input readOnly type={inputType} />
+                ) : (
+                  <SmartInput type={inputType} />
+                )}
                 <Errors />
               </>
             )}
