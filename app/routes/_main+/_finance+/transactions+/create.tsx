@@ -1,7 +1,7 @@
 import type { ActionFunction } from '@remix-run/node'
 import { json, redirect } from '@remix-run/node'
 import { performMutation } from 'remix-forms'
-import { TransactionForm } from '~/components/model-form/Transaction'
+import { TransactionForm } from '~/components'
 import { ROUTES } from '~/constants'
 import { createTransactionMutation } from '~/domains'
 import { TransactionSchema } from '~/schemas'

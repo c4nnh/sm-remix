@@ -15,7 +15,7 @@ export const TransactionSchema = z.object({
   type: z
     .enum([TransactionType.EXPENDITURE, TransactionType.INCOME])
     .default(TransactionType.EXPENDITURE),
-  description: z.string().nullable(),
+  description: z.optional(z.string()),
 })
 
 export const CreateTransactionEnvironmentSchema = z.object({
