@@ -177,10 +177,11 @@ model Tontine {
   id String @id @default(uuid())
 
   title       String
-  amount      String
+  amount      Float
   currency    String
   description String?
   date        DateTime @db.Date
+  isDeleted   Boolean  @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

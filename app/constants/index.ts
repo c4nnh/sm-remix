@@ -15,7 +15,8 @@ export const ROUTES = {
   CREATE_TRANSACTION: '/transactions/create',
   DELETE_TRANSACTION: '/transactions/delete',
   TONTINES: '/tontines',
-  CREATE_TONTINES: '/tontines/create',
+  CREATE_TONTINE: '/tontines/create',
+  DELETE_TONTINE: '/tontines/delete',
   PROJECTS: '/projects',
   CREATE_PROJECTS: '/projects/create',
   EXTEND_PROJECTS_SUBSCRIPTION: '/projects/extend-subscription',
@@ -46,6 +47,6 @@ export const QUERY_KEY = {
 
 export const PAGINATION = {
   SKIP: 0,
-  TAKE: 20,
+  TAKE: 1,
   GAP: 2,
 }

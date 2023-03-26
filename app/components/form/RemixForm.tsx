@@ -72,6 +72,7 @@ export const RemixForm = <Schema extends SomeZodObject>({
 
         // @ts-ignore
         const inputType = props.type
+
         return (
           <Field key={String(name)} {...props}>
             {({ Label, SmartInput, Errors }) => (
