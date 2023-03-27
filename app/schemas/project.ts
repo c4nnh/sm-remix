@@ -15,11 +15,8 @@ export const ProjectSchema = z.object({
     }, 'From date must be before or equal today'),
   toDate: z.date().optional(),
   description: z.optional(z.string().trim()),
-  roleIds: z.array(z.string()).min(1),
-  skillIds: z.optional(z.array(z.string())),
-  year: z.optional(z.number().min(0, getErrorMessage({ min: 0 }).min)),
-  month: z.optional(z.number().min(0, getErrorMessage({ min: 0 }).min)),
-  day: z.optional(z.number().min(0, getErrorMessage({ min: 0 }).min)),
+  roleIds: z.string().transform(value => value.split(',')),
+  skillIds: z.string().transform(value => value.split(',')),
 })
 
 export const CreateProjectEnvironmentSchema = z.object({

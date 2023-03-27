@@ -81,6 +81,7 @@ export const updateProjectMutation = makeDomainFunction(
   ProjectSchema,
   UpdateProjectEnvironmentSchema
 )(async ({ ...dto }, { membershipId, projectId }) => {
+  console.log({ dto })
   const isValidDuration = checkDateDuration({
     from: dto.fromDate,
     to: dto.toDate,

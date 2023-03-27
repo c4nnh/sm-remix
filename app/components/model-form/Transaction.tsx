@@ -10,7 +10,7 @@ export const TransactionForm: React.FC<Props> = ({ transaction }) => {
   const isCreate = !transaction
 
   return (
-    <div className="mb-96 flex w-full max-w-[500px] flex-col gap-10 rounded-lg bg-layer-3 p-10 text-text mobile:p-5">
+    <div className="-mt-80 flex w-full max-w-[500px] flex-col gap-10 rounded-lg bg-layer-3 p-10 text-text mobile:p-5">
       <div className="flex flex-col gap-1">
         <span className="text-3xl">
           {isCreate ? 'Create your transaction' : 'Update your transaction'}

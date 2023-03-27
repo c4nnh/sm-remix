@@ -12,3 +12,8 @@ export type ListLoaderData<T, Name extends string> = {
 } & {
   totalItems: number
 }
+
+export type SelectOption = {
+  value: string
+  label: string
+}
