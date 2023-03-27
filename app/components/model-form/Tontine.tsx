@@ -20,7 +20,7 @@ export const TontineForm: React.FC<Props> = ({ tontine }) => {
         schema={TontineSchema}
         values={tontine}
         buttonLabel={isCreate ? 'Create' : 'Update'}
-        pendingButtonLabel={isCreate ? 'Creating...' : '"Updating..."'}
+        pendingButtonLabel={isCreate ? 'Creating...' : 'Updating...'}
       >
         {({ Field, Button, Errors }) => {
           return (

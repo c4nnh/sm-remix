@@ -20,7 +20,7 @@ export const SkillForm: React.FC<Props> = ({ skill }) => {
         schema={SkillSchema}
         values={skill}
         buttonLabel={isCreate ? 'Create' : 'Update'}
-        pendingButtonLabel={isCreate ? 'Creating...' : '"Updating..."'}
+        pendingButtonLabel={isCreate ? 'Creating...' : 'Updating...'}
       >
         {({ Field, Button, Errors }) => {
           return (

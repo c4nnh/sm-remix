@@ -3,7 +3,7 @@ import type { LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { Column } from '~/components'
 import { ListHeader, Pagination, Table } from '~/components'
-import { DISPLAY_DATE_FORMAT, ROUTES } from '~/constants'
+import { DISPLAY_DATE_FORMAT } from '~/constants'
 import { dayjs } from '~/libs/dayjs'
 import { db } from '~/services'
 import type { ListLoaderData } from '~/types'
@@ -44,7 +44,7 @@ export default function SubscriptionServices() {
 
   return (
     <div className="flex h-full w-full flex-col gap-5">
-      <ListHeader createPath={ROUTES.CREATE_ORGANIZATION} />
+      <ListHeader />
       <Table<SubscriptionService>
         columns={columns}
         data={subscriptionServices}

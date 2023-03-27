@@ -31,7 +31,7 @@ export const OrganizationForm: React.FC<Props> = ({
         schema={OrganizationSchema}
         values={organization}
         buttonLabel={isCreate ? 'Create' : 'Update'}
-        pendingButtonLabel={isCreate ? 'Creating...' : '"Updating..."'}
+        pendingButtonLabel={isCreate ? 'Creating...' : 'Updating...'}
         readOnlyFields={isEdiable ? [] : ['name']}
       >
         {({ Field, Button, Errors }) => {

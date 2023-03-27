@@ -20,7 +20,7 @@ export const TransactionForm: React.FC<Props> = ({ transaction }) => {
         schema={TransactionSchema}
         values={transaction}
         buttonLabel={isCreate ? 'Create' : 'Update'}
-        pendingButtonLabel={isCreate ? 'Creating...' : '"Updating..."'}
+        pendingButtonLabel={isCreate ? 'Creating...' : 'Updating...'}
       >
         {({ Field, Button, Errors }) => {
           return (
