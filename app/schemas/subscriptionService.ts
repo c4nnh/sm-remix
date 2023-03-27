@@ -15,6 +15,19 @@ export const SubscriptionServiceSchema = z.object({
       message: getErrorMessage().notEmpty,
     })
     .toLowerCase(),
+  year: z.optional(z.number().min(0, getErrorMessage({ min: 0 }).min)),
+  month: z.optional(
+    z
+      .number()
+      .min(0, getErrorMessage({ min: 0 }).min)
+      .max(12, getErrorMessage({ max: 12 }).max)
+  ),
+  day: z.optional(
+    z
+      .number()
+      .min(0, getErrorMessage({ min: 0 }).min)
+      .max(30, getErrorMessage({ max: 30 }).max)
+  ),
 })
 
 export const UpdateSubscriptionServiceEnvironmentSchema = z.object({
