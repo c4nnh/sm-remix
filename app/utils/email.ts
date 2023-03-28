@@ -1,32 +1,32 @@
 import { ROUTES } from '~/constants'
-import { confirmEmailToken, sendEmail } from '~/services'
+import {
+  confirmEmailToken,
+  sendConfirmEmail as pSendConfirmEmail,
+} from '~/services'
 
 export const sendConfirmEmail = async ({
   originUrl,
   userId,
+  name,
   email,
 }: {
   originUrl: string
   userId: string
+  name: string
   email: string
 }) => {
-  try {
-    const token = await confirmEmailToken.create(
-      {
-        userId,
-        email,
-      },
-      {
-        expiresIn: '2d',
-      }
-    )
-    const confirmUrl = `${originUrl}${ROUTES.CONFIRM_EMAIL}?token=${token}}`
-    sendEmail({
-      to: email,
-      subject: 'User Registration',
-      text: `Welcome! Please use this link to finish user registration: ${confirmUrl}`,
-    })
-  } catch {
-    // do nothing
-  }
+  const token = await confirmEmailToken.create(
+    {
+      userId,
+      email,
+    },
+    {
+      expiresIn: '2d',
+    }
+  )
+  const confirmUrl = `${originUrl}${ROUTES.CONFIRM_EMAIL}?token=${token}}`
+  pSendConfirmEmail(email, {
+    name: name,
+    confirm_url: confirmUrl,
+  })
 }
