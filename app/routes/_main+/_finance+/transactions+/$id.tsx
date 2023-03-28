@@ -1,6 +1,4 @@
-import type { Transaction } from '@prisma/client'
 import type { ActionFunction, LoaderFunction } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
 import { performMutation } from 'remix-forms'
 import { forbidden, notFound } from 'remix-utils'
 import { TransactionForm } from '~/components'
@@ -42,12 +40,6 @@ export const action: ActionFunction = async ({ request, params }) => {
   })
 }
 
-type LoaderData = {
-  transaction: Transaction
-}
-
 export default function TransactionDetail() {
-  const { transaction } = useLoaderData<LoaderData>()
-
-  return <TransactionForm transaction={transaction as unknown as Transaction} />
+  return <TransactionForm />
 }

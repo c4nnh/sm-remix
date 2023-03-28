@@ -1,12 +1,14 @@
 import type { Transaction } from '@prisma/client'
+import { useLoaderData } from '@remix-run/react'
 import { TransactionSchema } from '~/schemas'
 import { RemixForm } from '../form'
 
-type Props = {
-  transaction?: Transaction
+type LoaderData = {
+  transaction: Transaction
 }
 
-export const TransactionForm: React.FC<Props> = ({ transaction }) => {
+export const TransactionForm = () => {
+  const { transaction } = useLoaderData<LoaderData>()
   const isCreate = !transaction
 
   return (

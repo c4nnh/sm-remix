@@ -26,6 +26,7 @@ export const ROUTES = {
   CREATE_SKILL: '/skills/create',
   DELETE_SKILL: '/skills/delete',
   PAY_NOW: '/pay-now',
+  AUTO_PAY: '/auto-pay',
 }
 
 export const FORM_STRATEGY = {

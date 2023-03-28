@@ -1,6 +1,4 @@
-import type { Skill } from '@prisma/client'
 import type { ActionFunction, LoaderFunction } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
 import { performMutation } from 'remix-forms'
 import { forbidden, notFound } from 'remix-utils'
 import { SkillForm } from '~/components'
@@ -42,12 +40,6 @@ export const action: ActionFunction = async ({ request, params }) => {
   })
 }
 
-type LoaderData = {
-  skill: Skill
-}
-
 export default function SkillDetail() {
-  const { skill } = useLoaderData<LoaderData>()
-
-  return <SkillForm skill={skill as unknown as Skill} />
+  return <SkillForm />
 }

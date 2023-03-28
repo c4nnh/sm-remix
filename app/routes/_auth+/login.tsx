@@ -23,7 +23,7 @@ export default function Login() {
               <Field name="email" />
               <Field name="password" type="password" />
               <Errors />
-              <p className="-mb-3 text-center text-sm text-text">
+              <p className="-mb-1 mt-1 text-center text-sm text-text">
                 No account?&nbsp;
                 <Link to={ROUTES.REGISTER}>
                   <span className="font-semibold text-blue-400 hover:text-blue-300">

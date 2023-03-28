@@ -1,12 +1,14 @@
 import type { Tontine } from '@prisma/client'
+import { useLoaderData } from '@remix-run/react'
 import { TontineSchema } from '~/schemas'
 import { RemixForm } from '../form'
 
-type Props = {
-  tontine?: Tontine
+type LoaderData = {
+  tontine: Tontine
 }
 
-export const TontineForm: React.FC<Props> = ({ tontine }) => {
+export const TontineForm = () => {
+  const { tontine } = useLoaderData<LoaderData>()
   const isCreate = !tontine
 
   return (

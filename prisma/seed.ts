@@ -27,6 +27,7 @@ const subscriptionServicesSeed: Prisma.SubscriptionServiceUncheckedCreateInput[]
       type: SubscriptionServiceType.PROJECT_MANAGEMENT,
       price: 100,
       currency: 'usd',
+      month: 1,
     },
   ]
 

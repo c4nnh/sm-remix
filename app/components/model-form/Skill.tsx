@@ -1,12 +1,14 @@
 import type { Skill } from '@prisma/client'
+import { useLoaderData } from '@remix-run/react'
 import { SkillSchema } from '~/schemas'
 import { RemixForm } from '../form'
 
-type Props = {
-  skill?: Skill
+type LoaderData = {
+  skill: Skill
 }
 
-export const SkillForm: React.FC<Props> = ({ skill }) => {
+export const SkillForm = () => {
+  const { skill } = useLoaderData<LoaderData>()
   const isCreate = !skill
 
   return (

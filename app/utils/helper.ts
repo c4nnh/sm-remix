@@ -43,3 +43,15 @@ export const checkDateDuration = ({
 
   return fromDate.isSame(toDate) || fromDate.isBefore(toDate)
 }
+
+export const renderYearMonthDay = (
+  year: number,
+  month: number,
+  day: number
+) => {
+  const yearLabel = year ? `${year} year${year > 1 ? 's' : ''}` : ''
+  const monthLabel = month ? `${month} month${month > 1 ? 's' : ''}` : ''
+  const dayLabel = day ? `${day} day${day > 1 ? 's' : ''}` : ''
+
+  return `${yearLabel} ${monthLabel} ${dayLabel}`.trim()
+}

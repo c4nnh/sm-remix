@@ -6,6 +6,7 @@ import {
   CubeIcon,
   HandRaisedIcon,
   HomeIcon,
+  ServerStackIcon,
   UsersIcon,
   WalletIcon,
 } from '@heroicons/react/24/outline'
@@ -143,6 +144,12 @@ const links: LinkItem[] = [
     label: 'Skills',
     icon: HandRaisedIcon,
     href: ROUTES.SKILLS,
+    roles: [UserRole.USER],
+  },
+  {
+    label: 'Auto pay',
+    icon: ServerStackIcon,
+    href: ROUTES.AUTO_PAY,
     roles: [UserRole.USER],
   },
 ]

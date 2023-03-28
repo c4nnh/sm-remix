@@ -1,6 +1,4 @@
-import type { Tontine } from '@prisma/client'
 import type { ActionFunction, LoaderFunction } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
 import { performMutation } from 'remix-forms'
 import { forbidden, notFound } from 'remix-utils'
 import { TontineForm } from '~/components'
@@ -42,12 +40,6 @@ export const action: ActionFunction = async ({ request, params }) => {
   })
 }
 
-type LoaderData = {
-  tontine: Tontine
-}
-
 export default function TontineDetail() {
-  const { tontine } = useLoaderData<LoaderData>()
-
-  return <TontineForm tontine={tontine as unknown as Tontine} />
+  return <TontineForm />
 }
