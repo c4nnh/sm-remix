@@ -1,8 +1,7 @@
 import { PspType } from '@prisma/client'
 import type { ActionFunction } from '@remix-run/node'
 import { extendSubscription } from '~/models'
-import { db, stripe } from '~/services'
-import { STRIPE_WEBHOOK_SECRET } from '~/services/env.server'
+import { db, stripe, STRIPE_WEBHOOK_SECRET } from '~/services'
 import type {
   StripeCustomerMetadata,
   StripePaymentIntentMetadata,

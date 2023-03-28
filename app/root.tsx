@@ -13,7 +13,7 @@ import {
   useCatch,
   useLoaderData,
 } from '@remix-run/react'
-import { STRIPE_PUBLIC_KEY } from '~/services/env.server'
+import { STRIPE_PUBLIC_KEY } from '~/services'
 import globalStylesheet from '~/styles/global.css'
 import stylesheet from '~/styles/tailwind.generated.css'
 import { ErrorLayout } from './layouts/Error'

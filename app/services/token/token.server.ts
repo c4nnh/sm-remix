@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import invariant from 'tiny-invariant'
 import type { z } from 'zod'
-import { TOKEN_SECRET } from '../env.server'
+import { TOKEN_SECRET } from '../env'
 
 export class Token<Schema extends z.Schema> {
   private schema: Schema

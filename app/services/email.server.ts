@@ -1,5 +1,8 @@
 import { ServerClient } from 'postmark'
-import type { ConfirmEmailTemplateModel } from '~/types'
+import type {
+  ConfirmEmailTemplateModel,
+  ExtendSubscriptionServiceTemplateModel,
+} from '~/types'
 import {
   NODE_ENV,
   POSTMARK_API_KEY,
@@ -8,7 +11,7 @@ import {
   POSTMARK_MESSAGE_STREAM,
   PRODUCT_NAME,
   PRODUCT_URL,
-} from './env.server'
+} from './env'
 
 const client = new ServerClient(POSTMARK_API_KEY)
 
@@ -18,7 +21,7 @@ export const sendConfirmEmail = (
 ) => {
   if (NODE_ENV !== 'production') {
     console.log('---')
-    console.log('Email:')
+    console.log('Email Confirmation:')
     console.log(JSON.stringify(templateModel, null, 2))
     console.log('---')
   }
@@ -36,6 +39,40 @@ export const sendConfirmEmail = (
           product_url: PRODUCT_URL,
         },
       })
+    } catch {
+      // do nothing
+    }
+  }
+}
+
+export const sendExtendSubscriptionServiceReminder = (
+  messages: Array<{
+    to: string
+    template: ExtendSubscriptionServiceTemplateModel
+  }>
+) => {
+  if (NODE_ENV !== 'production') {
+    console.log('---')
+    console.log('Email Extend Subscription Reminder:')
+    messages.forEach(message => console.log(JSON.stringify(message)))
+    console.log('---')
+  }
+
+  if (NODE_ENV === 'production') {
+    try {
+      return client.sendEmailBatchWithTemplates(
+        messages.map(({ to, template }) => ({
+          MessageStream: POSTMARK_MESSAGE_STREAM,
+          From: POSTMARK_EMAIL_FROM_ADDRESS,
+          To: to,
+          TemplateId: +POSTMARK_CONFIRM_EMAIL_TEMPLATE_ID,
+          TemplateModel: {
+            ...template,
+            product_name: PRODUCT_NAME,
+            product_url: PRODUCT_URL,
+          },
+        }))
+      )
     } catch {
       // do nothing
     }
