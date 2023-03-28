@@ -15,7 +15,7 @@ invariant(
   'POSTMARK_CONFIRM_EMAIL_TEMPLATE_ID is not set'
 )
 invariant(
-  typeof process.env.POSTMARK_CONFIRM_EMAIL_TEMPLATE_ID === 'number',
+  /^\d+$/.test(process.env.POSTMARK_CONFIRM_EMAIL_TEMPLATE_ID),
   'POSTMARK_CONFIRM_EMAIL_TEMPLATE_ID is invalid'
 )
 invariant(

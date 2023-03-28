@@ -3,7 +3,7 @@ import { performMutation } from 'remix-forms'
 import { forbidden, notFound } from 'remix-utils'
 import { ProjectForm } from '~/components'
 import { updateProjectMutation } from '~/domains'
-import { ProjectSchema } from '~/schemas'
+import { ProjectDetailSchema } from '~/schemas'
 import { db } from '~/services'
 import { getCurrentMembership } from '~/utils'
 
@@ -12,7 +12,17 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
   const { id } = params
 
-  const project = await db.project.findUnique({ where: { id } })
+  const project = await db.project.findUnique({
+    where: { id },
+    include: {
+      rolesInProject: {
+        select: { projectRoleId: true },
+      },
+      skillsInProject: {
+        select: { skillId: true },
+      },
+    },
+  })
 
   if (!project) {
     throw notFound('Project does not exist')
@@ -31,7 +41,15 @@ export const loader: LoaderFunction = async ({ params, request }) => {
 
   const projectRoles = await db.projectRole.findMany()
 
-  return { project, skills, projectRoles }
+  return {
+    project: {
+      ...project,
+      skillIds: project.skillsInProject.map(item => item.skillId),
+      roleIds: project.rolesInProject.map(item => item.projectRoleId),
+    },
+    skills,
+    projectRoles,
+  }
 }
 
 export const action: ActionFunction = async ({ request, params }) => {
@@ -40,7 +58,7 @@ export const action: ActionFunction = async ({ request, params }) => {
 
   return performMutation({
     request,
-    schema: ProjectSchema,
+    schema: ProjectDetailSchema,
     mutation: updateProjectMutation,
     environment: {
       membershipId: membership.id,

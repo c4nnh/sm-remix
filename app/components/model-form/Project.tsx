@@ -1,6 +1,6 @@
 import type { Project, ProjectRole, Skill } from '@prisma/client'
 import { useLoaderData } from '@remix-run/react'
-import { ProjectSchema } from '~/schemas'
+import { ProjectDetailSchema } from '~/schemas'
 import { MultiSelect } from '../elements'
 import { RemixForm } from '../form'
 
@@ -22,12 +22,12 @@ export const ProjectForm = () => {
         </span>
       </div>
       <RemixForm
-        schema={ProjectSchema}
+        schema={ProjectDetailSchema}
         values={project}
         buttonLabel={isCreate ? 'Create' : 'Update'}
         pendingButtonLabel={isCreate ? 'Creating...' : 'Updating...'}
       >
-        {({ Field, Button, Errors, register, getValues, setValue }) => {
+        {({ Field, Button, Errors, getValues, setValue }) => {
           return (
             <>
               <Field name="name" label="Name" />
@@ -46,7 +46,14 @@ export const ProjectForm = () => {
                   setValue('skillIds', values)
                 }}
               />
-              <Field name="skillIds" hidden />
+              <Field name="skillIds">
+                {({ SmartInput, Errors }) => (
+                  <>
+                    <Errors className="!-mt-2" />
+                    <SmartInput className="hidden" />
+                  </>
+                )}
+              </Field>
               <MultiSelect
                 label="Roles in project"
                 options={projectRoles.map(item => ({
@@ -56,7 +63,14 @@ export const ProjectForm = () => {
                 values={getValues('roleIds') || []}
                 onChange={values => setValue('roleIds', values)}
               />
-              <Field name="roleIds" hidden />
+              <Field name="roleIds">
+                {({ SmartInput, Errors }) => (
+                  <>
+                    <Errors className="!-mt-2" />
+                    <SmartInput className="hidden" />
+                  </>
+                )}
+              </Field>
               <Errors />
               <Button />
             </>

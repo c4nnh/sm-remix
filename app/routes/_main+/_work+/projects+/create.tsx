@@ -4,7 +4,7 @@ import { performMutation } from 'remix-forms'
 import { ProjectForm } from '~/components'
 import { ROUTES } from '~/constants'
 import { createProjectMutation } from '~/domains'
-import { ProjectSchema } from '~/schemas'
+import { CreateUpdateProjectSchema } from '~/schemas'
 import { db } from '~/services'
 import { getCurrentMembership } from '~/utils'
 
@@ -13,7 +13,7 @@ export const action: ActionFunction = async ({ request }) => {
 
   const result = await performMutation({
     request,
-    schema: ProjectSchema,
+    schema: CreateUpdateProjectSchema,
     mutation: createProjectMutation,
     environment: {
       membershipId: membership.id,

@@ -10,6 +10,7 @@ export const getErrorMessage = (props?: Props) => {
 
   return {
     notEmpty: 'Please fill this field',
+    mustSelect: 'Please select at least 1 item',
     isEmail: 'Please enter valid email',
     minLength: `This field must contains at least ${min} character(s)`,
     maxLength: `This field must contains at most ${max} character(s)`,
@@ -28,7 +29,13 @@ export const isTwoObjectEqual = (
   return compareFields.every(key => first[key] === second[key])
 }
 
-export const checkDateDuration = ({ from, to }: { from?: Date; to?: Date }) => {
+export const checkDateDuration = ({
+  from,
+  to,
+}: {
+  from?: Date | null
+  to?: Date | null
+}) => {
   if (!from || !to) return true
 
   const fromDate = dayjs(from)

@@ -203,8 +203,9 @@ model Skill {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  membership   Membership @relation(fields: [membershipId], references: [id])
-  membershipId String
+  membership     Membership       @relation(fields: [membershipId], references: [id])
+  membershipId   String
+  SkillInProject SkillInProject[]
 
   @@map("skill")
 }
@@ -219,7 +220,6 @@ model ProjectRole {
   updatedAt DateTime @updatedAt
 
   rolesInProjects RoleInProject[]
-  SkillInProject  SkillInProject[]
 
   @@map("project_role")
 }
@@ -240,8 +240,8 @@ model Project {
   membership   Membership @relation(fields: [membershipId], references: [id])
   membershipId String
 
-  rolesInProjects RoleInProject[]
-  skillInProjects SkillInProject[]
+  rolesInProject  RoleInProject[]
+  skillsInProject SkillInProject[]
 
   @@unique([membershipId, name])
   @@map("project")
@@ -261,10 +261,10 @@ model RoleInProject {
 model SkillInProject {
   id String @id @default(uuid())
 
-  project       Project     @relation(fields: [projectId], references: [id])
-  projectRole   ProjectRole @relation(fields: [projectRoleId], references: [id])
-  projectId     String
-  projectRoleId String
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId String
+  skill     Skill   @relation(fields: [skillId], references: [id])
+  skillId   String
 
   @@map("skill_in_project")
 }

@@ -29,7 +29,7 @@ export const sendConfirmEmail = (
         MessageStream: POSTMARK_MESSAGE_STREAM,
         From: POSTMARK_EMAIL_FROM_ADDRESS,
         To: to,
-        TemplateId: POSTMARK_CONFIRM_EMAIL_TEMPLATE_ID,
+        TemplateId: +POSTMARK_CONFIRM_EMAIL_TEMPLATE_ID,
         TemplateModel: {
           ...templateModel,
           product_name: PRODUCT_NAME,

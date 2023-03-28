@@ -58,7 +58,7 @@ export const RemixForm = <Schema extends SomeZodObject>({
         return (
           <div
             {...fieldProps}
-            className={cx('flex flex-col space-y-2', fieldClassName)}
+            className={cx('flex flex-col', fieldClassName)}
           />
         )
       }}
@@ -66,7 +66,7 @@ export const RemixForm = <Schema extends SomeZodObject>({
       buttonComponent={FormButton}
       inputComponent={Input}
       errorComponent={FormError}
-      className={cx('flex flex-col gap-5', className)}
+      className={cx('flex flex-col gap-2', className)}
       renderField={({ Field, ...props }) => {
         const { name } = props
 
@@ -88,7 +88,7 @@ export const RemixForm = <Schema extends SomeZodObject>({
                     ])}
                   />
                 )}
-                <Errors />
+                <Errors className="mt-0" />
               </>
             )}
           </Field>
