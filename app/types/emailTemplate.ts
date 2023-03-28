@@ -3,7 +3,7 @@ export type ConfirmEmailTemplateModel = {
   confirmUrl: string
 }
 
-export type ExtendSubscriptionServiceTemplateModel = {
+export type ExtendSubscriptionTemplateModel = {
   serviceName: string
   name: string
   extendUrl: string

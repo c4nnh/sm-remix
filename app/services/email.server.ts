@@ -1,7 +1,7 @@
 import { ServerClient } from 'postmark'
 import type {
   ConfirmEmailTemplateModel,
-  ExtendSubscriptionServiceTemplateModel,
+  ExtendSubscriptionTemplateModel,
 } from '~/types'
 import {
   NODE_ENV,
@@ -45,10 +45,10 @@ export const sendConfirmEmail = (
   }
 }
 
-export const sendExtendSubscriptionServiceReminder = (
+export const sendExtendSubscriptionReminder = (
   messages: Array<{
     to: string
-    template: ExtendSubscriptionServiceTemplateModel
+    template: ExtendSubscriptionTemplateModel
   }>
 ) => {
   if (NODE_ENV !== 'production') {
