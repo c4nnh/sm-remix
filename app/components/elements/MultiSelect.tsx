@@ -18,7 +18,7 @@ type Props = {
 
 export const MultiSelect: React.FC<Props> = ({
   label,
-  placeholder,
+  placeholder = 'Select items',
   values = [],
   options = [],
   onChange = () => {},
@@ -74,7 +74,7 @@ export const MultiSelect: React.FC<Props> = ({
             <span className="inline-block w-full rounded-lg shadow-sm">
               <Listbox.Button
                 className={cx([
-                  'relative flex w-full items-center justify-between py-3 px-4',
+                  'relative flex w-full items-center justify-between py-2.5 px-4',
                   'rounded-xl border-2 border-muted-3 bg-transparent',
                   'text-sm font-semibold text-heading',
                   'transition duration-150 ease-in-out',

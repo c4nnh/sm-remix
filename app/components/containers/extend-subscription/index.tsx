@@ -93,26 +93,32 @@ export const ExtendSubscription: React.FC<Props> = ({
           {JSON.stringify(paymentIntent?.metadata)}
           <Form action={ROUTES.PAY_NOW} method="post">
             <div className="invisible h-0">
-              <input name="price" value={subscriptionService.price} />
-              <input name="currency" value={subscriptionService.currency} />
+              <input name="price" defaultValue={subscriptionService.price} />
+              <input
+                name="currency"
+                defaultValue={subscriptionService.currency}
+              />
               <input
                 name="customer"
-                value={paymentMethod.customer?.toString()}
+                defaultValue={paymentMethod.customer?.toString()}
               />
-              <input name="paymentMethod" value={paymentMethod.id} />
+              <input name="paymentMethod" defaultValue={paymentMethod.id} />
               <input
                 name="subscriptionServiceId"
-                value={subscriptionService.id}
+                defaultValue={subscriptionService.id}
               />
-              <input name="subscriptionId" value={subscription?.id || ''} />
+              <input
+                name="subscriptionId"
+                defaultValue={subscription?.id || ''}
+              />
               <input
                 name="membershipId"
-                value={
+                defaultValue={
                   membership?.id || paymentIntent?.metadata?.membershipId || ''
                 }
               />
-              <input name="service" value={subscriptionService.type} />
-              <input name="redirectUrl" value={returnPath} />
+              <input name="service" defaultValue={subscriptionService.type} />
+              <input name="redirectUrl" defaultValue={returnPath} />
             </div>
             <div className="mt-2 flex justify-between mobile:mt-3">
               <Link to={cancelRedirectPath}>

@@ -25,8 +25,11 @@ export const sendConfirmEmail = async ({
     }
   )
   const confirmUrl = `${originUrl}${ROUTES.CONFIRM_EMAIL}?token=${token}}`
-  pSendConfirmEmail(email, {
-    name: name,
-    confirm_url: confirmUrl,
+  pSendConfirmEmail({
+    to: email,
+    template: {
+      name: name,
+      confirmUrl,
+    },
   })
 }

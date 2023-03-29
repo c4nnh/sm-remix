@@ -1,15 +1,14 @@
-import { SubscriptionServiceType } from '@prisma/client'
 import { CronJob } from 'quirrel/remix'
 import { DISPLAY_DATE_TIME_FORMAT, ROUTES } from '~/constants'
 import { dayjs } from '~/libs'
-import { db, PRODUCT_URL, sendExtendSubscriptionReminder } from '~/services'
+import { db, PRODUCT_URL, sendAutoPayReminder } from '~/services'
 import type {
-  ExtendSubscriptionReminderTemplateModel,
+  AutoPayReminderTemplateModel,
   PostmarkTemplateMessage,
 } from '~/types'
 
 export const action = CronJob(
-  'cron-jobs/extend-subscription-reminder',
+  'cron-jobs/auto-pay-reminder',
   ['* * * * *', 'Asia/Ho_Chi_Minh'],
   async () => {
     const startOfNextTwoDays = dayjs().add(2, 'days').endOf('day').toDate()
@@ -21,6 +20,7 @@ export const action = CronJob(
           lte: startOfNextTwoDays,
           gte: endOfNextTwoDays,
         },
+        autoPay: true,
       },
       select: {
         membership: {
@@ -33,44 +33,52 @@ export const action = CronJob(
             },
           },
         },
-        subscriptionService: {
-          select: {
-            name: true,
-            type: true,
-          },
-        },
+        subscriptionService: true,
         expiredDate: true,
       },
     })
 
-    const messages: PostmarkTemplateMessage<ExtendSubscriptionReminderTemplateModel>[] =
+    const messages: PostmarkTemplateMessage<AutoPayReminderTemplateModel>[] =
       subscriptions.map(
         ({
-          expiredDate,
           membership: {
-            user: { name, email },
+            user: { email, name },
           },
-          subscriptionService: { name: serviceName, type },
+          expiredDate,
+          subscriptionService: {
+            name: serviceName,
+            price,
+            currency,
+            day,
+            month,
+            year,
+          },
         }) => {
-          const path =
-            type === SubscriptionServiceType.PROJECT_MANAGEMENT
-              ? ROUTES.EXTEND_PROJECTS_SUBSCRIPTION
-              : ''
+          const url = `${PRODUCT_URL}${ROUTES.AUTO_PAY}`
+
+          const nextExipredAt = dayjs(expiredDate)
+            .add(year, 'year')
+            .add(month, 'month')
+            .add(day, 'day')
+            .format(DISPLAY_DATE_TIME_FORMAT)
 
           return {
             to: email,
             template: {
               name,
-              extendUrl: `${PRODUCT_URL}${path}`,
-              serviceName,
-              expiredAt: dayjs(expiredDate)
+              turnOffAutoPayUrl: url,
+              service: serviceName,
+              amount: price,
+              currency,
+              extendAt: dayjs(expiredDate)
                 .endOf('day')
                 .format(DISPLAY_DATE_TIME_FORMAT),
+              nextExipredAt,
             },
           }
         }
       )
 
-    sendExtendSubscriptionReminder(messages)
+    sendAutoPayReminder(messages)
   }
 )
