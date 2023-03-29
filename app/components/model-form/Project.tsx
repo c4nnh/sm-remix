@@ -40,13 +40,11 @@ export const ProjectForm = () => {
                   <>
                     <Label />
                     <Input
+                      {...register('fromDate')}
                       type="date"
                       value={dayjs(
                         watch('fromDate') || project?.fromDate
                       ).format(DATA_DATE_FORMAT)}
-                      onChange={e =>
-                        setValue('fromDate', e.target.value as unknown as Date)
-                      }
                     />
                     <Errors />
                   </>
@@ -57,13 +55,11 @@ export const ProjectForm = () => {
                   <>
                     <Label />
                     <Input
+                      {...register('toDate')}
                       type="date"
                       value={dayjs(watch('toDate') || project?.toDate).format(
                         DATA_DATE_FORMAT
                       )}
-                      onChange={e =>
-                        setValue('toDate', e.target.value as unknown as Date)
-                      }
                     />
                     <Errors />
                   </>
