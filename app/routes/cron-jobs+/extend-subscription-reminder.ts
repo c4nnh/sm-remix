@@ -60,9 +60,11 @@ export const action = CronJob(
           to: email,
           template: {
             name,
-            extendUrl: `${PRODUCT_URL}/${path}`,
+            extendUrl: `${PRODUCT_URL}${path}`,
             serviceName,
-            expiredAt: dayjs(expiredDate).format(DISPLAY_DATE_TIME_FORMAT),
+            expiredAt: dayjs(expiredDate)
+              .endOf('day')
+              .format(DISPLAY_DATE_TIME_FORMAT),
           },
         }
       }

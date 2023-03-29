@@ -9,3 +9,13 @@ export type ExtendSubscriptionTemplateModel = {
   extendUrl: string
   expiredAt: string
 }
+
+export type AutoPayTemplateModel = {
+  name: string
+  service: string
+  extendAt: string
+  amount: number
+  currency: string
+  nextExipredAt: string
+  turnOffAutoPayUrl: string
+}
