@@ -22,7 +22,7 @@ export const sendConfirmEmail = (
   to: string,
   templateModel: ConfirmEmailTemplateModel
 ) => {
-  if (NODE_ENV === 'production') {
+  if (NODE_ENV !== 'production') {
     console.log('---')
     console.log('Email Confirmation:')
     console.log(JSON.stringify(templateModel, null, 2))
@@ -55,14 +55,14 @@ export const sendExtendSubscriptionReminder = (
     template: ExtendSubscriptionTemplateModel
   }>
 ) => {
-  if (NODE_ENV === 'production') {
+  if (NODE_ENV !== 'production') {
     console.log('---')
     console.log('Email Extend Subscription Reminder:')
     messages.forEach(message => console.log(JSON.stringify(message)))
     console.log('---')
   }
 
-  if (NODE_ENV !== 'production') {
+  if (NODE_ENV === 'production') {
     sendEmailBatchWithTemplates(
       +POSTMARK_EXTEND_SUBSCRIPTION_REMINDER_TEMPLATE_ID,
       messages
@@ -73,14 +73,14 @@ export const sendExtendSubscriptionReminder = (
 export const sendAutoPayReminder = (
   messages: Array<{ to: string; template: AutoPayTemplateModel }>
 ) => {
-  if (NODE_ENV === 'production') {
+  if (NODE_ENV !== 'production') {
     console.log('---')
     console.log('Email Auto Pay Reminder:')
     messages.forEach(message => console.log(JSON.stringify(message)))
     console.log('---')
   }
 
-  if (NODE_ENV !== 'production') {
+  if (NODE_ENV === 'production') {
     sendEmailBatchWithTemplates(
       +POSTMARK_AUTO_PAY_REMINDER_TEMPLATE_ID,
       messages
