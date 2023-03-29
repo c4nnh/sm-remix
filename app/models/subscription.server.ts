@@ -25,12 +25,15 @@ export const extendSubscription = async (
   // get duration of service
   const { year, month, day } = subscriptionService
 
+  let oldExipredDate = dayjs()
   const subscription = subscriptionId
     ? await db.subscription.findUnique({
         where: { id: subscriptionId },
       })
     : undefined
-  const oldExipredDate = subscription?.expiredDate || dayjs()
+  if (subscription && dayjs(subscription.expiredDate).isAfter(oldExipredDate)) {
+    oldExipredDate = dayjs(subscription.expiredDate)
+  }
   const newExpiredDate = dayjs(oldExipredDate)
     .add(year || 0, 'year')
     .add(month || 0, 'month')

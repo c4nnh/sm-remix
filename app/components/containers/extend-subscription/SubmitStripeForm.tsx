@@ -52,7 +52,7 @@ export const SubmitStripeForm: React.FC<Props> = ({
           <Button>Cancel</Button>
         </Link>
         <Button disabled={!stripe || isLoading} buttonType="primary">
-          {isLoading ? 'Submitting' : 'Submit'}
+          {isLoading ? 'Executing' : 'Pay'}
         </Button>
       </div>
       {/* Show error message to your customers */}

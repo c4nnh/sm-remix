@@ -25,7 +25,7 @@ model User {
   id String @id @default(uuid())
 
   email    String     @unique
-  name     String?
+  name     String
   password String?
   role     UserRole   @default(USER)
   status   UserStatus @default(PENDING)
@@ -115,6 +115,7 @@ model Subscription {
   id String @id @default(uuid())
 
   expiredDate DateTime @db.Date
+  autoPay     Boolean  @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -157,11 +158,12 @@ model Transaction {
   id String @id @default(uuid())
 
   title       String
-  amount      String
+  amount      Float
   currency    String
   description String?
   date        DateTime        @db.Date
   type        TransactionType
+  isDeleted   Boolean         @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -176,10 +178,11 @@ model Tontine {
   id String @id @default(uuid())
 
   title       String
-  amount      String
+  amount      Float
   currency    String
   description String?
   date        DateTime @db.Date
+  isDeleted   Boolean  @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -193,30 +196,31 @@ model Tontine {
 model Skill {
   id String @id @default(uuid())
 
-  name   String
-  yoe    Int
-  isMain Boolean? @default(false)
+  name      String
+  yoe       Int
+  isMain    Boolean? @default(false)
+  isDeleted Boolean  @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  membership   Membership @relation(fields: [membershipId], references: [id])
-  membershipId String
+  membership     Membership       @relation(fields: [membershipId], references: [id])
+  membershipId   String
+  SkillInProject SkillInProject[]
 
-  @@unique([membershipId, name])
   @@map("skill")
 }
 
 model ProjectRole {
   id String @id @default(uuid())
 
-  name String @unique
+  name      String  @unique
+  isDeleted Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   rolesInProjects RoleInProject[]
-  SkillInProject  SkillInProject[]
 
   @@map("project_role")
 }
@@ -229,6 +233,7 @@ model Project {
   teamSize    Int
   fromDate    DateTime  @db.Date
   toDate      DateTime? @db.Date
+  isDeleted   Boolean   @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -236,8 +241,8 @@ model Project {
   membership   Membership @relation(fields: [membershipId], references: [id])
   membershipId String
 
-  rolesInProjects RoleInProject[]
-  skillInProjects SkillInProject[]
+  rolesInProject  RoleInProject[]
+  skillsInProject SkillInProject[]
 
   @@unique([membershipId, name])
   @@map("project")
@@ -257,10 +262,10 @@ model RoleInProject {
 model SkillInProject {
   id String @id @default(uuid())
 
-  project       Project     @relation(fields: [projectId], references: [id])
-  projectRole   ProjectRole @relation(fields: [projectRoleId], references: [id])
-  projectId     String
-  projectRoleId String
+  project   Project @relation(fields: [projectId], references: [id])
+  projectId String
+  skill     Skill   @relation(fields: [skillId], references: [id])
+  skillId   String
 
   @@map("skill_in_project")
 }

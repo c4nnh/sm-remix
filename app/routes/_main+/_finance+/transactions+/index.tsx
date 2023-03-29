@@ -29,13 +29,17 @@ export const loader: LoaderFunction = async ({
       contains: search,
       mode: 'insensitive',
     },
+    isDeleted: false,
   }
 
   const transactions = await db.transaction.findMany({
     where,
-    orderBy: {
-      date: 'desc',
-    },
+    orderBy: [
+      {
+        date: 'desc',
+      },
+      { createdAt: 'desc' },
+    ],
     skip,
     take,
   })
@@ -52,8 +56,14 @@ export default function Transactions() {
 
   return (
     <div className="flex h-full w-full flex-col gap-5">
-      <ListHeader createPath={ROUTES.CREATE_TRANSACTIONS} />
-      <Table<Transaction> data={transactions} columns={columns} />
+      <ListHeader createPath={ROUTES.CREATE_TRANSACTION} />
+      <Table<Transaction>
+        data={transactions}
+        columns={columns}
+        deleteUrl={ROUTES.DELETE_TRANSACTION}
+        deleteTitle="Delete transaction"
+        deleteMessage="Are you sure you wish to delete this transaction?"
+      />
       <Pagination total={totalItems} />
     </div>
   )

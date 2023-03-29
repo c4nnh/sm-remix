@@ -1,25 +1,18 @@
 import { SubscriptionServiceType } from '@prisma/client'
 import type { LoaderFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
-import { useLoaderData } from '@remix-run/react'
-import { Elements } from '@stripe/react-stripe-js'
-import type Stripe from 'stripe'
 import invariant from 'tiny-invariant'
 import { projectImage } from '~/assets'
-import { SubmitStripeForm, SubscriptionBanner } from '~/components'
+import { ExtendSubscription } from '~/components'
 import { ROUTES } from '~/constants'
-import { useStripePromise } from '~/hooks'
 import {
   createPaymentIntent,
   getMembershipByUserAndOrg,
+  getPaymentMethodInfo,
   getSubscriptionByMembership,
 } from '~/models'
 import { db } from '~/services'
 import { requiredRole } from '~/utils'
-
-type LoaderData = {
-  paymentIntent: Stripe.Response<Stripe.PaymentIntent>
-}
 
 export const loader: LoaderFunction = async ({ request }) => {
   const { id: userId, organizationId } = await requiredRole(request)
@@ -49,6 +42,21 @@ export const loader: LoaderFunction = async ({ request }) => {
     },
   })
 
+  if (paymentCustomer && paymentCustomer.paymentMethodPspId) {
+    const paymentMethod = await getPaymentMethodInfo(
+      paymentCustomer.paymentMethodPspId
+    )
+
+    if (paymentMethod) {
+      return {
+        subscriptionService,
+        paymentMethod,
+        subscription,
+        membership,
+      }
+    }
+  }
+
   const paymentIntent = await createPaymentIntent({
     amount: price,
     currency,
@@ -71,31 +79,11 @@ export const loader: LoaderFunction = async ({ request }) => {
 }
 
 export default function ExtendProjectsSubscription() {
-  const { stripePromise } = useStripePromise()
-  const { paymentIntent } = useLoaderData<LoaderData>()
-
   return (
-    <div className="flex rounded-2xl bg-layer-2 p-10 mobile:flex-col mobile:px-5">
-      <SubscriptionBanner image={projectImage} />
-      <Elements
-        stripe={stripePromise}
-        options={{
-          locale: 'en',
-          clientSecret: paymentIntent.client_secret || '',
-          appearance: {
-            rules: {
-              '.Label': {
-                color: 'white',
-              },
-            },
-          },
-        }}
-      >
-        <SubmitStripeForm
-          cancelRedirectPath={ROUTES.PROJECTS}
-          returnPath={ROUTES.EXTEND_PROJECTS_SUBSCRIPTION_SUCCESS}
-        />
-      </Elements>
-    </div>
+    <ExtendSubscription
+      bannerImage={projectImage}
+      cancelRedirectPath={ROUTES.PROJECTS}
+      returnPath={ROUTES.EXTEND_PROJECTS_SUBSCRIPTION_SUCCESS}
+    />
   )
 }

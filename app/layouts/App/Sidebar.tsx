@@ -6,6 +6,7 @@ import {
   CubeIcon,
   HandRaisedIcon,
   HomeIcon,
+  ServerStackIcon,
   UsersIcon,
   WalletIcon,
 } from '@heroicons/react/24/outline'
@@ -22,7 +23,7 @@ export const Sidebar = () => {
   const { user, organizations } = useLoaderData<AppLoaderData>()
 
   return (
-    <div className="relative z-30 flex h-full flex-col bg-layer-2 shadow">
+    <div className="z-2 relative flex h-full flex-col bg-layer-2 shadow">
       <div className="flex flex-1 flex-col overflow-y-auto">
         {/* Logo */}
         <div className="mt-5 flex h-8 flex-shrink-0 px-4 text-xl text-blue-500">
@@ -143,6 +144,12 @@ const links: LinkItem[] = [
     label: 'Skills',
     icon: HandRaisedIcon,
     href: ROUTES.SKILLS,
+    roles: [UserRole.USER],
+  },
+  {
+    label: 'Auto pay',
+    icon: ServerStackIcon,
+    href: ROUTES.AUTO_PAY,
     roles: [UserRole.USER],
   },
 ]

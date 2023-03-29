@@ -3,16 +3,12 @@ import type { SelectHTMLAttributes } from 'react'
 import { forwardRef } from 'react'
 import type { SelectStyleProps } from '~/styles'
 import { select, selectOption } from '~/styles'
-
-type Option = {
-  value: string
-  label: string
-}
+import type { SelectOption } from '~/types'
 
 type Ref = HTMLSelectElement
 type Props = SelectStyleProps &
   SelectHTMLAttributes<Ref> & {
-    options?: Option[]
+    options?: SelectOption[]
     optionClassName?: string
   }
 

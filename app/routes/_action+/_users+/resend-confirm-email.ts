@@ -13,7 +13,12 @@ export const loader: LoaderFunction = async ({ request }: LoaderArgs) => {
   }
 
   const originUrl = new URL(request.url).origin
-  await sendConfirmEmail({ originUrl, userId: user.id, email: user.email })
+  await sendConfirmEmail({
+    originUrl,
+    userId: user.id,
+    email: user.email,
+    name: user.name,
+  })
 
   return redirect(ROUTES.ROOT)
 }

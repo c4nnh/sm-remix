@@ -28,6 +28,7 @@ export const loader: LoaderFunction = async ({
       contains: search,
       mode: 'insensitive',
     },
+    isDeleted: false,
   }
 
   const tontines = await db.tontine.findMany({
@@ -49,8 +50,14 @@ export default function Tontines() {
 
   return (
     <div className="flex h-full w-full flex-col gap-5">
-      <ListHeader createPath={ROUTES.CREATE_TONTINES} />
-      <Table<Tontine> columns={columns} data={tontines} />
+      <ListHeader createPath={ROUTES.CREATE_TONTINE} />
+      <Table<Tontine>
+        columns={columns}
+        data={tontines}
+        deleteUrl={ROUTES.DELETE_TONTINE}
+        deleteTitle="Delete tontine"
+        deleteMessage="Are you sure you wish to delete this tontine?"
+      />
       <Pagination total={totalItems} />
     </div>
   )

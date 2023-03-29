@@ -1,15 +1,14 @@
 import type { Organization } from '@prisma/client'
-import type { LoaderFunction } from '@remix-run/node'
+import { MembershipRole } from '@prisma/client'
+import type { ActionFunction, LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
+import { performMutation } from 'remix-forms'
 import { notFound } from 'remix-utils'
-import { RemixForm } from '~/components'
+import { OrganizationForm } from '~/components'
+import { updateOrganizationMutation } from '~/domains'
 import { OrganizationSchema } from '~/schemas'
 import { db } from '~/services'
 import { requiredRole } from '~/utils'
-
-type LoaderData = {
-  organization: Organization
-}
 
 export const loader: LoaderFunction = async ({ params, request }) => {
   const user = await requiredRole(request)
@@ -24,36 +23,50 @@ export const loader: LoaderFunction = async ({ params, request }) => {
         },
       },
     },
+    include: {
+      memberships: true,
+    },
   })
 
   if (!organization) {
     throw notFound('Organization does not exist')
   }
 
-  return { organization }
+  const isOwner = organization.memberships.some(
+    membership =>
+      membership.userId === user.id && membership.role === MembershipRole.OWNER
+  )
+
+  return { organization, isOwner }
+}
+
+export const action: ActionFunction = async ({ request, params }) => {
+  const user = await requiredRole(request)
+  const { id: orgId } = params
+
+  return performMutation({
+    request,
+    schema: OrganizationSchema,
+    mutation: updateOrganizationMutation,
+    environment: {
+      userId: user.id,
+      orgId,
+    },
+  })
+}
+
+type LoaderData = {
+  organization: Organization
+  isOwner: boolean
 }
 
 export default function OrganizationDetail() {
-  const { organization } = useLoaderData<LoaderData>()
+  const { organization, isOwner } = useLoaderData<LoaderData>()
 
   return (
-    <div>
-      <RemixForm
-        schema={OrganizationSchema}
-        values={organization}
-        buttonLabel="Update"
-        pendingButtonLabel="Updating..."
-      >
-        {({ Field, Button, Errors }) => {
-          return (
-            <>
-              <Field name="name" label="Name" />
-              <Errors />
-              <Button />
-            </>
-          )
-        }}
-      </RemixForm>
-    </div>
+    <OrganizationForm
+      organization={organization as unknown as Organization}
+      isOwner={isOwner}
+    />
   )
 }

@@ -47,7 +47,7 @@ export const loader: LoaderFunction = async ({
       },
     },
     orderBy: {
-      name: 'asc',
+      createdAt: 'desc',
     },
     skip,
     take,

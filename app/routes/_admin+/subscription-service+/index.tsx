@@ -3,11 +3,11 @@ import type { LoaderFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import type { Column } from '~/components'
 import { ListHeader, Pagination, Table } from '~/components'
-import { DISPLAY_DATE_FORMAT, ROUTES } from '~/constants'
+import { DISPLAY_DATE_FORMAT } from '~/constants'
 import { dayjs } from '~/libs/dayjs'
 import { db } from '~/services'
 import type { ListLoaderData } from '~/types'
-import { getPaginationAndSearchParams } from '~/utils'
+import { getPaginationAndSearchParams, renderYearMonthDay } from '~/utils'
 
 type LoaderData = ListLoaderData<SubscriptionService, 'subscriptionServices'>
 
@@ -44,7 +44,7 @@ export default function SubscriptionServices() {
 
   return (
     <div className="flex h-full w-full flex-col gap-5">
-      <ListHeader createPath={ROUTES.CREATE_ORGANIZATION} />
+      <ListHeader />
       <Table<SubscriptionService>
         columns={columns}
         data={subscriptionServices}
@@ -59,13 +59,7 @@ const columns: Column<SubscriptionService>[] = [
   { label: 'Type', dataIndex: 'type' },
   {
     label: 'Duration',
-    render: ({ year, month, day }) => {
-      const yearLabel = year ? `${year} year${year > 1 ? 's' : ''}` : ''
-      const monthLabel = month ? `${month} month${month > 1 ? 's' : ''}` : ''
-      const dayLabel = day ? `${day} day${day > 1 ? 's' : ''}` : ''
-
-      return `${yearLabel} ${monthLabel} ${dayLabel}`.trim()
-    },
+    render: ({ year, month, day }) => renderYearMonthDay(year, month, day),
   },
   {
     label: 'Price',

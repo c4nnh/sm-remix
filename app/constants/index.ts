@@ -12,15 +12,21 @@ export const ROUTES = {
   ORGANIZATIONS: '/organizations',
   CREATE_ORGANIZATION: '/organizations/create',
   TRANSACTIONS: '/transactions',
-  CREATE_TRANSACTIONS: '/transactions/create',
+  CREATE_TRANSACTION: '/transactions/create',
+  DELETE_TRANSACTION: '/transactions/delete',
   TONTINES: '/tontines',
-  CREATE_TONTINES: '/tontines/create',
+  CREATE_TONTINE: '/tontines/create',
+  DELETE_TONTINE: '/tontines/delete',
   PROJECTS: '/projects',
-  CREATE_PROJECTS: '/projects/create',
+  CREATE_PROJECT: '/projects/create',
+  DELETE_PROJECT: '/projects/delete',
   EXTEND_PROJECTS_SUBSCRIPTION: '/projects/extend-subscription',
   EXTEND_PROJECTS_SUBSCRIPTION_SUCCESS: '/projects/extend-subscription/success',
   SKILLS: '/skills',
-  CREATE_SKILLS: '/skills/create',
+  CREATE_SKILL: '/skills/create',
+  DELETE_SKILL: '/skills/delete',
+  PAY_NOW: '/pay-now',
+  AUTO_PAY: '/auto-pay',
 }
 
 export const FORM_STRATEGY = {
@@ -34,6 +40,8 @@ export const SESSION_KEY = 'SESSION_KEY'
 export const SESSION_ERROR_KEY = 'SESSION_ERROR_KEY'
 
 export const DISPLAY_DATE_FORMAT = 'DD/MM/YYYY'
+export const DISPLAY_DATE_TIME_FORMAT = 'hh:mm:ss DD/MM/YYYY'
+export const DATA_DATE_FORMAT = 'YYYY-MM-DD'
 
 export const QUERY_KEY = {
   SEARCH: 'search',

@@ -1,8 +1,8 @@
-import type { UserRole } from '@prisma/client'
+import type { Membership, UserRole } from '@prisma/client'
 import { redirect } from '@remix-run/node'
 import { forbidden } from 'remix-utils'
 import { ROUTES } from '~/constants'
-import { authenticator } from '~/services'
+import { authenticator, db } from '~/services'
 import type { AuthSession } from '~/types'
 
 export const requiredRole = async (
@@ -20,4 +20,20 @@ export const requiredRole = async (
   }
 
   return user
+}
+
+export const getCurrentMembership = async (
+  request: Request
+): Promise<Membership> => {
+  const { id, organizationId } = await requiredRole(request)
+
+  const membership = await db.membership.findUnique({
+    where: { userId_organizationId: { userId: id, organizationId } },
+  })
+
+  if (!membership) {
+    throw forbidden('You are not member of this organization')
+  }
+
+  return membership
 }

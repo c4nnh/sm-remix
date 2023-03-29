@@ -24,7 +24,7 @@ export default function Register() {
               <Field name="name" />
               <Field name="password" type="password" />
               <Errors />
-              <p className="-mb-3 text-center text-sm text-text">
+              <p className="-mb-1 mt-1 text-center text-sm text-text">
                 <Link to={ROUTES.LOGIN}>
                   Already have an account?&nbsp;
                   <span className="font-semibold text-blue-400 hover:text-blue-300">

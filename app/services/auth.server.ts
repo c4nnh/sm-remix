@@ -85,7 +85,13 @@ authenticator.use(
     const user = await createUser({ email, name, password })
 
     const { id, role, status } = user
-    await sendConfirmEmail({ originUrl, email, userId: id })
+
+    await sendConfirmEmail({
+      email,
+      name,
+      originUrl,
+      userId: id,
+    })
     await createStripeCustomer(email, {
       userId: id,
     })

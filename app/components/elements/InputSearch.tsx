@@ -40,7 +40,7 @@ export const InputSearch: React.FC<Props> = ({
           onChange={e => setSearch(e.target.value)}
           onKeyDown={handleOnKeyDown}
         />
-        <div className="absolute inset-y-0 right-0 z-20 flex flex-shrink-0 items-center pr-4">
+        <div className="z-1 absolute inset-y-0 right-0 flex flex-shrink-0 items-center pr-4">
           <div
             className="cursor-pointer rounded-md bg-muted-2 px-2 py-1 hover:bg-muted-3"
             onClick={handleSearch}

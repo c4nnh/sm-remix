@@ -12,7 +12,8 @@ import type {
 } from 'react'
 import type { FormProps } from 'remix-forms'
 import { createForm } from 'remix-forms'
-import type { SomeZodObject } from 'zod'
+import type { SomeZodObject, z } from 'zod'
+import { input } from '~/styles'
 import { Button, Input, Label } from '../elements'
 
 const Form = createForm({
@@ -45,15 +46,19 @@ const FormError = ({
 export const RemixForm = <Schema extends SomeZodObject>({
   className,
   fieldClassName,
+  readOnlyFields = [],
   ...props
-}: FormProps<Schema> & { fieldClassName?: string }) => {
+}: FormProps<Schema> & {
+  fieldClassName?: string
+  readOnlyFields?: Array<keyof z.TypeOf<Schema>>
+}) => {
   return (
     <Form
       fieldComponent={fieldProps => {
         return (
           <div
             {...fieldProps}
-            className={cx('flex flex-col space-y-2', fieldClassName)}
+            className={cx('flex flex-col', fieldClassName)}
           />
         )
       }}
@@ -61,19 +66,29 @@ export const RemixForm = <Schema extends SomeZodObject>({
       buttonComponent={FormButton}
       inputComponent={Input}
       errorComponent={FormError}
-      className={cx('flex flex-col gap-5', className)}
+      className={cx('flex flex-col gap-2', className)}
       renderField={({ Field, ...props }) => {
-        const { name, errors } = props
+        const { name } = props
+
+        // @ts-ignore
+        const inputType = props.type
+
         return (
           <Field key={String(name)} {...props}>
             {({ Label, SmartInput, Errors }) => (
               <>
                 <Label />
-                <SmartInput
-                  // @ts-ignore
-                  hasError={Boolean(errors)}
-                />
-                <Errors />
+                {readOnlyFields.includes(name) ? (
+                  <Input readOnly type={inputType} />
+                ) : (
+                  <SmartInput
+                    type={inputType}
+                    className={cx(input(), [
+                      props.options ? '!bg-layer-3' : '',
+                    ])}
+                  />
+                )}
+                <Errors className="mt-0" />
               </>
             )}
           </Field>

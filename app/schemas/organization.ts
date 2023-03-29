@@ -6,3 +6,14 @@ export const OrganizationSchema = z.object({
     message: getErrorMessage().notEmpty,
   }),
 })
+
+export const CreateOrganizationEnvironmentSchema = z.object({
+  userId: z.string(),
+})
+
+export const UpdateOrganizationEnvironmentSchema = z.intersection(
+  CreateOrganizationEnvironmentSchema,
+  z.object({
+    orgId: z.string(),
+  })
+)
