@@ -27,7 +27,7 @@ export const sendConfirmEmail = ({
   to,
   template,
 }: PostmarkTemplateMessage<ConfirmEmailTemplateModel>) => {
-  if (NODE_ENV !== 'development') {
+  if (NODE_ENV === 'development') {
     console.log('---')
     console.log('Email Confirmation:')
     console.log(JSON.stringify(template, null, 2))
@@ -57,7 +57,7 @@ export const sendConfirmEmail = ({
 export const sendExtendSubscriptionReminder = (
   messages: PostmarkTemplateMessage<ExtendSubscriptionReminderTemplateModel>[]
 ) => {
-  if (NODE_ENV !== 'development') {
+  if (NODE_ENV === 'development') {
     console.log('---')
     console.log('Email Extend Subscription Reminder:')
     messages.forEach(message => console.log(JSON.stringify(message)))
@@ -75,7 +75,7 @@ export const sendExtendSubscriptionReminder = (
 export const sendAutoPayReminder = (
   messages: PostmarkTemplateMessage<AutoPayReminderTemplateModel>[]
 ) => {
-  if (NODE_ENV !== 'development') {
+  if (NODE_ENV === 'development') {
     console.log('---')
     console.log('Email Auto Pay Reminder:')
     messages.forEach(message => console.log(JSON.stringify(message)))
@@ -93,7 +93,7 @@ export const sendAutoPayReminder = (
 export const sendAutoPaySuccess = (
   messages: PostmarkTemplateMessage<AutoPaySuccessTemplateModel>[]
 ) => {
-  if (NODE_ENV !== 'development') {
+  if (NODE_ENV === 'development') {
     console.log('---')
     console.log('Email Auto Pay Success:')
     messages.forEach(message => console.log(JSON.stringify(message)))
@@ -111,7 +111,7 @@ export const sendAutoPaySuccess = (
 export const sendAutoPayFailed = (
   messages: PostmarkTemplateMessage<AutoPayFailedTemplateModel>[]
 ) => {
-  if (NODE_ENV !== 'development') {
+  if (NODE_ENV === 'development') {
     console.log('---')
     console.log('Email Auto Pay Failed:')
     messages.forEach(message => console.log(JSON.stringify(message)))
