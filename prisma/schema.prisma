@@ -161,7 +161,7 @@ model Transaction {
   amount      Float
   currency    String
   description String?
-  date        DateTime        @db.Date
+  date        DateTime?       @default(now()) @db.Date
   type        TransactionType
   isDeleted   Boolean         @default(false)
 

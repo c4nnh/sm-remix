@@ -2,7 +2,8 @@ import { CheckCircleIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import type { Subscription, SubscriptionService } from '@prisma/client'
 import type { ActionFunction, LoaderFunction } from '@remix-run/node'
 import { redirect } from '@remix-run/node'
-import { Form, useLoaderData } from '@remix-run/react'
+import { Form, useLoaderData, useNavigation } from '@remix-run/react'
+import { useMemo } from 'react'
 import { forbidden, notFound } from 'remix-utils'
 import { Button } from '~/components'
 import { DISPLAY_DATE_TIME_FORMAT, ROUTES } from '~/constants'
@@ -96,9 +97,15 @@ export const action: ActionFunction = async ({ request, params }) => {
 }
 
 export default function SubscriptionDetail() {
+  const navigation = useNavigation()
   const {
     subscription: { subscriptionService, ...subscriptionData },
   } = useLoaderData<LoaderData>()
+
+  const isSubmitting = useMemo(
+    () => navigation.state === 'submitting',
+    [navigation]
+  )
 
   return (
     <div className="flex flex-col gap-5 rounded-xl bg-layer-3 p-10 text-white">
@@ -137,9 +144,14 @@ export default function SubscriptionDetail() {
       >
         <Button
           type="submit"
+          disabled={isSubmitting}
           buttonType={subscriptionData.autoPay ? 'danger' : 'primary'}
         >
-          {subscriptionData.autoPay ? 'Turn off auto pay' : 'Turn on auto pay'}
+          {isSubmitting
+            ? 'Executing'
+            : subscriptionData.autoPay
+            ? 'Turn off auto pay'
+            : 'Turn on auto pay'}
         </Button>
       </Form>
     </div>
