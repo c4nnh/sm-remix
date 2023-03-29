@@ -1,4 +1,5 @@
 import type { Subscription, SubscriptionServiceType } from '@prisma/client'
+import { TransactionType } from '@prisma/client'
 import { dayjs } from '~/libs'
 import { db } from '~/services'
 import type {
@@ -41,28 +42,43 @@ export const extendSubscription = async (
     .add(day || 0, 'day')
     .toDate()
 
-  if (subscription) {
-    // new expired date from old expired date
-    return db.subscription.update({
-      data: {
-        expiredDate: newExpiredDate,
-      },
-      where: {
-        id: subscriptionId,
-      },
-    })
-  } else {
-    const { membershipId } = metaData as StripeCreateSubscriptionMetadata
+  await db.$transaction(async tx => {
+    let membershipId
 
-    // new expired date from current date
-    return db.subscription.create({
+    if (subscription) {
+      // new expired date from old expired date
+      await tx.subscription.update({
+        data: {
+          expiredDate: newExpiredDate,
+        },
+        where: {
+          id: subscriptionId,
+        },
+      })
+      membershipId = subscription.membershipId
+    } else {
+      // new expired date from current date
+      membershipId = (metaData as StripeCreateSubscriptionMetadata).membershipId
+      await tx.subscription.create({
+        data: {
+          subscriptionServiceId: subscriptionService.id,
+          membershipId,
+          expiredDate: newExpiredDate,
+        },
+      })
+    }
+
+    await tx.transaction.create({
       data: {
-        subscriptionServiceId: subscriptionService.id,
+        amount: subscriptionService.price,
+        currency: subscriptionService.currency,
+        type: TransactionType.EXPENDITURE,
         membershipId,
-        expiredDate: newExpiredDate,
+        title: 'Pay for subscription',
+        description: `Pay for subscription service: ${subscriptionService.name}`,
       },
     })
-  }
+  })
 }
 
 export const getActiveSubscriptions = async (

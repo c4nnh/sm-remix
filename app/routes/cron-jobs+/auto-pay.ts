@@ -10,7 +10,7 @@ import type {
 
 export const action = CronJob(
   'cron-jobs/auto-pay',
-  ['* * * * *', 'Asia/Ho_Chi_Minh'],
+  ['0 0 * * *', 'Asia/Ho_Chi_Minh'],
   async () => {
     const currentDate = dayjs().toDate()
     const yesterday = dayjs().subtract(1, 'day').toDate()
