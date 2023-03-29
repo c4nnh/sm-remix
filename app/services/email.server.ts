@@ -34,7 +34,7 @@ export const sendConfirmEmail = ({
     console.log('---')
   }
 
-  if (NODE_ENV === 'production') {
+  if (NODE_ENV === 'test') {
     try {
       return client.sendEmailWithTemplate({
         MessageStream: POSTMARK_MESSAGE_STREAM,
@@ -64,7 +64,7 @@ export const sendExtendSubscriptionReminder = (
     console.log('---')
   }
 
-  if (NODE_ENV === 'production') {
+  if (NODE_ENV === 'test') {
     sendEmailBatchWithTemplates(
       +POSTMARK_EXTEND_SUBSCRIPTION_REMINDER_TEMPLATE_ID,
       messages
@@ -82,7 +82,7 @@ export const sendAutoPayReminder = (
     console.log('---')
   }
 
-  if (NODE_ENV === 'production') {
+  if (NODE_ENV === 'test') {
     sendEmailBatchWithTemplates(
       +POSTMARK_AUTO_PAY_REMINDER_TEMPLATE_ID,
       messages
@@ -100,7 +100,7 @@ export const sendAutoPaySuccess = (
     console.log('---')
   }
 
-  if (NODE_ENV === 'production') {
+  if (NODE_ENV === 'test') {
     sendEmailBatchWithTemplates(
       +POSTMARK_AUTO_PAY_SUCCESS_TEMPLATE_ID,
       messages
@@ -118,7 +118,7 @@ export const sendAutoPayFailed = (
     console.log('---')
   }
 
-  if (NODE_ENV === 'production') {
+  if (NODE_ENV === 'test') {
     sendEmailBatchWithTemplates(+POSTMARK_AUTO_PAY_FAILED_TEMPLATE_ID, messages)
   }
 }

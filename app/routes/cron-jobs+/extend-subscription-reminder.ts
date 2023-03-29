@@ -10,7 +10,7 @@ import type {
 
 export const action = CronJob(
   'cron-jobs/extend-subscription-reminder',
-  ['* * * * *', 'Asia/Ho_Chi_Minh'],
+  ['0 0 * * *', 'Asia/Ho_Chi_Minh'],
   async () => {
     const startOfNextTwoDays = dayjs().add(2, 'days').endOf('day').toDate()
     const endOfNextTwoDays = dayjs().add(2, 'days').startOf('day').toDate()
