@@ -101,7 +101,7 @@ export default function SubscriptionDetail() {
   } = useLoaderData<LoaderData>()
 
   return (
-    <div className="-mt-80 flex flex-col gap-5 rounded-xl bg-layer-3 p-10 text-white">
+    <div className="flex flex-col gap-5 rounded-xl bg-layer-3 p-10 text-white">
       <span className="w-full text-center text-3xl font-semibold">
         {subscriptionService.name}
       </span>
