@@ -5,7 +5,7 @@ import {
   ChevronUpIcon,
 } from '@heroicons/react/24/outline'
 import { cx } from 'class-variance-authority'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import type { SelectOption } from '~/types'
 
 type Props = {
@@ -23,7 +23,10 @@ export const MultiSelect: React.FC<Props> = ({
   options = [],
   onChange = () => {},
 }) => {
+  const buttonRef = useRef<any>(null)
+  const optionsContainerRef = useRef<any>(null)
   const [isOpen, setIsOpen] = useState(false)
+  const [isHover, setIsHover] = useState(false)
   const [selectedValues, setSelectedValues] = useState<string[]>(
     Array.from(new Set(values))
   )
@@ -31,6 +34,33 @@ export const MultiSelect: React.FC<Props> = ({
   useEffect(() => {
     onChange(selectedValues)
   }, [onChange, selectedValues])
+
+  useEffect(() => {
+    /**
+     * Alert if clicked on outside of element
+     */
+    function handleClickOutside(event: any) {
+      if (
+        buttonRef.current &&
+        optionsContainerRef.current &&
+        !buttonRef.current.contains(event.target) &&
+        !optionsContainerRef.current.contains(event.target) &&
+        !isHover
+      ) {
+        alert('You clicked outside of me!')
+      }
+    }
+    // Bind the event listener
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [buttonRef, optionsContainerRef, isHover])
+
+  const onHover = () => setIsHover(true)
+
+  const onLeave = () => setIsHover(false)
 
   const isSelected = (value: string) => {
     return selectedValues.find(el => el === value) ? true : false
@@ -70,8 +100,14 @@ export const MultiSelect: React.FC<Props> = ({
               {label}
             </Listbox.Label>
           )}
+          {isHover ? 'true' : 'false'}
           <div className="relative rounded-lg">
-            <span className="inline-block w-full rounded-lg shadow-sm">
+            <span
+              className="inline-block w-full rounded-lg shadow-sm"
+              onMouseOver={onHover}
+              onMouseLeave={onLeave}
+              ref={buttonRef}
+            >
               <Listbox.Button
                 className={cx([
                   'relative flex w-full items-center justify-between py-3 px-4',
@@ -106,6 +142,9 @@ export const MultiSelect: React.FC<Props> = ({
               <Listbox.Options
                 static
                 className="shadow-xs max-h-60 overflow-auto rounded-xl py-1 text-base leading-6 focus:outline-none sm:text-sm sm:leading-5"
+                onMouseOver={onHover}
+                onMouseLeave={onLeave}
+                ref={optionsContainerRef}
               >
                 {options.map(({ value, label }) => {
                   const selected = isSelected(value)
