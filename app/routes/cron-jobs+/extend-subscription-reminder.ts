@@ -3,7 +3,10 @@ import { CronJob } from 'quirrel/remix'
 import { DISPLAY_DATE_TIME_FORMAT, ROUTES } from '~/constants'
 import { dayjs } from '~/libs'
 import { db, PRODUCT_URL, sendExtendSubscriptionReminder } from '~/services'
-import type { ExtendSubscriptionTemplateModel } from '~/types'
+import type {
+  ExtendSubscriptionReminderTemplateModel,
+  PostmarkTemplateMessage,
+} from '~/types'
 
 export const action = CronJob(
   'cron-jobs/extend-subscription-reminder',
@@ -40,35 +43,33 @@ export const action = CronJob(
       },
     })
 
-    const messages: Array<{
-      to: string
-      template: ExtendSubscriptionTemplateModel
-    }> = subscriptions.map(
-      ({
-        expiredDate,
-        membership: {
-          user: { name, email },
-        },
-        subscriptionService: { name: serviceName, type },
-      }) => {
-        const path =
-          type === SubscriptionServiceType.PROJECT_MANAGEMENT
-            ? ROUTES.EXTEND_PROJECTS_SUBSCRIPTION
-            : ''
-
-        return {
-          to: email,
-          template: {
-            name,
-            extendUrl: `${PRODUCT_URL}${path}`,
-            serviceName,
-            expiredAt: dayjs(expiredDate)
-              .endOf('day')
-              .format(DISPLAY_DATE_TIME_FORMAT),
+    const messages: PostmarkTemplateMessage<ExtendSubscriptionReminderTemplateModel>[] =
+      subscriptions.map(
+        ({
+          expiredDate,
+          membership: {
+            user: { name, email },
           },
+          subscriptionService: { name: serviceName, type },
+        }) => {
+          const path =
+            type === SubscriptionServiceType.PROJECT_MANAGEMENT
+              ? ROUTES.EXTEND_PROJECTS_SUBSCRIPTION
+              : ''
+
+          return {
+            to: email,
+            template: {
+              name,
+              extendUrl: `${PRODUCT_URL}${path}`,
+              serviceName,
+              expiredAt: dayjs(expiredDate)
+                .endOf('day')
+                .format(DISPLAY_DATE_TIME_FORMAT),
+            },
+          }
         }
-      }
-    )
+      )
 
     sendExtendSubscriptionReminder(messages)
   }

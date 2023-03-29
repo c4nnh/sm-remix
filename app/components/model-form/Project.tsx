@@ -43,7 +43,7 @@ export const ProjectForm = () => {
                       {...register('fromDate')}
                       type="date"
                       value={dayjs(
-                        watch('fromDate') || project?.fromDate
+                        watch('fromDate') ?? project?.fromDate
                       ).format(DATA_DATE_FORMAT)}
                     />
                     <Errors />
@@ -57,7 +57,7 @@ export const ProjectForm = () => {
                     <Input
                       {...register('toDate')}
                       type="date"
-                      value={dayjs(watch('toDate') || project?.toDate).format(
+                      value={dayjs(watch('toDate') ?? project?.toDate).format(
                         DATA_DATE_FORMAT
                       )}
                     />

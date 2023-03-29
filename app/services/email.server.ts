@@ -1,13 +1,18 @@
 import { ServerClient } from 'postmark'
 import type {
-  AutoPayTemplateModel,
+  AutoPayFailedTemplateModel,
+  AutoPayReminderTemplateModel,
+  AutoPaySuccessTemplateModel,
   ConfirmEmailTemplateModel,
-  ExtendSubscriptionTemplateModel,
+  ExtendSubscriptionReminderTemplateModel,
+  PostmarkTemplateMessage,
 } from '~/types'
 import {
   NODE_ENV,
   POSTMARK_API_KEY,
+  POSTMARK_AUTO_PAY_FAILED_TEMPLATE_ID,
   POSTMARK_AUTO_PAY_REMINDER_TEMPLATE_ID,
+  POSTMARK_AUTO_PAY_SUCCESS_TEMPLATE_ID,
   POSTMARK_CONFIRM_EMAIL_TEMPLATE_ID,
   POSTMARK_EMAIL_FROM_ADDRESS,
   POSTMARK_EXTEND_SUBSCRIPTION_REMINDER_TEMPLATE_ID,
@@ -18,14 +23,14 @@ import {
 
 const client = new ServerClient(POSTMARK_API_KEY)
 
-export const sendConfirmEmail = (
-  to: string,
-  templateModel: ConfirmEmailTemplateModel
-) => {
+export const sendConfirmEmail = ({
+  to,
+  template,
+}: PostmarkTemplateMessage<ConfirmEmailTemplateModel>) => {
   if (NODE_ENV !== 'production') {
     console.log('---')
     console.log('Email Confirmation:')
-    console.log(JSON.stringify(templateModel, null, 2))
+    console.log(JSON.stringify(template, null, 2))
     console.log('---')
   }
 
@@ -37,7 +42,7 @@ export const sendConfirmEmail = (
         To: to,
         TemplateId: +POSTMARK_CONFIRM_EMAIL_TEMPLATE_ID,
         TemplateModel: {
-          ...templateModel,
+          ...template,
           productName: PRODUCT_NAME,
           productUrl: PRODUCT_URL,
         },
@@ -50,10 +55,7 @@ export const sendConfirmEmail = (
 }
 
 export const sendExtendSubscriptionReminder = (
-  messages: Array<{
-    to: string
-    template: ExtendSubscriptionTemplateModel
-  }>
+  messages: PostmarkTemplateMessage<ExtendSubscriptionReminderTemplateModel>[]
 ) => {
   if (NODE_ENV !== 'production') {
     console.log('---')
@@ -71,7 +73,7 @@ export const sendExtendSubscriptionReminder = (
 }
 
 export const sendAutoPayReminder = (
-  messages: Array<{ to: string; template: AutoPayTemplateModel }>
+  messages: PostmarkTemplateMessage<AutoPayReminderTemplateModel>[]
 ) => {
   if (NODE_ENV !== 'production') {
     console.log('---')
@@ -88,11 +90,48 @@ export const sendAutoPayReminder = (
   }
 }
 
+export const sendAutoPaySuccess = (
+  messages: PostmarkTemplateMessage<AutoPaySuccessTemplateModel>[]
+) => {
+  if (NODE_ENV !== 'production') {
+    console.log('---')
+    console.log('Email Auto Pay Success:')
+    messages.forEach(message => console.log(JSON.stringify(message)))
+    console.log('---')
+  }
+
+  if (NODE_ENV === 'production') {
+    sendEmailBatchWithTemplates(
+      +POSTMARK_AUTO_PAY_SUCCESS_TEMPLATE_ID,
+      messages
+    )
+  }
+}
+
+export const sendAutoPayFailed = (
+  messages: PostmarkTemplateMessage<AutoPayFailedTemplateModel>[]
+) => {
+  if (NODE_ENV !== 'production') {
+    console.log('---')
+    console.log('Email Auto Pay Failed:')
+    messages.forEach(message => console.log(JSON.stringify(message)))
+    console.log('---')
+  }
+
+  if (NODE_ENV === 'production') {
+    sendEmailBatchWithTemplates(+POSTMARK_AUTO_PAY_FAILED_TEMPLATE_ID, messages)
+  }
+}
+
 const sendEmailBatchWithTemplates = (
   templateId: number,
   messages: Array<{
     to: string
-    template: ExtendSubscriptionTemplateModel | AutoPayTemplateModel
+    template:
+      | ExtendSubscriptionReminderTemplateModel
+      | AutoPayReminderTemplateModel
+      | AutoPaySuccessTemplateModel
+      | AutoPayFailedTemplateModel
   }>
 ) => {
   try {

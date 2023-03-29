@@ -2,7 +2,10 @@ import { CronJob } from 'quirrel/remix'
 import { DISPLAY_DATE_TIME_FORMAT, ROUTES } from '~/constants'
 import { dayjs } from '~/libs'
 import { db, PRODUCT_URL, sendAutoPayReminder } from '~/services'
-import type { AutoPayTemplateModel } from '~/types'
+import type {
+  AutoPayReminderTemplateModel,
+  PostmarkTemplateMessage,
+} from '~/types'
 
 export const action = CronJob(
   'cron-jobs/auto-pay-reminder',
@@ -35,7 +38,7 @@ export const action = CronJob(
       },
     })
 
-    const messages: Array<{ to: string; template: AutoPayTemplateModel }> =
+    const messages: PostmarkTemplateMessage<AutoPayReminderTemplateModel>[] =
       subscriptions.map(
         ({
           membership: {
