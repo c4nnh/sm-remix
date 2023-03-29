@@ -11,7 +11,7 @@ export const SubscriptionServiceForm = () => {
   const { subscriptionService } = useLoaderData<LoaderData>()
 
   return (
-    <div className="mb-80 flex w-full max-w-[1000px] flex-col gap-10 rounded-lg bg-layer-3 p-10 text-text mobile:p-5">
+    <div className="flex w-full max-w-[1000px] flex-col gap-10 rounded-lg bg-layer-3 p-10 text-text mobile:p-5">
       <div className="flex flex-col gap-1">
         <span className="text-3xl">Update subscription service</span>
       </div>
