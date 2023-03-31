@@ -1330,6 +1330,11 @@ select {
   border-color: rgb(187 247 208 / var(--tw-border-opacity));
 }
 
+.border-green-600 {
+  --tw-border-opacity: 1;
+  border-color: rgb(22 163 74 / var(--tw-border-opacity));
+}
+
 .border-hr {
   --tw-border-opacity: 1;
   border-color: rgb(var(--color-hr) / var(--tw-border-opacity));
@@ -1407,6 +1412,11 @@ select {
 .bg-green-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(187 247 208 / var(--tw-bg-opacity));
+}
+
+.bg-green-600 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 163 74 / var(--tw-bg-opacity));
 }
 
 .bg-layer-1\/60 {
@@ -2003,6 +2013,11 @@ select {
   border-color: rgb(229 231 235 / var(--tw-border-opacity));
 }
 
+.hover\:border-green-500:hover {
+  --tw-border-opacity: 1;
+  border-color: rgb(34 197 94 / var(--tw-border-opacity));
+}
+
 .hover\:border-primary-accent:hover {
   --tw-border-opacity: 1;
   border-color: rgb(var(--color-primary-accent) / var(--tw-border-opacity));
@@ -2016,6 +2031,11 @@ select {
 .hover\:bg-gray-200:hover {
   --tw-bg-opacity: 1;
   background-color: rgb(229 231 235 / var(--tw-bg-opacity));
+}
+
+.hover\:bg-green-500:hover {
+  --tw-bg-opacity: 1;
+  background-color: rgb(34 197 94 / var(--tw-bg-opacity));
 }
 
 .hover\:bg-heading\/5:hover {
@@ -2110,6 +2130,10 @@ select {
   --tw-ring-color: rgb(229 231 235 / 0.8);
 }
 
+.focus\:ring-green-400\/80:focus {
+  --tw-ring-color: rgb(74 222 128 / 0.8);
+}
+
 .focus\:ring-heading\/80:focus {
   --tw-ring-color: rgb(var(--color-heading) / 0.8);
 }
@@ -2139,6 +2163,11 @@ select {
   border-color: rgb(156 163 175 / var(--tw-border-opacity));
 }
 
+.disabled\:hover\:border-green-600:hover:disabled {
+  --tw-border-opacity: 1;
+  border-color: rgb(22 163 74 / var(--tw-border-opacity));
+}
+
 .disabled\:hover\:border-primary:hover:disabled {
   --tw-border-opacity: 1;
   border-color: rgb(var(--color-primary) / var(--tw-border-opacity));
@@ -2152,6 +2181,11 @@ select {
 .disabled\:hover\:bg-gray-300:hover:disabled {
   --tw-bg-opacity: 1;
   background-color: rgb(209 213 219 / var(--tw-bg-opacity));
+}
+
+.disabled\:hover\:bg-green-600:hover:disabled {
+  --tw-bg-opacity: 1;
+  background-color: rgb(22 163 74 / var(--tw-bg-opacity));
 }
 
 .disabled\:hover\:bg-primary:hover:disabled {

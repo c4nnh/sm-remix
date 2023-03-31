@@ -1,5 +1,7 @@
+export * from './forgot-password'
 export * from './organization'
 export * from './project'
+export * from './reset-password'
 export * from './skill'
 export * from './subscriptionService'
 export * from './tontine'

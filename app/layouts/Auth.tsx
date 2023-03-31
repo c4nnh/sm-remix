@@ -9,7 +9,10 @@ export const AuthLayout: React.FC<PropsWithChildren> = ({ children }) => {
           <div className="mx-auto h-12 text-heading">
             <LogoIcon viewBox="0 0 30 25" className="text-blue-500" />
           </div>
-          <span className="text-center text-xl font-bold text-white">
+          <span
+            className="text-center text-xl font-bold text-white"
+            id="app-name"
+          >
             Self management
           </span>
         </div>

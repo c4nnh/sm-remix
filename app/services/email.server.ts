@@ -6,6 +6,7 @@ import type {
   ConfirmEmailTemplateModel,
   ExtendSubscriptionReminderTemplateModel,
   PostmarkTemplateMessage,
+  ResetPasswordTempalteModel,
 } from '~/types'
 import {
   NODE_ENV,
@@ -17,6 +18,7 @@ import {
   POSTMARK_EMAIL_FROM_ADDRESS,
   POSTMARK_EXTEND_SUBSCRIPTION_REMINDER_TEMPLATE_ID,
   POSTMARK_MESSAGE_STREAM,
+  POSTMARK_RESET_PASSWORD_TEMPLATE_ID,
   PRODUCT_NAME,
   PRODUCT_URL,
 } from './env'
@@ -41,6 +43,37 @@ export const sendConfirmEmail = ({
         From: POSTMARK_EMAIL_FROM_ADDRESS,
         To: to,
         TemplateId: +POSTMARK_CONFIRM_EMAIL_TEMPLATE_ID,
+        TemplateModel: {
+          ...template,
+          productName: PRODUCT_NAME,
+          productUrl: PRODUCT_URL,
+        },
+      })
+    } catch (e) {
+      console.log(e)
+      // do nothing
+    }
+  }
+}
+
+export const sendResetPassword = ({
+  to,
+  template,
+}: PostmarkTemplateMessage<ResetPasswordTempalteModel>) => {
+  if (NODE_ENV !== 'production') {
+    console.log('---')
+    console.log('Email Reset Password:')
+    console.log(JSON.stringify(template, null, 2))
+    console.log('---')
+  }
+
+  if (NODE_ENV === 'production') {
+    try {
+      return client.sendEmailWithTemplate({
+        MessageStream: POSTMARK_MESSAGE_STREAM,
+        From: POSTMARK_EMAIL_FROM_ADDRESS,
+        To: to,
+        TemplateId: +POSTMARK_RESET_PASSWORD_TEMPLATE_ID,
         TemplateModel: {
           ...template,
           productName: PRODUCT_NAME,
