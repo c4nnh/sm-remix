@@ -23,6 +23,12 @@ export const button = cva(
           'focus:ring-red-400/80',
           'disabled:hover:border-red-600 disabled:hover:bg-red-600',
         ],
+        success: [
+          'border-green-600 bg-green-600 text-white',
+          'hover:border-green-500 hover:bg-green-500',
+          'focus:ring-green-400/80',
+          'disabled:hover:border-green-600 disabled:hover:bg-green-600',
+        ],
         default: [
           'border-gray-300 bg-gray-300 text-black',
           'hover:border-gray-200 hover:bg-gray-200',
