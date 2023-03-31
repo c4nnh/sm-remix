@@ -4,6 +4,10 @@ export const ROUTES = {
   LOGIN: '/login',
   REGISTER: '/register',
   LOGOUT: '/logout',
+  FORGOT_PASSWORD: '/forgot-password',
+  FORGOT_PASSWORD_SUCCESS: '/forgot-password/success',
+  RESET_PASSWORD: '/reset-password',
+  RESET_PASSWORD_SUCCESS: '/reset-password/success',
   CONFIRM_EMAIL: '/confirm-email',
   RESEND_CONFIRM_EMAIL: '/resend-confirm-email',
   CHANGE_ORGANIZATION: '/change-organization',
@@ -34,6 +38,7 @@ export const FORM_STRATEGY = {
   REGISTER: 'register',
   CONFIRM_EMAIL: 'confirm-email',
   CHANGE_ORGANIZATION: 'change-organization',
+  CHANGE_PASSWORD: 'change-password',
 }
 
 export const SESSION_KEY = 'SESSION_KEY'
@@ -47,6 +52,7 @@ export const QUERY_KEY = {
   SEARCH: 'search',
   SKIP: 'skip',
   TAKE: 'take',
+  TOKEN: 'token',
 }
 
 export const PAGINATION = {

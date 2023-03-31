@@ -11,6 +11,10 @@ export type ConfirmEmailTemplateModel = BaseModel & {
   confirmUrl: string
 }
 
+export type ResetPasswordTempalteModel = {
+  resetUrl: string
+}
+
 export type ExtendSubscriptionReminderTemplateModel = BaseModel & {
   serviceName: string
   extendUrl: string
