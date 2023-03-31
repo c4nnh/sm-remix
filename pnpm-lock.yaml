@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@headlessui/react': ^1.7.13
   '@heroicons/react': ^2.0.16
+  '@playwright/test': ^1.32.1
   '@prisma/client': ^4.11.0
   '@remix-run/dev': ^1.14.3
   '@remix-run/eslint-config': ^1.14.3
@@ -81,6 +82,7 @@ dependencies:
   zod: 3.21.4
 
 devDependencies:
+  '@playwright/test': 1.32.1
   '@remix-run/dev': 1.14.3_mkerhb7bhzuvx42nqbtrlxw7ha
   '@remix-run/eslint-config': 1.14.3_g4ssdyyxd6zhf5tqd24yazbeaq
   '@tailwindcss/forms': 0.5.3_tailwindcss@3.2.7
@@ -2137,6 +2139,17 @@ packages:
       picocolors: 1.0.0
       tiny-glob: 0.2.9
       tslib: 2.5.0
+    dev: true
+
+  /@playwright/test/1.32.1:
+    resolution: {integrity: sha512-FTwjCuhlm1qHUGf4hWjfr64UMJD/z0hXYbk+O387Ioe6WdyZQ+0TBDAc6P+pHjx2xCv1VYNgrKbYrNixFWy4Dg==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dependencies:
+      '@types/node': 18.15.5
+      playwright-core: 1.32.1
+    optionalDependencies:
+      fsevents: 2.3.2
     dev: true
 
   /@prisma/client/4.11.0_prisma@4.11.0:
@@ -7425,6 +7438,12 @@ packages:
     transitivePeerDependencies:
       - encoding
     dev: false
+
+  /playwright-core/1.32.1:
+    resolution: {integrity: sha512-KZYUQC10mXD2Am1rGlidaalNGYk3LU1vZqqNk0gT4XPty1jOqgup8KDP8l2CUlqoNKhXM5IfGjWgW37xvGllBA==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
 
   /postcss-discard-duplicates/5.1.0_postcss@8.4.21:
     resolution: {integrity: sha512-zmX3IoSI2aoenxHV6C7plngHWWhUOV3sP1T8y2ifzxzbtnuhk1EdPwm0S1bIUNaJ2eNbWeGLEwzw8huPD67aQw==}

@@ -16,7 +16,8 @@
     "start": "remix-serve build",
     "typecheck": "tsc",
     "generate:css": "tailwindcss -o ./app/styles/tailwind.generated.css",
-    "seed:database": "ts-node prisma/seed.ts"
+    "seed:database": "ts-node prisma/seed.ts",
+    "test": "pnpm exec playwright test"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.13",
@@ -48,6 +49,7 @@
     "zod": "^3.21.4"
   },
   "devDependencies": {
+    "@playwright/test": "^1.32.1",
     "@remix-run/dev": "^1.14.3",
     "@remix-run/eslint-config": "^1.14.3",
     "@tailwindcss/forms": "^0.5.3",
