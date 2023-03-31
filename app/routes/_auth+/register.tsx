@@ -5,39 +5,40 @@ import { AuthorizationError } from 'remix-auth'
 import { performMutation } from 'remix-forms'
 import { RemixForm } from '~/components'
 import { FORM_STRATEGY, ROUTES } from '~/constants'
-import { AuthLayout } from '~/layouts'
 import { RegisterSchema } from '~/schemas'
 import { authenticator } from '~/services'
 
 export default function Register() {
   return (
-    <AuthLayout>
-      <RemixForm
-        schema={RegisterSchema}
-        buttonLabel="Register"
-        pendingButtonLabel="Registering"
-      >
-        {({ Field, Button, Errors }) => {
-          return (
-            <>
-              <Field name="email" />
-              <Field name="name" />
-              <Field name="password" type="password" />
-              <Errors />
-              <p className="-mb-1 mt-1 text-center text-sm text-text">
-                <Link to={ROUTES.LOGIN}>
-                  Already have an account?&nbsp;
-                  <span className="font-semibold text-blue-400 hover:text-blue-300">
-                    Login
-                  </span>
-                </Link>
-              </p>
-              <Button />
-            </>
-          )
-        }}
-      </RemixForm>
-    </AuthLayout>
+    <RemixForm
+      schema={RegisterSchema}
+      buttonLabel="Register"
+      pendingButtonLabel="Registering"
+    >
+      {({ Field, Button, Errors }) => {
+        return (
+          <>
+            <Field name="email" placeholder="Enter your email" />
+            <Field name="name" placeholder="Enter your name" />
+            <Field
+              name="password"
+              type="password"
+              placeholder="Enter your password"
+            />
+            <Errors />
+            <p className="-mb-1 mt-1 text-center text-sm text-text">
+              <Link to={ROUTES.LOGIN}>
+                Already have an account?&nbsp;
+                <span className="font-semibold text-blue-400 hover:text-blue-300">
+                  Login
+                </span>
+              </Link>
+            </p>
+            <Button />
+          </>
+        )
+      }}
+    </RemixForm>
   )
 }
 
