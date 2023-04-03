@@ -13,7 +13,7 @@
     "dev:css": "npm run generate:css -- --watch",
     "dev:seed": "npm run seed:database",
     "dev:webhooks-stripe": "hookdeck listen 3000 sm -p dev",
-    "start": "concurrently 'quirrel' 'remix-serve build'",
+    "start": "remix-serve build",
     "typecheck": "tsc",
     "generate:css": "tailwindcss -o ./app/styles/tailwind.generated.css",
     "seed:database": "ts-node prisma/seed.ts",
