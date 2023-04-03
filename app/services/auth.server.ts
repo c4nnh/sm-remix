@@ -16,6 +16,7 @@ import {
   getUserByEmail,
   setDefaultOrganization,
 } from '~/models'
+import { someQueue } from '~/queues'
 import { sessionStorage } from '~/services/session.server'
 import type { AuthSession } from '~/types/auth'
 import { sendConfirmEmail } from '~/utils'
@@ -56,6 +57,15 @@ authenticator.use(
     } else {
       organizationId = (await setDefaultOrganization(user.id)) || ''
     }
+
+    await someQueue.enqueue(
+      {
+        name: 'acbd',
+      },
+      {
+        delay: '1s',
+      }
+    )
 
     const { id, name, role, status } = user
 
