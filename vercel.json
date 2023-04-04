@@ -3,6 +3,10 @@
     {
       "path": "/cron-jobs/vercel",
       "schedule": "* * * * *"
+    },
+    {
+      "path": "/cron-jobs/test-deploy-quirrel",
+      "schedule": "* * * * *"
     }
   ]
 }
