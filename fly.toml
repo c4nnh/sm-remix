@@ -8,6 +8,8 @@ processes = []
 
 [env]
   PORT = "8080"
+  QUIRREL_API_URL = "https://self-management-quirrel.fly.dev"
+  QUIRREL_BASE_URL = "https://self-management.fly.dev"
 
 [experimental]
   auto_rollback = true
