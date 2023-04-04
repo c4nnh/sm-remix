@@ -2,7 +2,11 @@
   "crons": [
     {
       "path": "/cron-jobs/vercel",
-      "schedule": "* * * * *"
+      "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/cron-jobs/test-deploy-vercel",
+      "schedule": "0 14 * * *"
     }
   ]
 }
