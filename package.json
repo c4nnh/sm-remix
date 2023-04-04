@@ -7,7 +7,7 @@
   "scripts": {
     "build": "run-p build:*",
     "build:css": "npm run generate:css",
-    "build:remix": "remix build",
+    "build:remix": "remix build && quirrel ci",
     "dev": "concurrently 'quirrel' 'run-p dev:*'",
     "dev:remix": "remix dev",
     "dev:css": "npm run generate:css -- --watch",
