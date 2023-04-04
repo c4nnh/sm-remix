@@ -1,41 +1,30 @@
-# fly.toml file generated for self-management on 2023-03-31T22:05:09+07:00
+# fly.toml file generated for self-management-quirrel on 2023-04-04T10:58:20+07:00
 
-app = "self-management"
-kill_signal = "SIGINT"
-kill_timeout = 5
+app = "self-management-quirrel"
 primary_region = "sin"
-processes = []
 
-[env]
-  PORT = "8080"
-  QUIRREL_API_URL = "https://self-management-quirrel.fly.dev"
-  QUIRREL_BASE_URL = "https://self-management.fly.dev"
-
-[experimental]
-  auto_rollback = true
+[build]
+  image = "ghcr.io/quirrel-dev/quirrel:main"
 
 [[services]]
-  http_checks = []
-  internal_port = 8080
-  processes = ["app"]
+  internal_port = 9181
   protocol = "tcp"
-  script_checks = []
   [services.concurrency]
     hard_limit = 25
     soft_limit = 20
     type = "connections"
 
+  [[services.http_checks]]
+    interval = "10s"
+    method = "get"
+    path = "/health"
+    protocol = "http"
+    timeout = "2s"
+
   [[services.ports]]
-    force_https = true
     handlers = ["http"]
     port = 80
 
   [[services.ports]]
     handlers = ["tls", "http"]
     port = 443
-
-  [[services.tcp_checks]]
-    grace_period = "1s"
-    interval = "15s"
-    restart_limit = 0
-    timeout = "2s"
