@@ -1,4 +1,4 @@
-# fly.toml file generated for self-management-quirrel on 2023-04-04T10:58:20+07:00
+# fly.toml file generated for self-management-quirrel on 2023-04-05T10:04:30+07:00
 
 app = "self-management-quirrel"
 primary_region = "sin"
