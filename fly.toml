@@ -1,4 +1,4 @@
-# fly.toml file generated for self-management-quirrel-redis on 2023-04-05T09:59:19+07:00
+# fly.toml file generated for self-management-quirrel-redis on 2023-04-08T16:13:25+07:00
 
 app = "self-management-quirrel-redis"
 primary_region = "sin"
