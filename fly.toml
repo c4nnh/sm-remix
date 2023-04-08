@@ -1,4 +1,4 @@
-# fly.toml file generated for self-management on 2023-03-31T22:05:09+07:00
+# fly.toml file generated for self-management on 2023-04-08T20:55:39+07:00
 
 app = "self-management"
 kill_signal = "SIGINT"
@@ -8,8 +8,6 @@ processes = []
 
 [env]
   PORT = "8080"
-  QUIRREL_API_URL = "https://self-management-quirrel.fly.dev"
-  QUIRREL_BASE_URL = "https://self-management.fly.dev"
 
 [experimental]
   auto_rollback = true
