@@ -117,6 +117,7 @@ const HomepageBody = () => {
 
   return (
     <div className="flex h-full w-full flex-col items-center gap-5 pt-10 mobile:gap-1 mobile:pt-2">
+      test 2
       <div className="text-center text-5xl text-white mobile:text-3xl">
         WELCOME TO SELF MANAGEMENT APP
       </div>
