@@ -2,6 +2,12 @@ projects:
   - name: 'self-management'
     description: 'Self management'
 
+    environments:
+      - name: 'Production'
+        slug: 'prd'
+        configs:
+          - slug: 'prd'
+
     secrets:
       prd:
         NODE_ENV: 'production'
