@@ -1,0 +1,12 @@
+projects:
+  - name: 'myboothrent'
+    description: "'My booth rent"
+
+    secrets:
+      prd:
+        NODE_ENV: 'production'
+        SESSION_SECRET: ''
+        TOKEN_SECRET: ''
+        DATABASE_URL: ''
+        STRIPE_SECRET_KEY: ''
+        STRIPE_PUBLIC_KEY: ''
