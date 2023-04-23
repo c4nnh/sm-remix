@@ -16,3 +16,4 @@ projects:
         DATABASE_URL: ''
         STRIPE_SECRET_KEY: ''
         STRIPE_PUBLIC_KEY: ''
+        STRIPE_WEBHOOKS_KEY: ''
